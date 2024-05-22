@@ -1,4 +1,4 @@
-package io.catalyte.demo.categories;
+package io.catalyte.demo.products;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,47 +14,47 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/categories")
-public class CategoriesController {
+@RequestMapping(value = "/products")
+public class ProductsController {
 
   private static int idCounter = 1;
-  private static List<Category> categories = new ArrayList<>();
+  private static List<Product> products = new ArrayList<>();
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public List<Category> getCategories() {
-    return categories;
+  public List<Product> getProducts() {
+    return products;
   }
 
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public Category getCategoryById(@PathVariable int id) {
-    return categories.get(id-1);
+  public Product getProductById(@PathVariable int id) {
+    return products.get(id-1);
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Category createCategory(@RequestBody Category categoryToCreate) {
-    categoryToCreate.setId(idCounter++);
-    categories.add(categoryToCreate);
+  public Product createProduct(@RequestBody Product productToCreate) {
+    productToCreate.setId(idCounter++);
+    products.add(productToCreate);
 
-    return categoryToCreate;
+    return productToCreate;
   }
 
   @PutMapping(value = "/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public Category editCategory(@RequestBody Category categoryToEdit, @PathVariable int id) {
-    if (categories.size() >= id - 1 && categoryToEdit.getId() == id) {
-      categories.set(id - 1, categoryToEdit);
+  public Product editProduct(@RequestBody Product productToEdit, @PathVariable int id) {
+    if (products.size() >= id - 1 && productToEdit.getId() == id) {
+      products.set(id - 1, productToEdit);
     }
 
-    return categoryToEdit;
+    return productToEdit;
   }
 
   @DeleteMapping(value = "/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteCategory(@PathVariable int id) {
-    categories.remove(id - 1);
+  public void deleteProduct(@PathVariable int id) {
+    products.remove(id - 1);
   }
 
 }
