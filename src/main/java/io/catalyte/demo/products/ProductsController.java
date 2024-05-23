@@ -2,6 +2,8 @@ package io.catalyte.demo.products;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/products")
 public class ProductsController {
+
+  ProductService productService;
+
+  @Autowired
+  public ProductsController(ProductService productService) {
+    this.productService = productService;
+  }
 
   private static int idCounter = 1;
   private static List<Product> products = new ArrayList<>();
@@ -35,10 +44,7 @@ public class ProductsController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Product createProduct(@RequestBody Product productToCreate) {
-    productToCreate.setId(idCounter++);
-    products.add(productToCreate);
-
-    return productToCreate;
+    return productService.createProduct(productToCreate);
   }
 
   @PutMapping(value = "/{id}")
