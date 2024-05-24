@@ -1,15 +1,10 @@
 package io.catalyte.demo.products;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
 public class Product {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
@@ -19,10 +14,14 @@ public class Product {
   private String name;
   private String imageUrl;
   private int vendorId;
-  //private List<String> ingredientsList;
+
+  @ElementCollection
+  private List<String> ingredientsList;
   private String classification;
   private double cost;
-  //private List<String> allergenList;
+
+ @ElementCollection
+  private List<String> allergenList;
   private double salePrice;
 
   public Product() {
@@ -38,10 +37,10 @@ public class Product {
     this.name = name;
     this.imageUrl = imageUrl;
     this.vendorId = vendorId;
-    //this.ingredientsList = ingredientsList;
+    this.ingredientsList = ingredientsList;
     this.classification = classification;
     this.cost = cost;
-    //this.allergenList = allergenList;
+    this.allergenList = allergenList;
     this.salePrice = salePrice;
   }
 
@@ -93,13 +92,13 @@ public class Product {
     this.vendorId = vendorId;
   }
 
-  /*public List<String> getIngredientsList() {
+  public List<String> getIngredientsList() {
     return ingredientsList;
   }
 
   public void setIngredientsList(List<String> ingredientsList) {
     this.ingredientsList = ingredientsList;
-  }*/
+  }
 
   public String getClassification() {
     return classification;
@@ -117,13 +116,13 @@ public class Product {
     this.cost = cost;
   }
 
-  /*public List<String> getAllergenList() {
+  public List<String> getAllergenList() {
     return allergenList;
   }
 
   public void setAllergenList(List<String> allergenList) {
     this.allergenList = allergenList;
-  }*/
+  }
 
   public double getSalePrice() {
     return salePrice;
