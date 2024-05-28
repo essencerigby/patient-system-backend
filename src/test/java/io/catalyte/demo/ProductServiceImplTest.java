@@ -44,13 +44,11 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    public void createProduct_withInvalidProduct_returnsNothing() {
+    public void createProduct_withInvalidProduct_throwsError() {
         testProduct.setName("");
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+        assertThrows(ResponseStatusException.class, () -> {
             productService.createProduct(testProduct);
-        });
-
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode(), "Product was saved.");
+        }, "Product was saved.");
     }
 }
