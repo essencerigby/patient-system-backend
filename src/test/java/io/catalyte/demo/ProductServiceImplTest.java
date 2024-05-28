@@ -9,11 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -26,25 +27,30 @@ public class ProductServiceImplTest {
 
     Product testProduct;
     List<String> sampleList;
-    Double sampleDouble = 5.0;
 
     @BeforeEach
     public void setUp() {
         productService = new ProductServiceImpl(productRepository);
-        testProduct = new Product(1, true, "", "TestName", "", 5, sampleList, "", sampleDouble, sampleList, sampleDouble);
+        testProduct = new Product(1, true, "",
+                "TestName", "", 5, sampleList,
+                "", 5.0, sampleList, 5.0);
     }
 
     @Test
     public void createProduct_withValidProduct_returnsPersistedProduct() {
         when(productRepository.save(any(Product.class))).thenReturn(testProduct);
         Product result = productService.createProduct(testProduct);
-        assertEquals("TestName", result.getName(), "Incorrect Name was returned");
+        assertEquals("TestName", result.getName(), "Product was Invalid");
     }
 
     @Test
     public void createProduct_withInvalidProduct_returnsNothing() {
-        when(productRepository.save(any(Product.class))).thenReturn(testProduct);
-        Product result = productService.createProduct(testProduct);
-        assertNotEquals("WrongName", result.getName(), "Incorrect Name was returned");
+        testProduct.setName("");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            productService.createProduct(testProduct);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode(), "Product was saved.");
     }
 }
