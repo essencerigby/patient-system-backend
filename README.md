@@ -10,10 +10,22 @@ The server will start on `localhost:8085`
 
 ## JSON Body
 
-Use the following as a JSON body for a POST. We do not supply an id on the POST, as that is the application's job to manage.
+Use the following as a JSON body for a POST. We do not supply an id or timestamp on the POST, as that is the application's job to manage.
 ```
 {
-    "name": "Rental",
-    "imageUrl": "http:www.rentals.com/Rental"
+  "name": "Sample Vendor",
+  "address": {
+    "street": "123 Main St",
+    "street2": "Apt 101",
+    "city": "Springfield",
+    "state": "IL",
+    "zipCode": "62701"
+  },
+  "contact": {
+    "contactName": "John Doe",
+    "email": "john.doe@example.com",
+    "titleOrRole": "Sales Manager",
+    "phone": "1234567890"
+  }
 }
 ```
