@@ -25,10 +25,8 @@ public class ProductsController {
   ProductService productService;
 
   /**
-   * Injecting VendorService implementation
    * @param productService - the service for performing CRUD methods on Vendor instances
    * */
-
   @Autowired
   public ProductsController(ProductService productService) {
     this.productService = productService;
@@ -73,7 +71,7 @@ public class ProductsController {
   /**
    * Updates an existing product.
    *
-   * @param id      The ID of the product to update.
+   * @param id The ID of the product to update.
    * @param productToEdit The updated product data.
    * @return The updated product.
    */

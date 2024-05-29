@@ -57,6 +57,11 @@ public class ProductServiceImpl implements ProductService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Product");
         }
 
+        double markUp = productToCreate.getMarkUp();
+        double cost = productToCreate.getCost();
+        double salePrice = (cost * markUp) + cost;
+        productToCreate.setSalePrice(salePrice);
+
         productRepository.save(productToCreate);
         return productToCreate;
     }
@@ -64,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Updates an existing product.
      *
-     * @param id      The ID of the product to update.
+     * @param id The ID of the product to update.
      * @param productToEdit The updated product data.
      * @return The updated product.
      */
