@@ -2,7 +2,9 @@ package io.catalyte.demo.vendor;
 
 import io.catalyte.demo.vendor.vendorEntity.Vendor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -37,7 +39,11 @@ public class VendorServiceImpl implements VendorService {
      * @return the vendor with the specified ID
      */
     public Vendor getVendorById(int id) {
-        return null; // PLACEHOLDER
+        try {
+            return vendorRepository.findById(id).orElseThrow();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vendor not found.");
+        }
     }
 
     /**
