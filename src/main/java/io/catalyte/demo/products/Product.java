@@ -12,7 +12,6 @@ public class Product {
   private boolean active;
   private String description;
   private String name;
-  private String imageUrl;
   private int vendorId;
 
   @ElementCollection
@@ -29,15 +28,13 @@ public class Product {
   public Product() {
   }
 
-  public Product(int id, boolean active, String description, String name,
-                 String imageUrl, int vendorId, List<String> ingredientsList,
-                 String classification, double cost,
+  public Product(int id, boolean active, String description, String name, int vendorId,
+                 List<String> ingredientsList, String classification, double cost,
                  List<String> allergenList, double markup, double salePrice) {
     this.id = id;
     this.active = active;
     this.description = description;
     this.name = name;
-    this.imageUrl = imageUrl;
     this.vendorId = vendorId;
     this.ingredientsList = ingredientsList;
     this.classification = classification;
@@ -77,14 +74,6 @@ public class Product {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public String getImageUrl() {
-    return imageUrl;
-  }
-
-  public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
   }
 
   public int getVendorId() {
