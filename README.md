@@ -11,6 +11,8 @@ The server will start on `localhost:8085`
 ## JSON Body
 
 Use the following as a JSON body for a POST. We do not supply an id or timestamp on the POST, as that is the application's job to manage.
+
+## CreateVendor sample request body for POST
 ```
 {
   "name": "Sample Vendor",
@@ -27,5 +29,29 @@ Use the following as a JSON body for a POST. We do not supply an id or timestamp
     "titleOrRole": "Sales Manager",
     "phone": "1234567890"
   }
+}
+```
+
+## CreateProduct sample request body for POST
+```
+{    
+    "active": true,
+    "description": "The description of the Product.",
+    "name": "Product Name",
+    "vendorId": 12345,
+    "ingredientsList": [
+        "Sample Ingredient 1",
+        "Sample Ingredient 2",
+        "Sample Ingredient 3",
+        "Sample Ingredient 4"
+    ],
+    "classification": "Product Classification",
+    "type": "Product Type",
+    "cost": 1.5,
+    "markup": 0.05,
+    "allergenList": [
+        "Allergen 1",
+        "Allergen 2"
+    ]
 }
 ```
