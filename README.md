@@ -29,3 +29,29 @@ Use the following as a JSON body for a POST. We do not supply an id or timestamp
   }
 }
 ```
+```
+Response body after update:
+{
+    "id": 1,
+    "active": true,
+    "description": "A delicious and healthy snack bar made from natural ingredients.",
+    "name": "Nutty Delight Snack Bar",
+    "imageUrl": "http://example.com/images/nutty-delight.jpg",
+    "vendorId": 12345,
+    "ingredientsList": [
+        "Almonds",
+        "Honey",
+        "Oats",
+        "Dried Cranberries"
+    ],
+    "classification": "Baked Good",
+    "type": null,
+    "cost": 1.5,
+    "markup": 5.0,
+    "allergenList": [
+        "Nuts",
+        "Honey"
+    ],
+    "salePrice": 9.0
+}
+```
