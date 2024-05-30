@@ -36,25 +36,25 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<groupId>org.springframework.boot</groupId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<groupId>org.postgresql</groupId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
+			<groupId>org.junit.jupiter</groupId>
 			<scope>test</scope>
 			<version>5.6.0</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
+			<groupId>org.junit.jupiter</groupId>
 			<scope>test</scope>
 			<version>5.6.0</version>
 		</dependency>
@@ -65,7 +65,6 @@
 			<version>5.4.0</version>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>
