@@ -6,7 +6,7 @@ public interface ProductService {
 
     // CRUD methods:
 
-    List<Product> getProducts();
+    List<Product> getProducts(String name);
 
     Product getProductById(int id);
 

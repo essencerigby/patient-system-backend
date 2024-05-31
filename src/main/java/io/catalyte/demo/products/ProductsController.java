@@ -31,20 +31,8 @@ public class ProductsController {
    */
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public List<Product> getProducts() {
-    return productService.getProducts();
-  }
-
-  /**
-   * Retrieves a product by its name.
-   * Exact matches only.
-   * @param name The name of the product to retrieve.
-   * @return The product(s) with the specified name.
-   */
-  @GetMapping("/filter")
-  @ResponseStatus(HttpStatus.OK)
-  public List<Product> getProductByName(@RequestParam String name) {
-    return productService.getProductByName(name);
+  public List<Product> getProducts(@RequestParam(required = false)  String name) {
+    return productService.getProducts(name);
   }
 
   /**
