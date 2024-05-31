@@ -1,6 +1,5 @@
 package io.catalyte.demo;
 
-import io.catalyte.demo.vendor.CreateVendor;
 import io.catalyte.demo.vendor.VendorRepository;
 import io.catalyte.demo.vendor.VendorServiceImpl;
 import io.catalyte.demo.vendor.vendorEntity.Address;
@@ -34,16 +33,12 @@ class VendorServiceImplTests {
 
 	private PhoneNumberFormatter testPhoneNumberFormatter = new PhoneNumberFormatter();
 
-	private CreateVendor testCreateVendor;
-
 	Vendor testVendor;
 
 	Vendor testVendorToEdit;
 
 	@BeforeEach
 	public void setUp() {
-		testCreateVendor = new CreateVendor(vendorRepository, testPhoneNumberFormatter);
-
 		Address address = new Address();
 		address.setCity("Anytown");
 		address.setState("NY");
@@ -116,7 +111,7 @@ class VendorServiceImplTests {
 		when(vendorRepository.save(any(Vendor.class))).thenReturn(testVendor);
 
 		// Act
-		Vendor result = testCreateVendor.createVendor(testVendor);
+		Vendor result = vendorService.createVendor(testVendor);
 
 		// Assert
 		assertEquals("Vendor Inc.", result.getName());
@@ -129,7 +124,7 @@ class VendorServiceImplTests {
 				RuntimeException.class);
 
 		// Assert
-		assertThrows(ResponseStatusException.class, () -> testCreateVendor.createVendor(testVendor));
+		assertThrows(ResponseStatusException.class, () -> vendorService.createVendor(testVendor));
 	}
 
 	@Test

@@ -1,6 +1,5 @@
 package io.catalyte.demo.vendor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.catalyte.demo.vendor.vendorEntity.Vendor;
@@ -25,20 +24,15 @@ public class VendorController {
      * */
 
     private final VendorService vendorService;
-    private final CreateVendor createVendor;
 
     /**
      * Injecting VendorService implementation
      * @param vendorService - the service for performing CRUD methods on Vendor instances
      * */
     @Autowired
-    public VendorController(VendorService vendorService, CreateVendor createVendor) {
+    public VendorController(VendorService vendorService) {
         this.vendorService = vendorService;
-        this.createVendor = createVendor;
     }
-
-    private static int idCounter = 1;
-    private static List<Vendor> vendors = new ArrayList<>();
 
     /**
      * Retrieves all vendors
@@ -69,7 +63,6 @@ public class VendorController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Vendor createVendor(@RequestBody Vendor vendorToCreate) {
-        vendorToCreate.setId(idCounter++);
         return vendorService.createVendor(vendorToCreate);
     }
 
@@ -93,6 +86,5 @@ public class VendorController {
     public void deleteVendor(@PathVariable int id) {
         vendorService.deleteVendor(id);
     }
-
 }
 
