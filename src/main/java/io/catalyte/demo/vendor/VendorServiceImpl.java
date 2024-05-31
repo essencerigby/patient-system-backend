@@ -1,6 +1,8 @@
 package io.catalyte.demo.vendor;
 
+import io.catalyte.demo.vendor.vendorEntity.PhoneNumberFormatter;
 import io.catalyte.demo.vendor.vendorEntity.Vendor;
+import io.catalyte.demo.vendor.vendorEntity.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,13 +20,12 @@ import java.util.List;
 public class VendorServiceImpl implements VendorService {
 
     private final VendorRepository vendorRepository;
-    private final CreateVendor createVendor;
 
     @Autowired
-    public VendorServiceImpl(VendorRepository vendorRepository, CreateVendor createVendor) {
+    public VendorServiceImpl(VendorRepository vendorRepository) {
         this.vendorRepository = vendorRepository;
-        this.createVendor = createVendor;
     }
+
     /**
      * Retrieves all vendors from the repository.
      *
@@ -54,7 +55,32 @@ public class VendorServiceImpl implements VendorService {
      * @return the created vendor
      */
     public Vendor createVendor(Vendor vendorToCreate) {
-        return createVendor.createVendor(vendorToCreate);
+        // Setting timestamp at creation
+        vendorToCreate.setCreatedAt(getFormattedTimeStamp(LocalDateTime.now()));
+
+        // Setting timestamp at most recent update
+        vendorToCreate.setUpdatedAt(getFormattedTimeStamp(LocalDateTime.now()));
+
+        // Phone formatting to ensure phone number string can be saved as xxx-xxx-xxxx
+        Contact contactPhoneNumberToFormat = vendorToCreate.getContact();
+        try {
+            String formattedPhoneNumber = PhoneNumberFormatter.formatPhoneNumber(contactPhoneNumberToFormat.getPhone());
+            contactPhoneNumberToFormat.setPhone(formattedPhoneNumber);
+        } catch (
+                IllegalArgumentException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    e.getMessage());
+        }
+
+        try {
+            return vendorRepository.save(
+                    vendorToCreate);
+        } catch (Exception e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Unexpected error occurred");
+        }
     }
 
     /**
@@ -81,6 +107,11 @@ public class VendorServiceImpl implements VendorService {
      */
     public void deleteVendor(int id) {
         // PLACEHOLDER
+    }
+
+    public String getFormattedTimeStamp(LocalDateTime timestamp) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
+        return timestamp.format(formatter);
     }
 }
 
