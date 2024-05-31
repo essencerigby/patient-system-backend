@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -56,10 +58,22 @@ public class VendorServiceImpl implements VendorService {
     }
 
     /**
-     * Edits an existing vendor
+     * Edits an existing vendor.
+     *
+     * @param vendorToEdit the vendor with updated details
+     * @param id the ID of the vendor to update
+     * @return the updated vendor
      */
     public Vendor editVendor(Vendor vendorToEdit, int id) {
-        return null; // PLACEHOLDER
+        String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm"));
+
+        if (vendorRepository.findById(id).isPresent()) {
+            vendorToEdit.setId(id);
+            vendorToEdit.setCreatedAt(getVendorById(id).getCreatedAt());
+            vendorToEdit.setUpdatedAt(timeStamp);
+            vendorRepository.save(vendorToEdit);
+            return vendorToEdit;
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Vendor was not found");
     }
 
     /**
@@ -67,7 +81,6 @@ public class VendorServiceImpl implements VendorService {
      */
     public void deleteVendor(int id) {
         // PLACEHOLDER
-
     }
 }
 
