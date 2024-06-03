@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,8 +32,20 @@ public class ProductsController {
    */
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public List<Product> getProducts(@RequestParam(required = false)  String name) {
-    return productService.getProducts(name);
+  public List<Product> getProducts() {
+    return productService.getProducts();
+  }
+
+  /**
+   * Retrieves a product by its name.
+   *
+   * @param name The name of the product to retrieve.
+   * @return The product(s) with the specified name.
+   */
+  @GetMapping(params = "name")
+  public ResponseEntity<?> getProductByName(@RequestParam(name = "name", required = false) String name) {
+    List<Product> products = productService.getProductByName(name);
+    return ResponseEntity.ok(products);
   }
 
   /**
