@@ -43,7 +43,7 @@ public class CustomerController {
      */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Customer getCustomer(@PathVariable int id) {
+    public Customer getCustomerById(@PathVariable int id) {
         return customerService.getCustomerById(id);
     }
 
