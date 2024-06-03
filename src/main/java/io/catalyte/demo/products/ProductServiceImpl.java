@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
      *
      * @return A list of all products in the system.
      */
-    public List<Product> getProducts(String name) {
+    public List<Product> getProducts() {
             return productRepository.findAll();
     }
 
@@ -55,10 +55,11 @@ public class ProductServiceImpl implements ProductService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name value is empty");
         }
 
-        List<Product> tempList = productRepository.findByNameIgnoreCase(name);
+        String processedName = preprocessName(name);
+        List<Product> tempList = productRepository.findByNameIgnoreCase(processedName);
 
         if (!tempList.isEmpty()) {
-            return productRepository.findByNameIgnoreCase(name);
+            return productRepository.findByNameIgnoreCase(processedName);
         } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
     }
 
@@ -102,5 +103,12 @@ public class ProductServiceImpl implements ProductService {
      */
     public void deleteProductById(int id) {
         // Delete Product by ID Logic goes here
+    }
+
+    private String preprocessName(String name) {
+        if (name != null) {
+            return name.replace(" ", "%20");
+        }
+        return name;
     }
 }
