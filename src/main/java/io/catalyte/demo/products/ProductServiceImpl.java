@@ -55,11 +55,10 @@ public class ProductServiceImpl implements ProductService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name value is empty");
         }
 
-        String processedName = preprocessName(name);
-        List<Product> tempList = productRepository.findByNameIgnoreCase(processedName);
+        List<Product> tempList = productRepository.findByNameIgnoreCase(name);
 
         if (!tempList.isEmpty()) {
-            return productRepository.findByNameIgnoreCase(processedName);
+            return productRepository.findByNameIgnoreCase(name);
         } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
     }
 
@@ -103,12 +102,5 @@ public class ProductServiceImpl implements ProductService {
      */
     public void deleteProductById(int id) {
         // Delete Product by ID Logic goes here
-    }
-
-    private String preprocessName(String name) {
-        if (name != null) {
-            return name.replace(" ", "%20");
-        }
-        return name;
     }
 }
