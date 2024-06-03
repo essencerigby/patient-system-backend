@@ -25,7 +25,7 @@ public class ProductsController {
   ProductService productService;
 
   /**
-   * @param productService - the service for performing CRUD methods on Vendor instances
+   * @param productService - the service for performing CRUD methods on Customer instances
    * */
   @Autowired
   public ProductsController(ProductService productService) {

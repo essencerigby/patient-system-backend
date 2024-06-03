@@ -55,3 +55,13 @@ Use the following as a JSON body for a POST. We do not supply an id or timestamp
     ]
 }
 ```
+
+## CreateCustomer sample request body for POST
+```
+{    
+    "active": true,
+    "name": "Customer Name",
+    "emailAddress": "customer.name@email.com",
+    "lifetimeSpent": 5000.0
+}
+```
