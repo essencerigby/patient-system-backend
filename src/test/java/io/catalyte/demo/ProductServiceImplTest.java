@@ -75,7 +75,6 @@ public class ProductServiceImplTest {
         List<Product> result = productService.getProductByName("Football");
 
         assertEquals(testProduct2.getName(), result.get(0).getName());
-
     }
 
     @Test
