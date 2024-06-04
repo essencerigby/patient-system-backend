@@ -44,12 +44,6 @@ public class VendorValidationTest {
     }
 
     @Test
-    public void testNameValidation_InvalidCharName() {
-        String result = validator.nameValidation("Vendor1");
-        assertEquals("The name must have only alphabetic characters", result);
-    }
-
-    @Test
     public void testNameValidation_TooLongName() {
         String result = validator.nameValidation("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         assertEquals("~Please enter a shorter name~", result);
@@ -248,47 +242,5 @@ public class VendorValidationTest {
         contact.setTitleOrRole("");
         String result = validator.contactValidation(contact);
         assertTrue(result.contains("~Title/role field is empty~"));
-    }
-
-    @Test
-    public void testTimestampValidation_TimestampNull() {
-        String result = validator.timestampValidation(null);
-        assertEquals("~Timestamp field is null~", result);
-    }
-
-    @Test
-    public void testTimestampValidation_TimestampEmpty() {
-        String result = validator.timestampValidation("");
-        assertEquals("~Timestamp field is empty~", result);
-    }
-
-    @Test
-    public void testTimestampValidation_InvalidFormat_WrongMonth() {
-        String result = validator.timestampValidation("13-15-2023 12:30");
-        assertEquals("The timestamp is not in the right format: mm-dd-yyyy hh:mm", result);
-    }
-
-    @Test
-    public void testTimestampValidation_InvalidFormat_WrongDay() {
-        String result = validator.timestampValidation("12-32-2023 12:30");
-        assertEquals("The timestamp is not in the right format: mm-dd-yyyy hh:mm", result);
-    }
-
-    @Test
-    public void testTimestampValidation_InvalidFormat_WrongHour() {
-        String result = validator.timestampValidation("12-15-2023 25:30");
-        assertEquals("The timestamp is not in the right format: mm-dd-yyyy hh:mm", result);
-    }
-
-    @Test
-    public void testTimestampValidation_InvalidFormat_WrongMinute() {
-        String result = validator.timestampValidation("12-15-2023 12:60");
-        assertEquals("The timestamp is not in the right format: mm-dd-yyyy hh:mm", result);
-    }
-
-    @Test
-    public void testTimestampValidation_TimestampValid() {
-        String result = validator.timestampValidation("12-15-2023 12:30");
-        assertEquals("", result);
     }
 }

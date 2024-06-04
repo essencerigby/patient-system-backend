@@ -31,8 +31,6 @@ public class VendorValidation {
             err1 += "~Name field is null~";
         } else if (name.isBlank()) {
             err1 += "~Name field is empty~";
-        } else if (!name.matches("[a-zA-Z]+")) {
-            err1 += "The name must have only alphabetic characters";
         } else if (name.length() >= 50) {
             err1 += "~Please enter a shorter name~";
         }
@@ -158,35 +156,12 @@ public class VendorValidation {
     }
 
     /**
-     * Validates the vendor's timestamp.
-     *
-     * @param timestamp the timestamp to be validated
-     * @return an error message if the timestamp is invalid; otherwise, an empty string
-     */
-    public String timestampValidation(String timestamp) {
-        String err6 = "";
-        String regex = "^(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])-\\d{4} (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$";
-        if (timestamp == null) {
-            err6 += "~Timestamp field is null~";
-        } else if (timestamp.isBlank()) {
-            err6 += "~Timestamp field is empty~";
-        } else {
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(timestamp);
-            if (!matcher.matches()) {
-                err6 += "The timestamp is not in the right format: mm-dd-yyyy hh:mm";
-            }
-        }
-        return err6;
-    }
-
-    /**
      * Validates the vendor's details.
      *
      * @param vendor the vendor to be validated
      * @return a concatenation of error messages for invalid fields; otherwise, an empty string
      */
     public String validateVendor(Vendor vendor) {
-            return nameValidation(vendor.getName()) + addressValidation(vendor.getAddress()) + contactValidation(vendor.getContact()) + timestampValidation(vendor.getCreatedAt());
+            return nameValidation(vendor.getName()) + addressValidation(vendor.getAddress()) + contactValidation(vendor.getContact());
         }
 }
