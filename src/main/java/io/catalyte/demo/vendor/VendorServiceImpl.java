@@ -34,7 +34,7 @@ public class VendorServiceImpl implements VendorService {
      * @return a list of all vendors
      */
     public List<Vendor> getVendors() {
-        return vendorRepository.findAll(); // PLACEHOLDER
+        return vendorRepository.findAll();
     }
 
     /**
