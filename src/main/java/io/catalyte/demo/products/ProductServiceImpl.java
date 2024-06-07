@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
      * @return A list of all products in the system.
      */
     public List<Product> getProducts() {
-        return null; // Get All Products Logic goes here
+        return productRepository.findAll(); // Get All Products Logic goes here
     }
 
     /**
