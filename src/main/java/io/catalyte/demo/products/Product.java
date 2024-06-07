@@ -18,19 +18,19 @@ public class Product {
   private List<String> ingredientsList;
   private String classification;
   private String type;
-  private double cost;
-  private double markup;
+  private String cost;
+  private String markup;
 
  @ElementCollection
   private List<String> allergenList;
-  private double salePrice;
+  private String salePrice;
 
   public Product() {
   }
 
   public Product(int id, boolean active, String description, String name, int vendorId,
-                 List<String> ingredientsList, String classification, double cost,
-                 List<String> allergenList, double markup, double salePrice) {
+                 List<String> ingredientsList, String classification, String cost,
+                 List<String> allergenList, String markup, String salePrice) {
     this.id = id;
     this.active = active;
     this.description = description;
@@ -108,19 +108,19 @@ public class Product {
       this.type = type;
   }
 
-  public double getCost() {
+  public String getCost() {
     return cost;
   }
 
-  public void setCost(double cost) {
+  public void setCost(String cost) {
     this.cost = cost;
   }
 
-  public double getMarkup() {
+  public String getMarkup() {
       return this.markup;
   }
 
-  public void setMarkup(double markup) {
+  public void setMarkup(String markup) {
       this.markup = markup;
   }
 
@@ -132,11 +132,11 @@ public class Product {
     this.allergenList = allergenList;
   }
 
-  public double getSalePrice() {
+  public String getSalePrice() {
     return salePrice;
   }
 
-  public void setSalePrice(double salePrice) {
+  public void setSalePrice(String salePrice) {
     this.salePrice = salePrice;
   }
 }

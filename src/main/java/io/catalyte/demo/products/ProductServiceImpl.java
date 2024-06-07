@@ -14,6 +14,7 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
+    ProductValidator productValidator = new ProductValidator();
 
     /**
      * Constructs a new instance of ProductServiceImpl with the specified ProductRepository.
@@ -52,15 +53,12 @@ public class ProductServiceImpl implements ProductService {
      * @return the created product
      */
     public Product createProduct(Product productToCreate) {
-        // Product Validation goes here, Replace Sample Validation Below.
-        if (productToCreate.getName() == null || productToCreate.getName().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Product");
+        String errorMessage = productValidator.validateProduct(productToCreate);
+        if (!errorMessage.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
 
-        double markup = productToCreate.getMarkup();
-        double cost = productToCreate.getCost();
-        double salePrice = (cost * markup) + cost;
-        productToCreate.setSalePrice(salePrice);
+        productToCreate.setSalePrice(productValidator.calculateSalesPrice(productToCreate));
 
         productRepository.save(productToCreate);
         return productToCreate;
