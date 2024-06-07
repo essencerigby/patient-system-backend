@@ -65,3 +65,9 @@ Use the following as a JSON body for a POST. We do not supply an id or timestamp
     "lifetimeSpent": 5000.0
 }
 ```
+
+## FrontEndConfig
+
+The FrontEndConfig class is a Spring configuration class designed to set up Cross-Origin Resource Sharing (CORS) for 
+the backend application. This configuration allows the backend to accept requests from the specified front-end origin, 
+enabling smooth communication between the two layers of the application.
