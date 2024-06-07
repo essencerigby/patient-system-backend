@@ -15,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -75,6 +77,31 @@ class VendorServiceImplTests {
 		testVendorToEdit.setCreatedAt("05-01-2023 10:00");
 		testVendorToEdit.setUpdatedAt("10-15-2023 14:30");
 		testVendorToEdit.setId(2);
+	}
+
+	@Test
+	public void getVendors_EmptyList() {
+		when(vendorRepository.findAll()).thenReturn(Arrays.asList());
+
+		List<Vendor> vendors = vendorService.getVendors();
+
+		assertNotNull(vendors);
+		assertEquals(0, vendors.size());
+	}
+
+	@Test
+	public void getVendors_NonEmptyList() {
+		List<Vendor> expectedVendors = Arrays.asList(
+				testVendor,
+				testVendor
+		);
+		when(vendorRepository.findAll()).thenReturn(expectedVendors);
+
+		List<Vendor> vendors = vendorService.getVendors();
+
+		assertNotNull(vendors);
+		assertEquals(2, vendors.size());
+		assertEquals(expectedVendors, vendors);
 	}
 
 	@Test
