@@ -20,6 +20,8 @@ import java.util.List;
 public class VendorServiceImpl implements VendorService {
 
     private final VendorRepository vendorRepository;
+    NameUniqueValidator nameValidator = new NameUniqueValidator();
+    VendorValidation validator = new VendorValidation();
 
     @Autowired
     public VendorServiceImpl(VendorRepository vendorRepository) {
@@ -32,7 +34,7 @@ public class VendorServiceImpl implements VendorService {
      * @return a list of all vendors
      */
     public List<Vendor> getVendors() {
-        return vendorRepository.findAll(); // PLACEHOLDER
+        return vendorRepository.findAll();
     }
 
     /**
@@ -63,24 +65,15 @@ public class VendorServiceImpl implements VendorService {
 
         // Phone formatting to ensure phone number string can be saved as xxx-xxx-xxxx
         Contact contactPhoneNumberToFormat = vendorToCreate.getContact();
-        try {
-            String formattedPhoneNumber = PhoneNumberFormatter.formatPhoneNumber(contactPhoneNumberToFormat.getPhone());
-            contactPhoneNumberToFormat.setPhone(formattedPhoneNumber);
-        } catch (
-                IllegalArgumentException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    e.getMessage());
-        }
+        String formattedPhoneNumber = PhoneNumberFormatter.formatPhoneNumber(contactPhoneNumberToFormat.getPhone());
+        contactPhoneNumberToFormat.setPhone(formattedPhoneNumber);
 
-        try {
-            return vendorRepository.save(
-                    vendorToCreate);
-        } catch (Exception e) {
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Unexpected error occurred");
+        // Validating the vendor information
+        String errors = nameValidator.isNameUnique(vendorToCreate.getName(), getVendors()) + validator.validateVendor(vendorToCreate);
+        if (!errors.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors);
         }
+        return vendorRepository.save(vendorToCreate);
     }
 
     /**
@@ -97,6 +90,16 @@ public class VendorServiceImpl implements VendorService {
             vendorToEdit.setId(id);
             vendorToEdit.setCreatedAt(getVendorById(id).getCreatedAt());
             vendorToEdit.setUpdatedAt(timeStamp);
+
+            // Phone formatting to ensure phone number string can be saved as xxx-xxx-xxxx
+            Contact contactPhoneNumberToFormat = vendorToEdit.getContact();
+            String formattedPhoneNumber = PhoneNumberFormatter.formatPhoneNumber(contactPhoneNumberToFormat.getPhone());
+            contactPhoneNumberToFormat.setPhone(formattedPhoneNumber);
+            
+            String errors = validator.validateVendor(vendorToEdit);
+            if (!errors.isBlank()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors);
+            }
             vendorRepository.save(vendorToEdit);
             return vendorToEdit;
         } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Vendor was not found");
