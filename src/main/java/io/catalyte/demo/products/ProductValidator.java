@@ -7,10 +7,6 @@ import java.util.List;
 public class ProductValidator {
     DecimalFormat df = new DecimalFormat("#.00");
 
-    public String validateProductActive(Product productToValidate) {
-        return null;
-    }
-
     public String validateProductDescription(Product productToValidate) {
         if (productToValidate.getDescription() == null) {
             return "-Description is null.";
@@ -51,7 +47,7 @@ public class ProductValidator {
             return "-Classification is null.";
         } else if (productToValidate.getClassification().isEmpty()) {
             return "-Classification is empty.";
-        } else if (productToValidate.getClassification().equals("Drink") || productToValidate.getClassification().equals("Baked Good")) {
+        } else if (productToValidate.getClassification().equalsIgnoreCase("Drink") || productToValidate.getClassification().equalsIgnoreCase("Baked Good")) {
             return "";
         }
         return "-Classification must be Drink or Baked Good.";
@@ -70,7 +66,7 @@ public class ProductValidator {
             return "-Type is empty.";
         } else {
             for (String drink : drinkTypes) {
-                if (productToValidate.getType().equals(drink)) {
+                if (productToValidate.getType().equalsIgnoreCase(drink)) {
                     return "";
                 }
             }
@@ -110,10 +106,10 @@ public class ProductValidator {
 
     public String validateProductAllergenList(Product productToValidate) {
         List<String> allergens = Arrays.asList(
-                "Dairy",
-                "Soy",
-                "Gluten",
-                "Nuts"
+                "dairy",
+                "soy",
+                "gluten",
+                "nuts"
         );
         List<String> allergensToValidate = productToValidate.getAllergenList();
 
@@ -121,7 +117,9 @@ public class ProductValidator {
             return "-AllergenList is null.";
         } else if (!productToValidate.getAllergenList().isEmpty()) {
             for (String allergen : allergensToValidate) {
-                if (!allergens.contains(allergen)) {
+                String allergenToTest = allergen.toLowerCase();
+
+                if (!allergens.contains(allergenToTest)) {
                     return "-AllergenList must contain: Diary, Soy, Gluten, or Nuts.";
                 }
             }
