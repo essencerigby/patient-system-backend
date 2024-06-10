@@ -41,7 +41,11 @@ public class ProductServiceImpl implements ProductService {
      * @return The product with the specified ID.
      */
     public Product getProductById(int id) {
-        return null; // Get Product by ID Logic goes here
+        try {
+            return productRepository.findById(id).orElseThrow();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+        }
     }
 
     /**

@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -66,6 +67,24 @@ public class ProductServiceImplTest {
             productService.createProduct(testProduct);
         }, "Product was saved.");
     }
+
+    @Test
+    public void getProduct_withValidID_returnsProductWithMatchingID() {
+        testProduct.setId(1);
+
+        when(productRepository.findById(testProduct.getId())).thenReturn(Optional.of(testProduct));
+        Product result = productService.getProductById(1);
+        assertEquals(testProduct, result);
+    }
+
+    @Test
+    public void getProduct_withInvalidID_returnsErrorWithMessage() {
+        testProduct.setId(18);
+
+        when(productRepository.findById(testProduct.getId())).thenReturn(Optional.empty());
+        assertThrows(ResponseStatusException.class, () -> {
+            productService.getProductById(testProduct.getId());
+        }, "Product not found.");
 
     @Test
     public void getProductByName_whenNameExists_shouldReturnProduct() {
