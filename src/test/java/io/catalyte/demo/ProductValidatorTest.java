@@ -32,7 +32,7 @@ public class ProductValidatorTest {
 
         testProduct = new Product(1, true, "Sample Description",
                 "TestName", 5, sampleIngredientList,
-                "Drink", "5.0", sampleAllergenList, "5.0", "5.0");
+                "Drink", "Soda", "5.0", sampleAllergenList, "5.0", "5.0");
     }
 
     @Test
@@ -120,5 +120,94 @@ public class ProductValidatorTest {
     public void validateProductClassification_asDrink_returnsEmptyString () {
         String err = productValidator.validateProductClassification(testProduct);
         assertEquals("", err, "Classification does not equal Baked Good.");
+    }
+
+    @Test
+    public void validateProductType_withNullType_returnsError() {
+        testProduct.setType(null);
+        String err = productValidator.validateProductType(testProduct);
+        assertEquals("-Type is null.", err, "Type is not null.");
+    }
+
+    @Test
+    public void validateProductType_withEmptyType_returnsError() {
+        testProduct.setType("");
+        String err = productValidator.validateProductType(testProduct);
+        assertEquals("-Type is empty.", err, "Type is not empty.");
+    }
+
+    @Test
+    public void validateProductType_withInvalidType_returnsError() {
+        testProduct.setType("Invalid Type");
+        String err = productValidator.validateProductType(testProduct);
+        assertEquals("-Type must be Coffee, Tea, or Soda.", err, "Type is valid.");
+    }
+
+    @Test
+    public void validateProductType_withValidType_returnsEmptyString() {
+        String err = productValidator.validateProductType(testProduct);
+        assertEquals("", err, "Type is valid.");
+
+        testProduct.setType("CoffeE");
+        err = productValidator.validateProductType(testProduct);
+        assertEquals("", err, "Type is valid.");
+
+        testProduct.setType("tEa");
+        err = productValidator.validateProductType(testProduct);
+        assertEquals("", err, "Type is valid.");
+    }
+
+    @Test
+    public void validateProductCost_withNullCost_returnsError() {
+        testProduct.setCost(null);
+        String err = productValidator.validateProductCost(testProduct);
+        assertEquals("-Cost is null.", err, "Cost is not null.");
+    }
+
+    @Test
+    public void validateProductCost_withEmptyCost_returnsError() {
+        testProduct.setCost("");
+        String err = productValidator.validateProductCost(testProduct);
+        assertEquals("-Cost is empty.", err, "Cost is not empty.");
+    }
+
+    @Test
+    public void validateProductCost_withInvalidCost_returnsError() {
+        testProduct.setCost("10.NotValid");
+        String err = productValidator.validateProductCost(testProduct);
+        assertEquals("-Cost must be a number.", err, "Cost is valid.");
+    }
+
+    @Test
+    public void validateProductCost_withValidCost_returnsEmptyString() {
+        String err = productValidator.validateProductCost(testProduct);
+        assertEquals("", err, "Cost is not valid.");
+    }
+
+    @Test
+    public void validateProductMarkup_withNullMarkup_returnsError() {
+        testProduct.setMarkup(null);
+        String err = productValidator.validateProductMarkup(testProduct);
+        assertEquals("-Markup is null.", err, "Markup is not null.");
+    }
+
+    @Test
+    public void validateProductMarkup_withEmptyMarkup_returnsError() {
+        testProduct.setMarkup("");
+        String err = productValidator.validateProductMarkup(testProduct);
+        assertEquals("-Markup is empty.", err, "Markup is not empty.");
+    }
+
+    @Test
+    public void validateProductMarkup_withInvalidMarkup_returnsError() {
+        testProduct.setMarkup("10.NotValid");
+        String err = productValidator.validateProductMarkup(testProduct);
+        assertEquals("-Markup must be a number.", err, "Markup is valid.");
+    }
+
+    @Test
+    public void validateProductMarkup_withValidMarkup_returnsEmptyString() {
+        String err = productValidator.validateProductMarkup(testProduct);
+        assertEquals("", err, "Markup is not valid.");
     }
 }

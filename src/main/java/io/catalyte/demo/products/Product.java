@@ -29,7 +29,7 @@ public class Product {
   }
 
   public Product(int id, boolean active, String description, String name, int vendorId,
-                 List<String> ingredientsList, String classification, String cost,
+                 List<String> ingredientsList, String classification, String type, String cost,
                  List<String> allergenList, String markup, String salePrice) {
     this.id = id;
     this.active = active;
@@ -38,6 +38,7 @@ public class Product {
     this.vendorId = vendorId;
     this.ingredientsList = ingredientsList;
     this.classification = classification;
+    this.type = type;
     this.cost = cost;
     this.allergenList = allergenList;
     this.markup = markup;

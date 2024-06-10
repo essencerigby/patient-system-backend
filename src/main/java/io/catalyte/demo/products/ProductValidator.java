@@ -93,7 +93,7 @@ public class ProductValidator {
         if (productToValidate.getMarkup() == null) {
             return "-Markup is null.";
         } else if (productToValidate.getMarkup().isEmpty()) {
-            return "Markup is empty.";
+            return "-Markup is empty.";
         } else {
             try {
                 formatDollarValues(productToValidate.getMarkup());
