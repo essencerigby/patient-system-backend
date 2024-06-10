@@ -45,6 +45,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
+     * Retrieves a product by its name.
+     * Exact matches only.
+     * @param name The name of the product to retrieve.
+     * @return The product(s) with the specified name.
+     */
+    public List<Product> getProductByName(String name) {
+        if (name.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name value is empty");
+        }
+
+        List<Product> tempList = productRepository.findByNameIgnoreCase(name);
+
+        if (!tempList.isEmpty()) {
+            return productRepository.findByNameIgnoreCase(name);
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+    }
+
+    /**
      * Creates a new product in the repository
      * @param productToCreate - Product Object containing unique identifier, active status, name,
      *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,

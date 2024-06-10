@@ -9,8 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +26,12 @@ public class ProductServiceImplTest {
     @Mock
     ProductRepository productRepository;
 
+    Product testProduct1;
+    Product testProduct2;
+    Product testProduct3;
+    Product testProduct4;
+    List<Product> testProducts;
+
     Product testProduct;
     List<String> sampleList;
 
@@ -33,6 +41,14 @@ public class ProductServiceImplTest {
         testProduct = new Product(1, true, "",
                 "TestName", 5, sampleList,
                 "", 5.0, sampleList, 5.0, 5.0);
+
+        testProduct1 = new Product();
+        testProduct1.setName("Basketball");
+        testProduct2 = new Product();
+        testProduct2.setName("Football");
+        testProduct3 = new Product();
+        testProduct3.setName("Basketball");
+        testProduct4 = new Product();
     }
 
     @Test
@@ -49,5 +65,45 @@ public class ProductServiceImplTest {
         assertThrows(ResponseStatusException.class, () -> {
             productService.createProduct(testProduct);
         }, "Product was saved.");
+    }
+
+    @Test
+    public void getProductByName_whenNameExists_shouldReturnProduct() {
+        testProducts = Arrays.asList(testProduct2);
+        when(productRepository.findByNameIgnoreCase("Football")).thenReturn(testProducts);
+
+        List<Product> result = productService.getProductByName("Football");
+
+        assertEquals(testProduct2.getName(), result.get(0).getName());
+    }
+
+    @Test
+    public void getProductByName_whenNameDoesntExist_shouldThrow404Exception() {
+        testProducts = Arrays.asList();
+        when(productRepository.findByNameIgnoreCase("Football")).thenReturn(testProducts);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->
+                productService.getProductByName("Football"));
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+    }
+
+    @Test
+    public void getProductByName_whenNameIsNullOrEmpty_shouldThrow400Exception() {
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->
+                productService.getProductByName(""));
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+    }
+
+    @Test
+    public void getProductByName_whenMultipleNamesExist_shouldReturnAllProductsWithThatName() {
+        testProducts = Arrays.asList(testProduct1, testProduct3);
+        when(productRepository.findByNameIgnoreCase("Basketball")).thenReturn(testProducts);
+
+        List<Product> result = productService.getProductByName("Basketball");
+
+        assertTrue(result.size() > 1);
     }
 }
