@@ -63,6 +63,33 @@ public class ProductValidatorTest {
     }
 
     @Test
+    public void validateProductName_withNullName_returnsError() {
+        testProduct.setName(null);
+        String err = productValidator.validateProductName(testProduct);
+        assertEquals("-Name is null.", err, "Name is not null.");
+    }
+
+    @Test
+    public void validateProductName_withEmptyName_returnsError() {
+        testProduct.setName("");
+        String err = productValidator.validateProductName(testProduct);
+        assertEquals("-Name is empty.", err, "Name is not null.");
+    }
+
+    @Test
+    public void validateProductName_nameExceedsCharacterLimit_returnsError() {
+        testProduct.setName("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        String err = productValidator.validateProductName(testProduct);
+        assertEquals("-Name must be less than 50 characters.", err, "Name is valid.");
+    }
+
+    @Test
+    public void validateProductName_withValidName_returnsEmptyString() {
+        String err = productValidator.validateProductName(testProduct);
+        assertEquals("", err, "Name is invalid.");
+    }
+
+    @Test
     public void validateProductVendorID_returnsNull() {
         assertNull(productValidator.validateProductVendorID(testProduct));
     }
@@ -209,5 +236,91 @@ public class ProductValidatorTest {
     public void validateProductMarkup_withValidMarkup_returnsEmptyString() {
         String err = productValidator.validateProductMarkup(testProduct);
         assertEquals("", err, "Markup is not valid.");
+    }
+
+    @Test
+    public void validateProductAllergenList_withNullList_returnsError() {
+        testProduct.setAllergenList(null);
+        String err = productValidator.validateProductAllergenList(testProduct);
+        assertEquals("-AllergenList is null.", err, "AllergenList is not null.");
+    }
+
+    @Test
+    public void validateProductAllergenList_withEmptyList_returnsEmptyString() {
+        List<String> emptyList = new ArrayList<>();
+        testProduct.setAllergenList(emptyList);
+        String err = productValidator.validateProductAllergenList(testProduct);
+        assertEquals("", err, "AllergenList is not empty.");
+    }
+
+    @Test
+    public void validateProductAllergenList_withInvalidList_returnsError() {
+        List<String> invalidList = Arrays.asList(
+                "Invalid 1",
+                "Invalid 2"
+        );
+        testProduct.setAllergenList(invalidList);
+
+        String err = productValidator.validateProductAllergenList(testProduct);
+        assertEquals("-AllergenList must contain: Diary, Soy, Gluten, or Nuts.", err, "AllergenList is valid.");
+    }
+
+    @Test
+    public void validateProductAllergenList_withValidList_returnsError() {
+        String err = productValidator.validateProductAllergenList(testProduct);
+        assertEquals("", err, "AllergenList is invalid.");
+    }
+
+    @Test
+    public void calculateSalesPrice_withInvalidProduct_throwsError() {
+        testProduct.setCost("InvalidCost");
+        assertThrows(NumberFormatException.class, () -> {
+            productValidator.calculateSalesPrice(testProduct);
+        });
+    }
+
+    @Test
+    public void calculateSalesPrice_withValidProduct_returnsFormattedResult() {
+        try {
+            String value = productValidator.calculateSalesPrice(testProduct);
+            assertEquals("30.00", value, "Product is invalid.");
+        } catch (Exception e) {
+            fail("Exception was thrown.");
+        }
+    }
+
+    @Test
+    public void formatDollarValues_withInvalidProduct_throwsError() {
+        assertThrows(NumberFormatException.class, () -> {
+            productValidator.formatDollarValues("InvalidString");
+        });
+    }
+
+    @Test
+    public void formatDollarValues_withValidProduct_returnsFormattedResult() {
+        String valueToFormat = "30";
+
+        try {
+            String value = productValidator.formatDollarValues(valueToFormat);
+            assertEquals("30.00", value, "valueToFormat is invalid.");
+        } catch (Exception e) {
+            fail("Exception was thrown.");
+        }
+    }
+
+    @Test
+    public void validateProduct_withInvalidProduct_returnsErrors() {
+        Product invalidProduct = new Product();
+
+        String allErrors = "-Description is null.-Name is null.-Classification is null.-Type is null.-Cost is null.-Markup is null.-IngredientsList is null.-AllergenList is null.";
+        String err = productValidator.validateProduct(invalidProduct);
+
+        assertEquals(allErrors, err, "Product is valid.");
+    }
+
+    @Test
+    public void validateProduct_withValidProduct_returnsEmptyString() {
+        String err = productValidator.validateProduct(testProduct);
+        assertEquals("", err, "Product is invalid.");
     }
 }
