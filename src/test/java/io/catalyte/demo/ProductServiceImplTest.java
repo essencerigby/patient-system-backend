@@ -85,6 +85,7 @@ public class ProductServiceImplTest {
         assertThrows(ResponseStatusException.class, () -> {
             productService.getProductById(testProduct.getId());
         }, "Product not found.");
+    }
 
     @Test
     public void getProductByName_whenNameExists_shouldReturnProduct() {
