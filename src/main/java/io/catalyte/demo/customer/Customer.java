@@ -20,7 +20,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(int id, Boolean active, String name, String emailAddress, Double lifetimeSpent, String customerSince) {
+    public Customer(int id, Boolean active, String name, String emailAddress, Double lifetimeSpent) {
         this.id = id;
         this.active = active;
         this.name = name;
