@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -56,6 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Customer");
         }
 
+        customerToCreate.setCustomerSince(getTimestamp());
         customerRepository.save(customerToCreate);
         return customerToCreate;
     }
@@ -78,5 +81,9 @@ public class CustomerServiceImpl implements CustomerService {
      */
     public void deleteCustomerById(int id) {
         // PLACEHOLDER
+    }
+
+    public String getTimestamp () {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-yyyy"));
     }
 }
