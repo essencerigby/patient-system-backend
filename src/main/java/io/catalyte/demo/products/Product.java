@@ -12,7 +12,7 @@ public class Product {
   private boolean active;
   private String description;
   private String name;
-  private int vendorId;
+  private String vendorId;
 
   @ElementCollection
   private List<String> ingredientsList;
@@ -28,7 +28,7 @@ public class Product {
   public Product() {
   }
 
-  public Product(int id, boolean active, String description, String name, int vendorId,
+  public Product(int id, boolean active, String description, String name, String vendorId,
                  List<String> ingredientsList, String classification, String type, String cost,
                  List<String> allergenList, String markup, String salePrice) {
     this.id = id;
@@ -77,11 +77,11 @@ public class Product {
     this.name = name;
   }
 
-  public int getVendorId() {
+  public String getVendorId() {
     return vendorId;
   }
 
-  public void setVendorId(int vendorId) {
+  public void setVendorId(String vendorId) {
     this.vendorId = vendorId;
   }
 

@@ -31,7 +31,7 @@ public class ProductValidatorTest {
         );
 
         testProduct = new Product(1, true, "Sample Description",
-                "TestName", 5, sampleIngredientList,
+                "TestName", "5", sampleIngredientList,
                 "Drink", "Soda", "5.0", sampleAllergenList, "5.0", "5.0");
     }
 

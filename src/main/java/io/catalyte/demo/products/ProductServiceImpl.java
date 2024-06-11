@@ -57,11 +57,15 @@ public class ProductServiceImpl implements ProductService {
         if (!errorMessage.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
+        errorMessage = productValidator.isUniqueProduct(productToCreate.getName(), getProducts());
+        if (!errorMessage.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, errorMessage);
+        }
 
-        productToCreate.setSalePrice(productValidator.calculateSalesPrice(productToCreate));
+        Product formattedProduct = productValidator.formatProductTypeAndMarkup(productToCreate);
 
-        productRepository.save(productToCreate);
-        return productToCreate;
+        productRepository.save(formattedProduct);
+        return formattedProduct;
     }
 
     /**
