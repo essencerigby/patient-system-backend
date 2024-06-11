@@ -83,6 +83,12 @@ public class CustomerServiceImpl implements CustomerService {
         // PLACEHOLDER
     }
 
+    /**
+     * Returns the current date formatted as a string.
+     * The format used is "MM-yyyy", representing the month and year.
+     *
+     * @return A string representing the current date in "MM-yyyy" format.
+     */
     public String getTimestamp () {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-yyyy"));
     }
