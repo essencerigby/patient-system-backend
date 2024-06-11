@@ -30,18 +30,21 @@ public class ProductValidator {
     }
 
     public String validateProductVendorID(Product productToValidate) {
-        if (productToValidate.getClassification().equals("Baked Good")) {
-            if (productToValidate.getVendorId() == null) {
-                return "-Vendor ID is null.";
+        if (productToValidate.getClassification() != null) {
+            if (productToValidate.getClassification().equals("Baked Good")) {
+                if (productToValidate.getVendorId() == null) {
+                    return "-Vendor ID is null.";
+                }
+                else if (productToValidate.getVendorId().isEmpty()) {
+                    return "-Vendor ID is empty.";
+                }
+                else {
+                    return "";
+                }
             }
-            else if (productToValidate.getVendorId().isEmpty()) {
-                return "-Vendor ID is empty.";
-            }
-            else {
-                return "";
-            }
+            return "";
         }
-        return "";
+        return "-VendorID could not be validated.";
     }
 
     public String validateProductIngredientsList(Product productToValidate) {
@@ -58,8 +61,7 @@ public class ProductValidator {
             return "-Classification is null.";
         } else if (productToValidate.getClassification().isEmpty()) {
             return "-Classification is empty.";
-        } else if (productToValidate.getClassification().equals("Drink")
-                || productToValidate.getClassification().equals("Baked Good")) {
+        } else if (productToValidate.getClassification().equals("Drink") || productToValidate.getClassification().equals("Baked Good")) {
             return "";
         }
         return "-Classification must be Drink or Baked Good.";
@@ -71,22 +73,24 @@ public class ProductValidator {
                 "Tea",
                 "Soda"
         );
-
-        if (productToValidate.getClassification().equals("Drink")) {
-            if (productToValidate.getType() == null) {
-                return "-Type is null.";
-            } else if (productToValidate.getType().isEmpty()) {
-                return "-Type is empty.";
-            } else {
-                for (String drink : drinkTypes) {
-                    if (productToValidate.getType().equals(drink)) {
-                        return "";
+        if (productToValidate.getClassification() != null) {
+            if (productToValidate.getClassification().equals("Drink")) {
+                if (productToValidate.getType() == null) {
+                    return "-Type is null.";
+                } else if (productToValidate.getType().isEmpty()) {
+                    return "-Type is empty.";
+                } else {
+                    for (String drink : drinkTypes) {
+                        if (productToValidate.getType().equals(drink)) {
+                            return "";
+                        }
                     }
                 }
+                return "-Type must be Coffee, Tea, or Soda.";
             }
-            return "-Type must be Coffee, Tea, or Soda.";
+            return "";
         }
-        return "";
+        return "-Type could not be validated.";
     }
 
     public String validateProductCost(Product productToValidate) {
@@ -105,21 +109,23 @@ public class ProductValidator {
     }
 
     public String validateProductMarkup(Product productToValidate) {
-        if (productToValidate.getClassification().equals("Baked Good")) {
-            if (productToValidate.getMarkup() == null) {
-                return "-Markup is null.";
-            } else if (productToValidate.getMarkup().isEmpty()) {
-                return "-Markup is empty.";
-            } else {
-                try {
-                    formatDollarValues(productToValidate.getMarkup());
-                } catch (NumberFormatException e) {
-                    return "-Markup must be a number.";
+        if (productToValidate.getClassification() != null) {
+            if (productToValidate.getClassification().equals("Baked Good")) {
+                if (productToValidate.getMarkup() == null) {
+                    return "-Markup is null.";
+                } else if (productToValidate.getMarkup().isEmpty()) {
+                    return "-Markup is empty.";
+                } else {
+                    try {
+                        formatDollarValues(productToValidate.getMarkup());
+                    } catch (NumberFormatException e) {
+                        return "-Markup must be a number.";
+                    }
                 }
-                return "";
             }
+            return "";
         }
-        return "";
+        return "-Markup could not be validated.";
     }
 
     public String validateProductAllergenList(Product productToValidate) {
@@ -135,8 +141,6 @@ public class ProductValidator {
             return "-AllergenList is null.";
         } else if (!productToValidate.getAllergenList().isEmpty()) {
             for (String allergen : allergensToValidate) {
-                // String allergenToTest = allergen.toLowerCase();
-
                 if (!allergens.contains(allergen)) {
                     return "-AllergenList must contain: Diary, Soy, Gluten, or Nuts.";
                 }
@@ -160,25 +164,25 @@ public class ProductValidator {
     }
 
     public String validateProduct(Product productToValidate) {
-        String error1 = validateProductDescription(productToValidate);
-        String error2 = validateProductName(productToValidate);
-        String error3 = validateProductVendorID(productToValidate);
-        String error4 = validateProductClassification(productToValidate);
-        String error5 = validateProductType(productToValidate);
-        String error6 = validateProductCost(productToValidate);
-        String error7 = validateProductMarkup(productToValidate);
-        String error8 = validateProductIngredientsList(productToValidate);
-        String error9 = validateProductAllergenList(productToValidate);
+            String error1 = validateProductDescription(productToValidate);
+            String error2 = validateProductName(productToValidate);
+            String error3 = validateProductVendorID(productToValidate);
+            String error4 = validateProductClassification(productToValidate);
+            String error5 = validateProductType(productToValidate);
+            String error6 = validateProductCost(productToValidate);
+            String error7 = validateProductMarkup(productToValidate);
+            String error8 = validateProductIngredientsList(productToValidate);
+            String error9 = validateProductAllergenList(productToValidate);
 
-        return error1 +
-                error2 +
-                error3 +
-                error4 +
-                error5 +
-                error6 +
-                error7 +
-                error8 +
-                error9;
+            return error1 +
+                    error2 +
+                    error3 +
+                    error4 +
+                    error5 +
+                    error6 +
+                    error7 +
+                    error8 +
+                    error9;
     }
 
     public Product formatProductTypeAndMarkup(Product productToFormat) {
