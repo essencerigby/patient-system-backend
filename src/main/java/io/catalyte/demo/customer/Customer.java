@@ -15,11 +15,12 @@ public class Customer {
     private String name;
     private String emailAddress;
     private Double lifetimeSpent;
+    private String customerSince;
 
     public Customer() {
     }
 
-    public Customer(int id, Boolean active, String name, String emailAddress, Double lifetimeSpent) {
+    public Customer(int id, Boolean active, String name, String emailAddress, Double lifetimeSpent, String customerSince) {
         this.id = id;
         this.active = active;
         this.name = name;
@@ -65,5 +66,13 @@ public class Customer {
 
     public void setLifetimeSpent(Double lifetimeSpent) {
         this.lifetimeSpent = lifetimeSpent;
+    }
+
+    public String getCustomerSince() {
+        return customerSince;
+    }
+
+    public void setCustomerSince(String customerSince) {
+        this.customerSince = customerSince;
     }
 }
