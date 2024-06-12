@@ -315,7 +315,7 @@ public class ProductValidatorTest {
     public void calculateSalesPrice_withValidProduct_returnsFormattedResult() {
         try {
             String value = productValidator.calculateSalesPrice(testDrinkProduct);
-            assertEquals("30.00", value, "Product is invalid.");
+            assertEquals("5.25", value, "Product is invalid.");
         } catch (Exception e) {
             fail("Exception was thrown.");
         }

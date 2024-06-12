@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,14 +26,28 @@ public class ProductServiceImplTest {
     ProductRepository productRepository;
 
     Product testProduct;
-    List<String> sampleList;
 
     @BeforeEach
     public void setUp() {
+        List<String> sampleIngredientList = Arrays.asList(
+                "Ingredient 1",
+                "Ingredient 2"
+        );
+
+        List<String> sampleAllergenList = Arrays.asList(
+                "Dairy",
+                "Soy"
+        );
+
         productService = new ProductServiceImpl(productRepository);
-        testProduct = new Product(1, true, "",
-                "TestName", "5", sampleList,
-                "", "", "5.0", sampleList, "5.0", "5.0");
+        testProduct = new Product(1, true, "SampleDescription",
+                "TestName", "5", sampleIngredientList,
+                "Drink", "Coffee", "5.0", sampleAllergenList, "5.0", "5.0");
+
+        List<Product> sampleProductList = Arrays.asList(
+                testProduct,
+                testProduct
+        );
     }
 
     @Test
@@ -49,5 +64,12 @@ public class ProductServiceImplTest {
         assertThrows(ResponseStatusException.class, () -> {
             productService.createProduct(testProduct);
         }, "Product was saved.");
+    }
+
+    @Test
+    public void createProduct_withDuplicateProduct_throwsError() {
+        assertThrows(ResponseStatusException.class, () -> {
+            productService.createProduct(testProduct);
+        });
     }
 }

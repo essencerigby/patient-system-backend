@@ -153,7 +153,7 @@ public class ProductValidator {
     public String calculateSalesPrice(Product productToValidate) {
         double markup = Double.parseDouble(productToValidate.getMarkup());
         double cost = Double.parseDouble(productToValidate.getCost());
-        double salePrice = (cost * markup) + cost;
+        double salePrice = (cost * (markup/100)) + cost;
 
         return formatDollarValues(String.valueOf(salePrice));
     }
