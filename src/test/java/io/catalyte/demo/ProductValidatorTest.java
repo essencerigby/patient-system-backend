@@ -33,11 +33,11 @@ public class ProductValidatorTest {
         );
 
         testDrinkProduct = new Product(1, true, "Sample Description",
-                "TestName", "5", sampleIngredientList,
+                "DrinkName", "5", sampleIngredientList,
                 "Drink", "Soda", "5.0", sampleAllergenList, "5.0", "5.0");
 
         testBakedGoodProduct = new Product(1, true, "Sample Description",
-                "TestName", "5", sampleIngredientList,
+                "BakedGoodName", "5", sampleIngredientList,
                 "Baked Good", "Soda", "5.0", sampleAllergenList, "5.0", "5.0");
 
         testInvalidProduct = new Product(0, true, null,
@@ -100,9 +100,37 @@ public class ProductValidatorTest {
     }
 
     @Test
-    public void validateProductVendorID_returnsNull() {
-        testDrinkProduct.setVendorId(null);
+    public void validateProductVendorID_withNullClassification_returnsError() {
+        testDrinkProduct.setClassification(null);
         String err = productValidator.validateProductVendorID(testDrinkProduct);
+        assertEquals("-VendorID could not be validated.", err, "Classification is not null.");
+    }
+
+    @Test
+    public void validateProductVendorID_withBakedGoodProduct_usingNullVendorID_returnsError() {
+        testBakedGoodProduct.setVendorId(null);
+        String err = productValidator.validateProductVendorID(testBakedGoodProduct);
+        assertEquals("-Vendor ID is null.", err, "Vendor ID is not null.");
+    }
+
+    @Test
+    public void validateProductVendorID_withBakedGoodProduct_usingEmptyVendorID_returnsError() {
+        testBakedGoodProduct.setVendorId("");
+        String err = productValidator.validateProductVendorID(testBakedGoodProduct);
+        assertEquals("-Vendor ID is empty.", err, "Vendor ID is not empty.");
+    }
+
+    @Test
+    public void validateProductVendorID_withBakedGoodProduct_usingValidVendorID_returnsEmptyString() {
+        testBakedGoodProduct.setVendorId("null");
+        String err = productValidator.validateProductVendorID(testBakedGoodProduct);
+        assertEquals("", err, "Vendor ID is not null.");
+    }
+
+    @Test
+    public void validateProductVendorID_withDrinkProduct_usingValidVendorID_returnsEmptyString() {
+        testBakedGoodProduct.setVendorId("null");
+        String err = productValidator.validateProductVendorID(testBakedGoodProduct);
         assertEquals("", err, "Vendor ID is not null.");
     }
 
@@ -183,17 +211,9 @@ public class ProductValidatorTest {
     }
 
     @Test
-    public void validateProductType_withValidType_returnsEmptyString() {
-        String err = productValidator.validateProductType(testDrinkProduct);
-        assertEquals("", err, "Type is valid.");
-
-        testDrinkProduct.setType("Coffee");
-        err = productValidator.validateProductType(testDrinkProduct);
-        assertEquals("", err, "Type is valid.");
-
-        testDrinkProduct.setType("Tea");
-        err = productValidator.validateProductType(testDrinkProduct);
-        assertEquals("", err, "Type is valid.");
+    public void validateProductType_withValidTypeAsBakedGoodProduct_returnsEmptyString() {
+        String err = productValidator.validateProductType(testBakedGoodProduct);
+        assertEquals("", err, "Product is not valid.");
     }
 
     @Test
@@ -332,5 +352,39 @@ public class ProductValidatorTest {
     public void validateProduct_withValidProduct_returnsEmptyString() {
         String err = productValidator.validateProduct(testDrinkProduct);
         assertEquals("", err, "Product is invalid.");
+    }
+
+    @Test
+    public void formatProduct_withDrinkProduct_returnsFormattedProduct() {
+            Product result = productValidator.formatProduct(testDrinkProduct);
+            assertEquals("0", result.getMarkup(), "Product Markup does not equal 0.");
+            assertEquals("-", result.getVendorId(), "Product has Vendor ID.");
+
+    }
+
+    @Test
+    public void formatProduct_WithBakedGoodProduct_returnsFormattedProduct() {
+        Product result = productValidator.formatProduct(testBakedGoodProduct);
+        assertEquals("-", result.getType(), "Product type has value.");
+    }
+
+    @Test
+    public void isUniqueProduct_withDuplicateProduct_returnsError() {
+        List<Product> sampleProductList = Arrays.asList(
+                testDrinkProduct,
+                testDrinkProduct
+        );
+        String err = productValidator.isUniqueProduct(testDrinkProduct.getName(), sampleProductList);
+        assertEquals("Product with matching name already exists.", err, "Product is unique.");
+    }
+
+    @Test
+    public void isUniqueProduct_withUniqueProduct_returnsEmptyString() {
+        List<Product> sampleProductList = Arrays.asList(
+                testDrinkProduct,
+                testDrinkProduct
+        );
+        String err = productValidator.isUniqueProduct(testBakedGoodProduct.getName(), sampleProductList);
+        assertEquals("", err, "Product is not unique.");
     }
 }

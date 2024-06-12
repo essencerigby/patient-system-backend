@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, errorMessage);
         }
 
-        Product formattedProduct = productValidator.formatProductTypeAndMarkup(productToCreate);
+        Product formattedProduct = productValidator.formatProduct(productToCreate);
 
         productRepository.save(formattedProduct);
         return formattedProduct;
