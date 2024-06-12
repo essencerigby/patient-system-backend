@@ -81,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
 
         double markup = productToCreate.getMarkup();
         double cost = productToCreate.getCost();
-        double salePrice = (cost * markup) + cost;
+        double salePrice = (cost * (markup/100)) + cost;
         productToCreate.setSalePrice(salePrice);
 
         productRepository.save(productToCreate);
