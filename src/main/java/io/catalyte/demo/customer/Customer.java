@@ -15,6 +15,7 @@ public class Customer {
     private String name;
     private String emailAddress;
     private Double lifetimeSpent;
+    private String customerSince;
 
     public Customer() {
     }
@@ -65,5 +66,13 @@ public class Customer {
 
     public void setLifetimeSpent(Double lifetimeSpent) {
         this.lifetimeSpent = lifetimeSpent;
+    }
+
+    public String getCustomerSince() {
+        return customerSince;
+    }
+
+    public void setCustomerSince(String customerSince) {
+        this.customerSince = customerSince;
     }
 }
