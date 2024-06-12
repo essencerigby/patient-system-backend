@@ -41,7 +41,7 @@ public class ProductServiceImplTest {
         productService = new ProductServiceImpl(productRepository);
         testProduct = new Product(1, true, "",
                 "TestName", 5, sampleList,
-                "", 5.0, sampleList, 5.0, 5.0);
+                "", 5.0, sampleList, 50, 5.0);
 
         testProduct1 = new Product();
         testProduct1.setName("Basketball");
