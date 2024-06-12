@@ -43,11 +43,6 @@ public class ProductServiceImplTest {
         testProduct = new Product(1, true, "SampleDescription",
                 "TestName", "5", sampleIngredientList,
                 "Drink", "Coffee", "5.0", sampleAllergenList, "5.0", "5.0");
-
-        List<Product> sampleProductList = Arrays.asList(
-                testProduct,
-                testProduct
-        );
     }
 
     @Test
@@ -68,6 +63,11 @@ public class ProductServiceImplTest {
 
     @Test
     public void createProduct_withDuplicateProduct_throwsError() {
+        List<Product> sampleProductList = Arrays.asList(
+                testProduct,
+                testProduct
+        );
+        when(productRepository.findAll()).thenReturn(sampleProductList);
         assertThrows(ResponseStatusException.class, () -> {
             productService.createProduct(testProduct);
         });
