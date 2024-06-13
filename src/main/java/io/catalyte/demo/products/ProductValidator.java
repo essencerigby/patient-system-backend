@@ -7,6 +7,13 @@ import java.util.List;
 public class ProductValidator {
     DecimalFormat df = new DecimalFormat("#.00");
 
+    /**
+     * Validates that Product Description is not null, empty, and greater than 100 characters
+     * @param productToValidate - Product Object containing unique identifier, active status, name,
+     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
+     *                        and salePrice
+     * @return an error String according to supplied Product
+     */
     public String validateProductDescription(Product productToValidate) {
         if (productToValidate.getDescription() == null) {
             return "-Description is null.";
@@ -18,6 +25,13 @@ public class ProductValidator {
         return "";
     }
 
+    /**
+     * Validates that Product Name is not null, empty, and less than 50 characters
+     * @param productToValidate - Product Object containing unique identifier, active status, name,
+     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
+     *                        and salePrice
+     * @return an error String according to supplied Product
+     */
     public String validateProductName(Product productToValidate) {
         if (productToValidate.getName() == null) {
             return "-Name is null.";
@@ -29,6 +43,13 @@ public class ProductValidator {
         return "";
     }
 
+    /**
+     * Validates that Product Vendor ID is not null or empty based on Product Classification
+     * @param productToValidate - Product Object containing unique identifier, active status, name,
+     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
+     *                        and salePrice
+     * @return an error String according to supplied Product
+     */
     public String validateProductVendorID(Product productToValidate) {
         if (productToValidate.getClassification() != null) {
             if (productToValidate.getClassification().equals("Baked Good")) {
@@ -47,6 +68,13 @@ public class ProductValidator {
         return "-VendorID could not be validated.";
     }
 
+    /**
+     * Validates that Product Ingredient List is not null or empty
+     * @param productToValidate - Product Object containing unique identifier, active status, name,
+     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
+     *                        and salePrice
+     * @return an error String according to supplied Product
+     */
     public String validateProductIngredientsList(Product productToValidate) {
         if (productToValidate.getIngredientsList() == null) {
             return "-IngredientsList is null.";
@@ -56,6 +84,13 @@ public class ProductValidator {
         return "";
     }
 
+    /**
+     * Validates that Product Classification is not null, empty, and equals "Drink" or "Baked Good"
+     * @param productToValidate - Product Object containing unique identifier, active status, name,
+     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
+     *                        and salePrice
+     * @return an error String according to supplied Product
+     */
     public String validateProductClassification(Product productToValidate) {
         if (productToValidate.getClassification() == null) {
             return "-Classification is null.";
@@ -67,12 +102,20 @@ public class ProductValidator {
         return "-Classification must be Drink or Baked Good.";
     }
 
+    /**
+     * Validates that Product Type is not null, empty, and equals Coffee, Tea, or Soda based on Classification
+     * @param productToValidate - Product Object containing unique identifier, active status, name,
+     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
+     *                        and salePrice
+     * @return an error String according to supplied Product
+     */
     public String validateProductType(Product productToValidate) {
         List<String> drinkTypes = Arrays.asList(
                 "Coffee",
                 "Tea",
                 "Soda"
         );
+
         if (productToValidate.getClassification() != null) {
             if (productToValidate.getClassification().equals("Drink")) {
                 if (productToValidate.getType() == null) {
@@ -93,6 +136,13 @@ public class ProductValidator {
         return "-Type could not be validated.";
     }
 
+    /**
+     * Validates that Product Cost is not null, empty, and is a number
+     * @param productToValidate - Product Object containing unique identifier, active status, name,
+     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
+     *                        and salePrice
+     * @return an error String according to supplied Product
+     */
     public String validateProductCost(Product productToValidate) {
         if (productToValidate.getCost() == null) {
             return "-Cost is null.";
@@ -108,6 +158,13 @@ public class ProductValidator {
         }
     }
 
+    /**
+     * Validates that Product Markup is not empty, null, and is a number based on Classification
+     * @param productToValidate - Product Object containing unique identifier, active status, name,
+     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
+     *                        and salePrice
+     * @return an error String according to supplied Product
+     */
     public String validateProductMarkup(Product productToValidate) {
         if (productToValidate.getClassification() != null) {
             if (productToValidate.getClassification().equals("Baked Good")) {
@@ -128,6 +185,13 @@ public class ProductValidator {
         return "-Markup could not be validated.";
     }
 
+    /**
+     * Validates that Product Allergen List is not null and contains Dairy, Soy, Gluten, or Nuts
+     * @param productToValidate - Product Object containing unique identifier, active status, name,
+     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
+     *                        and salePrice
+     * @return an error String according to supplied Product
+     */
     public String validateProductAllergenList(Product productToValidate) {
         List<String> allergens = Arrays.asList(
                 "Dairy",
@@ -150,6 +214,13 @@ public class ProductValidator {
         return "";
     }
 
+    /**
+     * Calculates Product Sale Price based on Cost and Markup (If Baked Good Product)
+     * @param productToValidate - Product Object containing unique identifier, active status, name,
+     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
+     *                        and salePrice
+     * @return a String containing calculated value in x.xx format
+     */
     public String calculateSalesPrice(Product productToValidate) {
         if (!productToValidate.getClassification().equals("Baked Good")) {
             return formatDollarValues(String.valueOf(productToValidate.getCost()));
@@ -162,11 +233,23 @@ public class ProductValidator {
         return formatDollarValues(String.valueOf(salePrice));
     }
 
+    /**
+     * Calculates Product Sale Price based on Cost and Markup (If Baked Good Product)
+     * @param valueToFormat - Numerical value in type String to be formatted
+     * @return a String containing numerical value in x.xx format
+     */
     public String formatDollarValues(String valueToFormat) {
         double convertedDoubleFromString = Double.parseDouble(valueToFormat);
         return df.format(convertedDoubleFromString);
     }
 
+    /**
+     * Validates all Product Fields
+     * @param productToValidate - Product Object containing unique identifier, active status, name,
+     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
+     *                        and salePrice
+     * @return an error String according to supplied Product
+     */
     public String validateProduct(Product productToValidate) {
             String error1 = validateProductDescription(productToValidate);
             String error2 = validateProductName(productToValidate);
@@ -189,6 +272,13 @@ public class ProductValidator {
                     error9;
     }
 
+    /**
+     * Formats a Product's values and applies default values based on Classification
+     * @param productToFormat - Product Object containing unique identifier, active status, name,
+     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
+     *                        and salePrice
+     * @return the formatted Product
+     */
     public Product formatProduct(Product productToFormat) {
         if (productToFormat.getClassification().equals("Baked Good")) {
             productToFormat.setType("n/a");
@@ -204,6 +294,12 @@ public class ProductValidator {
         return productToFormat;
     }
 
+    /**
+     * Validates that Product with matching name (Case insensitive) does not already exist
+     * @param productName - The name of the new Product
+     * @param listOfProducts - The list of all persisted Products
+     * @return an error String based on result of the search
+     */
     public String isUniqueProduct(String productName, List<Product> listOfProducts) {
         for (Product product : listOfProducts) {
             if (product.getName().equalsIgnoreCase(productName)) {

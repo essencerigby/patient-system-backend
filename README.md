@@ -45,13 +45,15 @@ Use the following as a JSON body for a POST. We do not supply an id or timestamp
         "Sample Ingredient 3",
         "Sample Ingredient 4"
     ],
-    "classification": "Product Classification",
-    "type": "Product Type",
+    "classification": "Drink",
+    "type": "Coffee",
     "cost": 1.5,
-    "markup": 0.05,
+    "markup": 5,
     "allergenList": [
-        "Allergen 1",
-        "Allergen 2"
+        "Dairy",
+        "Gluten",
+        "Nuts",
+        "Soy"
     ]
 }
 ```
