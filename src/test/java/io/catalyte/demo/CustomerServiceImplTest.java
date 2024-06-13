@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,11 +27,21 @@ public class CustomerServiceImplTest {
 
     Customer testCustomer;
 
+    List<Customer> sampleCustomers;
+
     @BeforeEach
     public void setUp() {
         customerService = new CustomerServiceImpl(customerRepository);
         testCustomer = new Customer(1, true, "Customer Name",
                 "customer.name@email.com", 5000.0);
+    }
+
+    @Test
+    public void getCustomers_getAllCustomers_returnsArrayOfCustomers() {
+        when(customerRepository.findAll()).thenReturn(sampleCustomers);
+        List<Customer> result = customerService.getCustomers();
+
+        assertEquals(result, sampleCustomers);
     }
 
     @Test
@@ -46,5 +58,12 @@ public class CustomerServiceImplTest {
         assertThrows(ResponseStatusException.class, () -> {
             customerService.createCustomer(testCustomer);
         }, "Product was saved.");
+    }
+
+    @Test
+    public void createCustomer_withValidCustomer_createsCustomerSinceField() {
+        when(customerRepository.save(any(Customer.class))).thenReturn(testCustomer);
+        Customer result = customerService.createCustomer(testCustomer);
+        assertFalse(result.getCustomerSince().isEmpty() && result.getCustomerSince() == null);
     }
 }

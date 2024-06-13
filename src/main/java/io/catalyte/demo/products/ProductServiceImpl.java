@@ -42,7 +42,29 @@ public class ProductServiceImpl implements ProductService {
      * @return The product with the specified ID.
      */
     public Product getProductById(int id) {
-        return null; // Get Product by ID Logic goes here
+        try {
+            return productRepository.findById(id).orElseThrow();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+        }
+    }
+
+    /**
+     * Retrieves a product by its name.
+     * Exact matches only.
+     * @param name The name of the product to retrieve.
+     * @return The product(s) with the specified name.
+     */
+    public List<Product> getProductByName(String name) {
+        if (name.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name value is empty");
+        }
+
+        List<Product> tempList = productRepository.findByNameIgnoreCase(name);
+
+        if (!tempList.isEmpty()) {
+            return productRepository.findByNameIgnoreCase(name);
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
     }
 
     /**
