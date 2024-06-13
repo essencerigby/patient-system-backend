@@ -9,9 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,14 +27,12 @@ public class ProductServiceImplTest {
     @Mock
     ProductRepository productRepository;
 
+    Product testProduct;
     Product testProduct1;
     Product testProduct2;
     Product testProduct3;
     Product testProduct4;
     List<Product> testProducts;
-
-    Product testProduct;
-    List<String> sampleList;
 
     @BeforeEach
     public void setUp() {
@@ -46,9 +47,9 @@ public class ProductServiceImplTest {
         );
 
         productService = new ProductServiceImpl(productRepository);
-        testProduct = new Product(1, true, "",
-                "TestName", 5, sampleList,
-                "", 5.0, sampleList, 50, 5.0);
+        testProduct = new Product(1, true, "SampleDescription",
+                "TestName", "5", sampleIngredientList,
+                "Drink", "Coffee", "5.0", sampleAllergenList, "5.0", "5.0");
 
         testProduct1 = new Product();
         testProduct1.setName("Basketball");
@@ -57,9 +58,6 @@ public class ProductServiceImplTest {
         testProduct3 = new Product();
         testProduct3.setName("Basketball");
         testProduct4 = new Product();
-        testProduct = new Product(1, true, "SampleDescription",
-                "TestName", "5", sampleIngredientList,
-                "Drink", "Coffee", "5.0", sampleAllergenList, "5.0", "5.0");
     }
 
     @Test
