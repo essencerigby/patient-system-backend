@@ -33,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
      * @return A list of all customers in the system.
      */
     public List<Customer> getCustomers() {
-        return null; // PLACEHOLDER
+        return customerRepository.findAll();
     }
 
     /**
