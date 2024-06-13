@@ -314,7 +314,7 @@ public class ProductValidatorTest {
     @Test
     public void calculateSalesPrice_withValidProduct_returnsFormattedResult() {
         try {
-            String value = productValidator.calculateSalesPrice(testDrinkProduct);
+            String value = productValidator.calculateSalesPrice(testBakedGoodProduct);
             assertEquals("5.25", value, "Product is invalid.");
         } catch (Exception e) {
             fail("Exception was thrown.");
@@ -357,7 +357,7 @@ public class ProductValidatorTest {
     @Test
     public void formatProduct_withDrinkProduct_returnsFormattedProduct() {
             Product result = productValidator.formatProduct(testDrinkProduct);
-            assertEquals("0", result.getMarkup(), "Product Markup does not equal 0.");
+            assertEquals("n/a", result.getMarkup(), "Product Markup does not have default value.");
             assertEquals("n/a", result.getVendorId(), "Product has Vendor ID.");
 
     }

@@ -151,6 +151,10 @@ public class ProductValidator {
     }
 
     public String calculateSalesPrice(Product productToValidate) {
+        if (!productToValidate.getClassification().equals("Baked Good")) {
+            return formatDollarValues(String.valueOf(productToValidate.getCost()));
+        }
+
         double markup = Double.parseDouble(productToValidate.getMarkup());
         double cost = Double.parseDouble(productToValidate.getCost());
         double salePrice = (cost * (markup/100)) + cost;
@@ -190,7 +194,7 @@ public class ProductValidator {
             productToFormat.setType("n/a");
         }
         else {
-            productToFormat.setMarkup("0");
+            productToFormat.setMarkup("n/a");
             productToFormat.setVendorId("n/a");
         }
 
