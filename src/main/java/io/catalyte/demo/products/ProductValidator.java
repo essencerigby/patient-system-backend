@@ -186,17 +186,18 @@ public class ProductValidator {
     }
 
     public Product formatProduct(Product productToFormat) {
-            if (productToFormat.getClassification().equals("Baked Good")) {
-                productToFormat.setType("-");
-                productToFormat.setSalePrice(calculateSalesPrice(productToFormat));
-            }
-            else {
-                productToFormat.setMarkup("0");
-                productToFormat.setVendorId("-");
-                productToFormat.setSalePrice(calculateSalesPrice(productToFormat));
-            }
+        if (productToFormat.getClassification().equals("Baked Good")) {
+            productToFormat.setType("n/a");
+        }
+        else {
+            productToFormat.setMarkup("0");
+            productToFormat.setVendorId("n/a");
+        }
 
-            return productToFormat;
+        productToFormat.setCost(formatDollarValues(productToFormat.getCost()));
+        productToFormat.setSalePrice(calculateSalesPrice(productToFormat));
+
+        return productToFormat;
     }
 
     public String isUniqueProduct(String productName, List<Product> listOfProducts) {

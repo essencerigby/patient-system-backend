@@ -358,14 +358,14 @@ public class ProductValidatorTest {
     public void formatProduct_withDrinkProduct_returnsFormattedProduct() {
             Product result = productValidator.formatProduct(testDrinkProduct);
             assertEquals("0", result.getMarkup(), "Product Markup does not equal 0.");
-            assertEquals("-", result.getVendorId(), "Product has Vendor ID.");
+            assertEquals("n/a", result.getVendorId(), "Product has Vendor ID.");
 
     }
 
     @Test
     public void formatProduct_WithBakedGoodProduct_returnsFormattedProduct() {
         Product result = productValidator.formatProduct(testBakedGoodProduct);
-        assertEquals("-", result.getType(), "Product type has value.");
+        assertEquals("n/a", result.getType(), "Product type has value.");
     }
 
     @Test
