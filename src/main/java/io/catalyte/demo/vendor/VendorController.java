@@ -5,15 +5,8 @@ import java.util.List;
 import io.catalyte.demo.vendor.vendorEntity.Vendor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/vendors")
@@ -42,6 +35,18 @@ public class VendorController {
     @ResponseStatus(HttpStatus.OK)
     public List<Vendor> getVendors() {
         return vendorService.getVendors();
+    }
+
+    /**
+     * Retrieves a vendor by their name.
+     *
+     * @param name The name of the vendor to retrieve.
+     * @return The vendor(s) with the specified name.
+     */
+    @GetMapping(params = "name")
+    public ResponseEntity<?> getVendorByName(@RequestParam(name = "name", required = false) String name) {
+        List<Vendor> vendors = vendorService.getVendorByName(name);
+        return ResponseEntity.ok(vendors);
     }
 
     /**
