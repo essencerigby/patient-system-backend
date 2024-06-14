@@ -27,21 +27,29 @@ public class ProductServiceImplTest {
     @Mock
     ProductRepository productRepository;
 
+    Product testProduct;
     Product testProduct1;
     Product testProduct2;
     Product testProduct3;
     Product testProduct4;
     List<Product> testProducts;
 
-    Product testProduct;
-    List<String> sampleList;
-
     @BeforeEach
     public void setUp() {
+        List<String> sampleIngredientList = Arrays.asList(
+                "Ingredient 1",
+                "Ingredient 2"
+        );
+
+        List<String> sampleAllergenList = Arrays.asList(
+                "Dairy",
+                "Soy"
+        );
+
         productService = new ProductServiceImpl(productRepository);
-        testProduct = new Product(1, true, "",
-                "TestName", 5, sampleList,
-                "", 5.0, sampleList, 50, 5.0);
+        testProduct = new Product(1, true, "SampleDescription",
+                "TestName", "5", sampleIngredientList,
+                "Drink", "Coffee", "5.0", sampleAllergenList, "5.0", "5.0");
 
         testProduct1 = new Product();
         testProduct1.setName("Basketball");
@@ -66,6 +74,18 @@ public class ProductServiceImplTest {
         assertThrows(ResponseStatusException.class, () -> {
             productService.createProduct(testProduct);
         }, "Product was saved.");
+    }
+
+    @Test
+    public void createProduct_withDuplicateProduct_throwsError() {
+        List<Product> sampleProductList = Arrays.asList(
+                testProduct,
+                testProduct
+        );
+        when(productRepository.findAll()).thenReturn(sampleProductList);
+        assertThrows(ResponseStatusException.class, () -> {
+            productService.createProduct(testProduct);
+        });
     }
 
     @Test
