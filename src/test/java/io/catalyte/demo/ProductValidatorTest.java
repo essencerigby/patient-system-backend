@@ -294,7 +294,7 @@ public class ProductValidatorTest {
         testDrinkProduct.setAllergenList(invalidList);
 
         String err = productValidator.validateProductAllergenList(testDrinkProduct);
-        assertEquals("-AllergenList must contain: Diary, Soy, Gluten, or Nuts.", err, "AllergenList is valid.");
+        assertEquals("-AllergenList must contain: Dairy, Soy, Gluten, or Nuts.", err, "AllergenList is valid.");
     }
 
     @Test

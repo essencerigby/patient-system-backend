@@ -206,7 +206,7 @@ public class ProductValidator {
         } else if (!productToValidate.getAllergenList().isEmpty()) {
             for (String allergen : allergensToValidate) {
                 if (!allergens.contains(allergen)) {
-                    return "-AllergenList must contain: Diary, Soy, Gluten, or Nuts.";
+                    return "-AllergenList must contain: Dairy, Soy, Gluten, or Nuts.";
                 }
             }
             return "";
