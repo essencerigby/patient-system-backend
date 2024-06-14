@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class VendorServiceImpl implements VendorService {
 
-    private final VendorRepository vendorRepository;
+    private VendorRepository vendorRepository;
     NameUniqueValidator nameValidator = new NameUniqueValidator();
     VendorValidation validator = new VendorValidation();
 
@@ -49,6 +49,25 @@ public class VendorServiceImpl implements VendorService {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vendor not found.");
         }
+    }
+
+    /**
+     * Retrieves a vendor by its name.
+     * Throws a ResponseStatusException if the vendor is not found.
+     * @param name the name of the vendor to retrieve
+     * @return vendor with the specified name; case insensitive
+     */
+    @Override
+    public List<Vendor> getVendorByName(String name) {
+        if (name.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name value is empty");
+        }
+
+        List<Vendor> vendors = vendorRepository.findByNameIgnoreCase(name);
+
+        if (!vendors.isEmpty()) {
+            return vendorRepository.findByNameIgnoreCase(name);
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
     }
 
     /**
