@@ -49,21 +49,21 @@ public class ProductValidatorTest {
     public void validateProductDescription_withNullDescription_returnsError() {
         testDrinkProduct.setDescription(null);
         String err = productValidator.validateProductDescription(testDrinkProduct);
-        assertEquals("-Description is null.", err, "Description is not null.");
+        assertEquals(" Description is null.", err, "Description is not null.");
     }
 
     @Test
     public void validateProductDescription_withEmptyDescription_returnsError() {
         testDrinkProduct.setDescription("");
         String err = productValidator.validateProductDescription(testDrinkProduct);
-        assertEquals("-Description is empty.", err, "Description has value.");
+        assertEquals(" Description is empty.", err, "Description has value.");
     }
 
     @Test
     public void validateProductDescription_descriptionTooLong_returnsError() {
         testDrinkProduct.setDescription("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         String err = productValidator.validateProductDescription(testDrinkProduct);
-        assertEquals("-Description must be less than 100 characters.", err, "Description is less than 100 characters.");
+        assertEquals(" Description must be less than 100 characters.", err, "Description is less than 100 characters.");
     }
 
     @Test
@@ -76,21 +76,21 @@ public class ProductValidatorTest {
     public void validateProductName_withNullName_returnsError() {
         testDrinkProduct.setName(null);
         String err = productValidator.validateProductName(testDrinkProduct);
-        assertEquals("-Name is null.", err, "Name is not null.");
+        assertEquals(" Name is null.", err, "Name is not null.");
     }
 
     @Test
     public void validateProductName_withEmptyName_returnsError() {
         testDrinkProduct.setName("");
         String err = productValidator.validateProductName(testDrinkProduct);
-        assertEquals("-Name is empty.", err, "Name is not null.");
+        assertEquals(" Name is empty.", err, "Name is not null.");
     }
 
     @Test
     public void validateProductName_nameExceedsCharacterLimit_returnsError() {
         testDrinkProduct.setName("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         String err = productValidator.validateProductName(testDrinkProduct);
-        assertEquals("-Name must be less than 50 characters.", err, "Name is valid.");
+        assertEquals(" Name must be less than 50 characters.", err, "Name is valid.");
     }
 
     @Test
@@ -103,21 +103,21 @@ public class ProductValidatorTest {
     public void validateProductVendorID_withNullClassification_returnsError() {
         testDrinkProduct.setClassification(null);
         String err = productValidator.validateProductVendorID(testDrinkProduct);
-        assertEquals("-VendorID could not be validated.", err, "Classification is not null.");
+        assertEquals(" VendorID could not be validated.", err, "Classification is not null.");
     }
 
     @Test
     public void validateProductVendorID_withBakedGoodProduct_usingNullVendorID_returnsError() {
         testBakedGoodProduct.setVendorId(null);
         String err = productValidator.validateProductVendorID(testBakedGoodProduct);
-        assertEquals("-Vendor ID is null.", err, "Vendor ID is not null.");
+        assertEquals(" Vendor ID is null.", err, "Vendor ID is not null.");
     }
 
     @Test
     public void validateProductVendorID_withBakedGoodProduct_usingEmptyVendorID_returnsError() {
         testBakedGoodProduct.setVendorId("");
         String err = productValidator.validateProductVendorID(testBakedGoodProduct);
-        assertEquals("-Vendor ID is empty.", err, "Vendor ID is not empty.");
+        assertEquals(" Vendor ID is empty.", err, "Vendor ID is not empty.");
     }
 
     @Test
@@ -138,7 +138,7 @@ public class ProductValidatorTest {
     public void validateProductIngredientsList_withNullIngredientsList_returnsError() {
         testDrinkProduct.setIngredientsList(null);
         String err = productValidator.validateProductIngredientsList(testDrinkProduct);
-        assertEquals("-IngredientsList is null.", err, "IngredientsList is not null.");
+        assertEquals(" IngredientsList is null.", err, "IngredientsList is not null.");
     }
 
     @Test
@@ -146,7 +146,7 @@ public class ProductValidatorTest {
         List<String> emptyList = new ArrayList<>();
         testDrinkProduct.setIngredientsList(emptyList);
         String err = productValidator.validateProductIngredientsList(testDrinkProduct);
-        assertEquals("-IngredientsList is empty.", err, "IngredientList is not empty.");
+        assertEquals(" IngredientsList is empty.", err, "IngredientList is not empty.");
     }
 
     @Test
@@ -159,21 +159,21 @@ public class ProductValidatorTest {
     public void validateProductClassification_withNullClassification_returnsError() {
         testDrinkProduct.setClassification(null);
         String err = productValidator.validateProductClassification(testDrinkProduct);
-        assertEquals("-Classification is null.", err, "Classification is not null.");
+        assertEquals(" Classification is null.", err, "Classification is not null.");
     }
 
     @Test
     public void validateProductClassification_withEmptyClassification_returnsError() {
         testDrinkProduct.setClassification("");
         String err = productValidator.validateProductClassification(testDrinkProduct);
-        assertEquals("-Classification is empty.", err, "Classification is not empty.");
+        assertEquals(" Classification is empty.", err, "Classification is not empty.");
     }
 
     @Test
     public void validateProductClassification_asInvalidClassification_returnsError() {
         testDrinkProduct.setClassification("Invalid Classification");
         String err = productValidator.validateProductClassification(testDrinkProduct);
-        assertEquals("-Classification must be Drink or Baked Good.", err, "Classification is valid.");
+        assertEquals(" Classification must be Drink or Baked Good.", err, "Classification is valid.");
     }
 
     @Test
@@ -193,21 +193,21 @@ public class ProductValidatorTest {
     public void validateProductType_withNullType_returnsError() {
         testDrinkProduct.setType(null);
         String err = productValidator.validateProductType(testDrinkProduct);
-        assertEquals("-Type is null.", err, "Type is not null.");
+        assertEquals(" Type is null.", err, "Type is not null.");
     }
 
     @Test
     public void validateProductType_withEmptyType_returnsError() {
         testDrinkProduct.setType("");
         String err = productValidator.validateProductType(testDrinkProduct);
-        assertEquals("-Type is empty.", err, "Type is not empty.");
+        assertEquals(" Type is empty.", err, "Type is not empty.");
     }
 
     @Test
     public void validateProductType_withInvalidType_returnsError() {
         testDrinkProduct.setType("Invalid Type");
         String err = productValidator.validateProductType(testDrinkProduct);
-        assertEquals("-Type must be Coffee, Tea, or Soda.", err, "Type is valid.");
+        assertEquals(" Type must be Coffee, Tea, or Soda.", err, "Type is valid.");
     }
 
     @Test
@@ -220,21 +220,21 @@ public class ProductValidatorTest {
     public void validateProductCost_withNullCost_returnsError() {
         testDrinkProduct.setCost(null);
         String err = productValidator.validateProductCost(testDrinkProduct);
-        assertEquals("-Cost is null.", err, "Cost is not null.");
+        assertEquals(" Cost is null.", err, "Cost is not null.");
     }
 
     @Test
     public void validateProductCost_withEmptyCost_returnsError() {
         testDrinkProduct.setCost("");
         String err = productValidator.validateProductCost(testDrinkProduct);
-        assertEquals("-Cost is empty.", err, "Cost is not empty.");
+        assertEquals(" Cost is empty.", err, "Cost is not empty.");
     }
 
     @Test
     public void validateProductCost_withInvalidCost_returnsError() {
         testDrinkProduct.setCost("10.NotValid");
         String err = productValidator.validateProductCost(testDrinkProduct);
-        assertEquals("-Cost must be a number.", err, "Cost is valid.");
+        assertEquals(" Cost must be a number.", err, "Cost is valid.");
     }
 
     @Test
@@ -247,21 +247,21 @@ public class ProductValidatorTest {
     public void validateProductMarkup_withNullMarkup_returnsError() {
         testBakedGoodProduct.setMarkup(null);
         String err = productValidator.validateProductMarkup(testBakedGoodProduct);
-        assertEquals("-Markup is null.", err, "Markup is not null.");
+        assertEquals(" Markup is null.", err, "Markup is not null.");
     }
 
     @Test
     public void validateProductMarkup_withEmptyMarkup_returnsError() {
         testBakedGoodProduct.setMarkup("");
         String err = productValidator.validateProductMarkup(testBakedGoodProduct);
-        assertEquals("-Markup is empty.", err, "Markup is not empty.");
+        assertEquals(" Markup is empty.", err, "Markup is not empty.");
     }
 
     @Test
     public void validateProductMarkup_withInvalidMarkup_returnsError() {
         testBakedGoodProduct.setMarkup("10.NotValid");
         String err = productValidator.validateProductMarkup(testBakedGoodProduct);
-        assertEquals("-Markup must be a whole number.", err, "Markup is valid.");
+        assertEquals(" Markup must be a whole number.", err, "Markup is valid.");
     }
 
     @Test
@@ -274,7 +274,7 @@ public class ProductValidatorTest {
     public void validateProductAllergenList_withNullList_returnsError() {
         testDrinkProduct.setAllergenList(null);
         String err = productValidator.validateProductAllergenList(testDrinkProduct);
-        assertEquals("-AllergenList is null.", err, "AllergenList is not null.");
+        assertEquals(" AllergenList is null.", err, "AllergenList is not null.");
     }
 
     @Test
@@ -294,7 +294,7 @@ public class ProductValidatorTest {
         testDrinkProduct.setAllergenList(invalidList);
 
         String err = productValidator.validateProductAllergenList(testDrinkProduct);
-        assertEquals("-AllergenList must contain: Dairy, Soy, Gluten, or Nuts.", err, "AllergenList is valid.");
+        assertEquals(" AllergenList must contain: Dairy, Soy, Gluten, or Nuts.", err, "AllergenList is valid.");
     }
 
     @Test
@@ -342,7 +342,7 @@ public class ProductValidatorTest {
 
     @Test
     public void validateProduct_withEmptyProduct_returnsErrors() {
-        String allErrors = "-Description is null.-Name is null.-VendorID could not be validated.-Classification is null.-Type could not be validated.-Cost is null.-Markup could not be validated.-IngredientsList is null.-AllergenList is null.";
+        String allErrors = " Description is null. Name is null. VendorID could not be validated. Classification is null. Type could not be validated. Cost is null. Markup could not be validated. IngredientsList is null. AllergenList is null.";
         String err = productValidator.validateProduct(testInvalidProduct);
 
         assertEquals(allErrors, err, "Product is valid.");

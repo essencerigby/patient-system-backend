@@ -16,11 +16,11 @@ public class ProductValidator {
      */
     public String validateProductDescription(Product productToValidate) {
         if (productToValidate.getDescription() == null) {
-            return "-Description is null.";
+            return " Description is null.";
         } else if (productToValidate.getDescription().isEmpty()) {
-            return "-Description is empty.";
+            return " Description is empty.";
         } else if (productToValidate.getDescription().length() > 100) {
-            return "-Description must be less than 100 characters.";
+            return " Description must be less than 100 characters.";
         }
         return "";
     }
@@ -34,11 +34,11 @@ public class ProductValidator {
      */
     public String validateProductName(Product productToValidate) {
         if (productToValidate.getName() == null) {
-            return "-Name is null.";
+            return " Name is null.";
         } else if (productToValidate.getName().isEmpty()) {
-            return "-Name is empty.";
+            return " Name is empty.";
         } else if (productToValidate.getName().length() > 50) {
-            return "-Name must be less than 50 characters.";
+            return " Name must be less than 50 characters.";
         }
         return "";
     }
@@ -54,10 +54,10 @@ public class ProductValidator {
         if (productToValidate.getClassification() != null) {
             if (productToValidate.getClassification().equals("Baked Good")) {
                 if (productToValidate.getVendorId() == null) {
-                    return "-Vendor ID is null.";
+                    return " Vendor ID is null.";
                 }
                 else if (productToValidate.getVendorId().isEmpty()) {
-                    return "-Vendor ID is empty.";
+                    return " Vendor ID is empty.";
                 }
                 else {
                     return "";
@@ -65,7 +65,7 @@ public class ProductValidator {
             }
             return "";
         }
-        return "-VendorID could not be validated.";
+        return " VendorID could not be validated.";
     }
 
     /**
@@ -77,9 +77,9 @@ public class ProductValidator {
      */
     public String validateProductIngredientsList(Product productToValidate) {
         if (productToValidate.getIngredientsList() == null) {
-            return "-IngredientsList is null.";
+            return " IngredientsList is null.";
         } else if (productToValidate.getIngredientsList().isEmpty()) {
-            return "-IngredientsList is empty.";
+            return " IngredientsList is empty.";
         }
         return "";
     }
@@ -93,13 +93,13 @@ public class ProductValidator {
      */
     public String validateProductClassification(Product productToValidate) {
         if (productToValidate.getClassification() == null) {
-            return "-Classification is null.";
+            return " Classification is null.";
         } else if (productToValidate.getClassification().isEmpty()) {
-            return "-Classification is empty.";
+            return " Classification is empty.";
         } else if (productToValidate.getClassification().equals("Drink") || productToValidate.getClassification().equals("Baked Good")) {
             return "";
         }
-        return "-Classification must be Drink or Baked Good.";
+        return " Classification must be Drink or Baked Good.";
     }
 
     /**
@@ -119,9 +119,9 @@ public class ProductValidator {
         if (productToValidate.getClassification() != null) {
             if (productToValidate.getClassification().equals("Drink")) {
                 if (productToValidate.getType() == null) {
-                    return "-Type is null.";
+                    return " Type is null.";
                 } else if (productToValidate.getType().isEmpty()) {
-                    return "-Type is empty.";
+                    return " Type is empty.";
                 } else {
                     for (String drink : drinkTypes) {
                         if (productToValidate.getType().equals(drink)) {
@@ -129,11 +129,11 @@ public class ProductValidator {
                         }
                     }
                 }
-                return "-Type must be Coffee, Tea, or Soda.";
+                return " Type must be Coffee, Tea, or Soda.";
             }
             return "";
         }
-        return "-Type could not be validated.";
+        return " Type could not be validated.";
     }
 
     /**
@@ -145,14 +145,14 @@ public class ProductValidator {
      */
     public String validateProductCost(Product productToValidate) {
         if (productToValidate.getCost() == null) {
-            return "-Cost is null.";
+            return " Cost is null.";
         } else if (productToValidate.getCost().isEmpty()) {
-            return "-Cost is empty.";
+            return " Cost is empty.";
         } else {
             try {
                 formatDollarValues(productToValidate.getCost());
             } catch (NumberFormatException e) {
-                return "-Cost must be a number.";
+                return " Cost must be a number.";
             }
             return "";
         }
@@ -169,20 +169,20 @@ public class ProductValidator {
         if (productToValidate.getClassification() != null) {
             if (productToValidate.getClassification().equals("Baked Good")) {
                 if (productToValidate.getMarkup() == null) {
-                    return "-Markup is null.";
+                    return " Markup is null.";
                 } else if (productToValidate.getMarkup().isEmpty()) {
-                    return "-Markup is empty.";
+                    return " Markup is empty.";
                 } else {
                     try {
                         Integer.parseInt(productToValidate.getMarkup());
                     } catch (NumberFormatException e) {
-                        return "-Markup must be a whole number.";
+                        return " Markup must be a whole number.";
                     }
                 }
             }
             return "";
         }
-        return "-Markup could not be validated.";
+        return " Markup could not be validated.";
     }
 
     /**
@@ -202,11 +202,11 @@ public class ProductValidator {
         List<String> allergensToValidate = productToValidate.getAllergenList();
 
         if (productToValidate.getAllergenList() == null) {
-            return "-AllergenList is null.";
+            return " AllergenList is null.";
         } else if (!productToValidate.getAllergenList().isEmpty()) {
             for (String allergen : allergensToValidate) {
                 if (!allergens.contains(allergen)) {
-                    return "-AllergenList must contain: Dairy, Soy, Gluten, or Nuts.";
+                    return " AllergenList must contain: Dairy, Soy, Gluten, or Nuts.";
                 }
             }
             return "";
