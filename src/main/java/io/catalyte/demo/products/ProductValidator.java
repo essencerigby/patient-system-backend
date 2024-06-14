@@ -174,9 +174,9 @@ public class ProductValidator {
                     return "-Markup is empty.";
                 } else {
                     try {
-                        formatDollarValues(productToValidate.getMarkup());
+                        Integer.parseInt(productToValidate.getMarkup());
                     } catch (NumberFormatException e) {
-                        return "-Markup must be a number.";
+                        return "-Markup must be a whole number.";
                     }
                 }
             }

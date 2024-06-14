@@ -261,7 +261,7 @@ public class ProductValidatorTest {
     public void validateProductMarkup_withInvalidMarkup_returnsError() {
         testBakedGoodProduct.setMarkup("10.NotValid");
         String err = productValidator.validateProductMarkup(testBakedGoodProduct);
-        assertEquals("-Markup must be a number.", err, "Markup is valid.");
+        assertEquals("-Markup must be a whole number.", err, "Markup is valid.");
     }
 
     @Test
