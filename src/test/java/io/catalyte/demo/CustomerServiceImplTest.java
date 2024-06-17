@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -41,6 +42,23 @@ public class CustomerServiceImplTest {
         List<Customer> result = customerService.getCustomers();
 
         assertEquals(result, sampleCustomers);
+    }
+
+    @Test
+    public void getCustomerById_withValidId_returnsCustomer() {
+        when(customerRepository.findById(1)).thenReturn(Optional.of(testCustomer));
+
+        Customer result = customerService.getCustomerById(1);
+
+        assertEquals(testCustomer, result, "Customer was not found.");
+    }
+
+    @Test
+    public void getCustomerById_withInvalidId_throwsError() {
+        when(customerRepository.findById(2)).thenReturn(Optional.empty());
+        assertThrows(ResponseStatusException.class, () -> {
+            customerService.getCustomerById(2);
+        });
     }
 
     @Test
