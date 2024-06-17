@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -56,9 +57,12 @@ public class CustomerServiceImplTest {
     @Test
     public void getCustomerById_withInvalidId_throwsError() {
         when(customerRepository.findById(2)).thenReturn(Optional.empty());
-        assertThrows(ResponseStatusException.class, () -> {
+        ResponseStatusException result = assertThrows(ResponseStatusException.class, () -> {
             customerService.getCustomerById(2);
         });
+
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode(), "Expected NOT_FOUND Status");
+        assertEquals("Customer not found.", result.getReason(), "Expected error message mismatch");
     }
 
     @Test
