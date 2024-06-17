@@ -75,7 +75,13 @@ public class CustomerServiceImpl implements CustomerService {
      * @return The updated customer.
      */
     public Customer editCustomer(Customer customerToEdit, int id) {
-        return null; // PLACEHOLDER
+        Customer existingCustomer = getCustomerById(id);
+        if (existingCustomer != null) {
+            customerToEdit.setId(id);
+            customerToEdit.setCustomerSince(existingCustomer.getCustomerSince());
+            customerRepository.save(customerToEdit);
+        }
+        return customerToEdit;
     }
 
     /**
