@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -31,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
      * @return A list of all customers in the system.
      */
     public List<Customer> getCustomers() {
-        return null; // PLACEHOLDER
+        return customerRepository.findAll();
     }
 
     /**
@@ -41,7 +43,11 @@ public class CustomerServiceImpl implements CustomerService {
      * @return The customer with the specified ID.
      */
     public Customer getCustomerById(int id) {
-        return null; // PLACEHOLDER
+        try {
+            return customerRepository.findById(id).orElseThrow();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found.");
+        }
     }
 
     /**
@@ -56,6 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Customer");
         }
 
+        customerToCreate.setCustomerSince(getTimestamp());
         customerRepository.save(customerToCreate);
         return customerToCreate;
     }
@@ -68,7 +75,12 @@ public class CustomerServiceImpl implements CustomerService {
      * @return The updated customer.
      */
     public Customer editCustomer(Customer customerToEdit, int id) {
-        return null; // PLACEHOLDER
+        Customer existingCustomer = getCustomerById(id);
+        customerToEdit.setId(id);
+        customerToEdit.setCustomerSince(existingCustomer.getCustomerSince());
+        customerRepository.save(customerToEdit);
+
+        return customerToEdit;
     }
 
     /**
@@ -78,5 +90,15 @@ public class CustomerServiceImpl implements CustomerService {
      */
     public void deleteCustomerById(int id) {
         // PLACEHOLDER
+    }
+
+    /**
+     * Returns the current date formatted as a string.
+     * The format used is "MM-yyyy", representing the month and year.
+     *
+     * @return A string representing the current date in "MM-yyyy" format.
+     */
+    public String getTimestamp () {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-yyyy"));
     }
 }

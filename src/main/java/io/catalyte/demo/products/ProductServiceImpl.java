@@ -14,6 +14,7 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
+    ProductValidator productValidator = new ProductValidator();
 
     /**
      * Constructs a new instance of ProductServiceImpl with the specified ProductRepository.
@@ -31,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
      * @return A list of all products in the system.
      */
     public List<Product> getProducts() {
-        return null; // Get All Products Logic goes here
+        return productRepository.findAll(); // Get All Products Logic goes here
     }
 
     /**
@@ -41,7 +42,29 @@ public class ProductServiceImpl implements ProductService {
      * @return The product with the specified ID.
      */
     public Product getProductById(int id) {
-        return null; // Get Product by ID Logic goes here
+        try {
+            return productRepository.findById(id).orElseThrow();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+        }
+    }
+
+    /**
+     * Retrieves a product by its name.
+     * Exact matches only.
+     * @param name The name of the product to retrieve.
+     * @return The product(s) with the specified name.
+     */
+    public List<Product> getProductByName(String name) {
+        if (name.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name value is empty");
+        }
+
+        List<Product> tempList = productRepository.findByNameIgnoreCase(name);
+
+        if (!tempList.isEmpty()) {
+            return productRepository.findByNameIgnoreCase(name);
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
     }
 
     /**
@@ -52,18 +75,19 @@ public class ProductServiceImpl implements ProductService {
      * @return the created product
      */
     public Product createProduct(Product productToCreate) {
-        // Product Validation goes here, Replace Sample Validation Below.
-        if (productToCreate.getName() == null || productToCreate.getName().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Product");
+        String errorMessage = productValidator.validateProduct(productToCreate);
+        if (!errorMessage.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+        errorMessage = productValidator.isUniqueProduct(productToCreate.getName(), getProducts());
+        if (!errorMessage.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, errorMessage);
         }
 
-        double markup = productToCreate.getMarkup();
-        double cost = productToCreate.getCost();
-        double salePrice = (cost * markup) + cost;
-        productToCreate.setSalePrice(salePrice);
+        Product formattedProduct = productValidator.formatProduct(productToCreate);
 
-        productRepository.save(productToCreate);
-        return productToCreate;
+        productRepository.save(formattedProduct);
+        return formattedProduct;
     }
 
     /**

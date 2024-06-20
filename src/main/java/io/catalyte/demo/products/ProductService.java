@@ -10,6 +10,8 @@ public interface ProductService {
 
     Product getProductById(int id);
 
+    List<Product> getProductByName(String name);
+
     Product createProduct(Product productToCreate);
 
     Product editProduct(Product productToEdit, int id);

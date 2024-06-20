@@ -12,25 +12,25 @@ public class Product {
   private boolean active;
   private String description;
   private String name;
-  private int vendorId;
+  private String vendorId;
 
   @ElementCollection
   private List<String> ingredientsList;
   private String classification;
   private String type;
-  private double cost;
-  private double markup;
+  private String cost;
+  private String markup;
 
  @ElementCollection
   private List<String> allergenList;
-  private double salePrice;
+  private String salePrice;
 
   public Product() {
   }
 
-  public Product(int id, boolean active, String description, String name, int vendorId,
-                 List<String> ingredientsList, String classification, double cost,
-                 List<String> allergenList, double markup, double salePrice) {
+  public Product(int id, boolean active, String description, String name, String vendorId,
+                 List<String> ingredientsList, String classification, String type, String cost,
+                 List<String> allergenList, String markup, String salePrice) {
     this.id = id;
     this.active = active;
     this.description = description;
@@ -38,6 +38,7 @@ public class Product {
     this.vendorId = vendorId;
     this.ingredientsList = ingredientsList;
     this.classification = classification;
+    this.type = type;
     this.cost = cost;
     this.allergenList = allergenList;
     this.markup = markup;
@@ -76,11 +77,11 @@ public class Product {
     this.name = name;
   }
 
-  public int getVendorId() {
+  public String getVendorId() {
     return vendorId;
   }
 
-  public void setVendorId(int vendorId) {
+  public void setVendorId(String vendorId) {
     this.vendorId = vendorId;
   }
 
@@ -108,19 +109,19 @@ public class Product {
       this.type = type;
   }
 
-  public double getCost() {
+  public String getCost() {
     return cost;
   }
 
-  public void setCost(double cost) {
+  public void setCost(String cost) {
     this.cost = cost;
   }
 
-  public double getMarkup() {
+  public String getMarkup() {
       return this.markup;
   }
 
-  public void setMarkup(double markup) {
+  public void setMarkup(String markup) {
       this.markup = markup;
   }
 
@@ -132,11 +133,11 @@ public class Product {
     this.allergenList = allergenList;
   }
 
-  public double getSalePrice() {
+  public String getSalePrice() {
     return salePrice;
   }
 
-  public void setSalePrice(double salePrice) {
+  public void setSalePrice(String salePrice) {
     this.salePrice = salePrice;
   }
 }

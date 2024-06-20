@@ -12,6 +12,8 @@ public interface VendorService {
 
     Vendor getVendorById(int id);
 
+    List<Vendor> getVendorByName(String name);
+
     Vendor createVendor(Vendor vendorToCreate);
 
     Vendor editVendor(Vendor vendorToEdit, int id);
