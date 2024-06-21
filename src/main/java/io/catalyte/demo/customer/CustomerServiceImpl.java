@@ -51,6 +51,27 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
+     * Retrieves a customer by its name.
+     *
+     * @param name The name of the customer to retrieve; must be exact (i.e. First Last),
+     *             not case-sensitive.
+     * @return All customers with the specified name.
+     * @throws ResponseStatusException if name is empty or null.
+     * @throws ResponseStatusException if a customer with the name wasn't found.
+     */
+    public List<Customer> getCustomerByName(String name) {
+        if(name == null || name.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please ensure a valid name is provided.");
+        }
+
+        List<Customer> tempList = customerRepository.findByNameIgnoreCase(name);
+
+        if(!tempList.isEmpty()) {
+            return customerRepository.findByNameIgnoreCase(name);
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A customer with this name wasn't found.");
+    }
+
+    /**
      * Creates a new customer in the repository
      * @param customerToCreate - Customer Object containing unique identifier, name,
      *                         emailAddress, and lifetimeSpent.

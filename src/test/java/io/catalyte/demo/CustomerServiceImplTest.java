@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +67,50 @@ public class CustomerServiceImplTest {
 
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode(), "Expected NOT_FOUND Status");
         assertEquals("Customer not found.", result.getReason(), "Expected error message mismatch");
+    }
+
+    @Test
+    public void getCustomerByName_withValidName_returnsCustomer() {
+        sampleCustomers = Collections.singletonList(testCustomer);
+        when(customerRepository.findByNameIgnoreCase("Customer Name")).thenReturn(sampleCustomers);
+
+        List<Customer> result = customerService.getCustomerByName("Customer Name");
+
+        assertEquals(testCustomer.getName(), result.get(0).getName());
+    }
+
+    @Test
+    public void getCustomerByName_withNonExistentName_throwsError() {
+        String nonExistentName = "John Doe";
+
+        ResponseStatusException result = assertThrows(ResponseStatusException.class, () -> {
+            customerService.getCustomerByName(nonExistentName);
+        });
+
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode(), "Expected NOT_FOUND Status");
+        assertEquals("A customer with this name wasn't found.", result.getReason());
+    }
+
+    @Test
+    public void getCustomerByName_withEmptyName_throwsError() {
+        testCustomer.setName("");
+
+        ResponseStatusException result = assertThrows(ResponseStatusException.class, () -> {
+            customerService.getCustomerByName(testCustomer.getName());
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Expected BAD_REQUEST Status");
+        assertEquals("Please ensure a valid name is provided.", result.getReason());
+    }
+
+    @Test
+    public void getCustomerByName_withNullValue_throwsError() {
+        ResponseStatusException result = assertThrows(ResponseStatusException.class, () -> {
+            customerService.getCustomerByName(null);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Expected BAD_REQUEST Status");
+        assertEquals("Please ensure a valid name is provided.", result.getReason());
     }
 
     @Test
