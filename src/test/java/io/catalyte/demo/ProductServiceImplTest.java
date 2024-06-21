@@ -18,7 +18,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceImplTest {
@@ -75,9 +76,7 @@ public class ProductServiceImplTest {
     public void createProduct_withInvalidProduct_throwsError() {
         testProduct.setName("");
 
-        assertThrows(ResponseStatusException.class, () -> {
-            productService.createProduct(testProduct);
-        }, "Product was saved.");
+        assertThrows(ResponseStatusException.class, () -> productService.createProduct(testProduct), "Product was saved.");
     }
 
     @Test
@@ -87,9 +86,7 @@ public class ProductServiceImplTest {
                 testProduct
         );
         when(productRepository.findAll()).thenReturn(sampleProductList);
-        assertThrows(ResponseStatusException.class, () -> {
-            productService.createProduct(testProduct);
-        });
+        assertThrows(ResponseStatusException.class, () -> productService.createProduct(testProduct));
     }
 
     @Test
@@ -106,9 +103,7 @@ public class ProductServiceImplTest {
         testProduct.setId(18);
 
         when(productRepository.findById(testProduct.getId())).thenReturn(Optional.empty());
-        assertThrows(ResponseStatusException.class, () -> {
-            productService.getProductById(testProduct.getId());
-        }, "Product not found.");
+        assertThrows(ResponseStatusException.class, () -> productService.getProductById(testProduct.getId()), "Product not found.");
     }
 
     @Test
@@ -174,9 +169,7 @@ public class ProductServiceImplTest {
     public void editProduct_whenNameIsEmpty_shouldReturn400Error() {
         testProductToEdit.setName("");
         when(productRepository.findById(1)).thenReturn(Optional.of(testProduct));
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productService.editProduct(testProductToEdit, 1);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> productService.editProduct(testProductToEdit, 1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("400 BAD_REQUEST \" Name is empty.\"", exception.getMessage());
     }
@@ -185,9 +178,7 @@ public class ProductServiceImplTest {
     public void editProduct_whenProductIdIsNotValid_shouldReturn404Error() {
         int invalidID = 25; // Assuming this Product ID does not exist
         when(productRepository.findById(invalidID)).thenReturn(Optional.empty());
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productService.editProduct(testProductToEdit, invalidID);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> productService.editProduct(testProductToEdit, invalidID));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
         assertEquals("404 NOT_FOUND \"The Product was not found\"", exception.getMessage());
     }
@@ -200,12 +191,32 @@ public class ProductServiceImplTest {
         when(productRepository.findAll()).thenReturn(sampleProducts);
         when(productRepository.findById(testProduct.getId())).thenReturn(Optional.of(testProduct));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productService.editProduct(testProductToEdit, testProductToEdit.getId());
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> productService.editProduct(testProductToEdit, testProductToEdit.getId()));
 
         assertEquals(HttpStatus.CONFLICT, exception.getStatusCode());
         assertEquals("Product with matching name already exists.", exception.getReason());
     }
+
+    @Test
+    public void deleteProductByID_withValidID_deletesProduct() {
+        int testID = testProduct.getId();
+
+        when(productRepository.findById(testID)).thenReturn(Optional.of(testProduct));
+        productService.deleteProductById(testID);
+
+        //Verify each method was called once
+        verify(productRepository).findById(testID);
+        verify(productRepository).deleteById(testID);
+    }
+
+    @Test
+    public void deleteProductByID_withInvalidID_throwsError() {
+        int invalidID = 7;
+
+        ResponseStatusException result = assertThrows(ResponseStatusException.class, () -> productService.deleteProductById(invalidID));
+
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    }
+
 }
 
