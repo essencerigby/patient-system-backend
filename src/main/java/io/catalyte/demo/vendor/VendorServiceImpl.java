@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service implementation & business logic layer.
@@ -126,9 +127,15 @@ public class VendorServiceImpl implements VendorService {
 
     /**
      * Deletes a vendor by its ID
+     * Throws a ResponseStatusException if the vendor is not found.
+     * @param id the ID of the vendor to retrieve
      */
-    public void deleteVendor(int id) {
-        // PLACEHOLDER
+    public void deleteVendorById(int id) {
+        Optional<Vendor> vendorToDelete = vendorRepository.findById(id);
+
+        if (vendorToDelete.isPresent()) {
+            vendorRepository.deleteById(id);
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vendor with matching id could not be found.");
     }
 
     public String getFormattedTimeStamp(LocalDateTime timestamp) {
