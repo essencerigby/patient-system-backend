@@ -10,6 +10,8 @@ public interface CustomerService {
 
     Customer getCustomerById(int id);
 
+    List<Customer> getCustomerByName(String name);
+
     Customer createCustomer(Customer customerToCreate);
 
     Customer editCustomer(Customer customerToEdit, int id);
