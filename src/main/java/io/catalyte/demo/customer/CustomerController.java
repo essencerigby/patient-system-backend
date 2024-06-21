@@ -1,7 +1,9 @@
 package io.catalyte.demo.customer;
 
+import io.catalyte.demo.products.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +47,18 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.OK)
     public Customer getCustomerById(@PathVariable int id) {
         return customerService.getCustomerById(id);
+    }
+
+    /**
+     * Retrieves a product by its name.
+     *
+     * @param name The name of the customer to retrieve.
+     * @return The customer(s) with the specified name.
+     */
+    @GetMapping(params = "name")
+    public ResponseEntity<?> getCustomerByName(@RequestParam(name = "name", required = false) String name) {
+        List<Customer> customers = customerService.getCustomerByName(name);
+        return ResponseEntity.ok(customers);
     }
 
     /**
