@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service implementation & business logic layer.
@@ -122,8 +123,13 @@ public class ProductServiceImpl implements ProductService {
      * Deletes a product from the system.
      *
      * @param id The ID of the product to delete.
+     * @throws ResponseStatusException NOT_FOUND when an invalid ID is provided.
      */
     public void deleteProductById(int id) {
-        // Delete Product by ID Logic goes here
+        Optional<Product> foundProduct = productRepository.findById(id);
+
+        if (foundProduct.isPresent()) {
+            productRepository.deleteById(id);
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A product with this ID was not found and could not be deleted.");
     }
 }

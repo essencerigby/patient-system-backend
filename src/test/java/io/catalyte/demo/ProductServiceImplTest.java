@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceImplTest {
     ProductService productService;
@@ -198,6 +197,7 @@ public class ProductServiceImplTest {
     }
 
     @Test
+
     public void deleteProductByID_withValidID_deletesProduct() {
         int testID = testProduct.getId();
 
@@ -217,6 +217,5 @@ public class ProductServiceImplTest {
 
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
-
 }
 
