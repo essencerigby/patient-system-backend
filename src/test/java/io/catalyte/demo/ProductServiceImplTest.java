@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceImplTest {
@@ -145,5 +145,28 @@ public class ProductServiceImplTest {
         List<Product> result = productService.getProductByName("Basketball");
 
         assertTrue(result.size() > 1);
+    }
+
+    @Test
+    public void deleteProductByID_withValidID_deletesProduct() {
+        int testID = testProduct.getId();
+
+        when(productRepository.findById(testID)).thenReturn(Optional.of(testProduct));
+        productService.deleteProductById(testID);
+
+        //Verify each method was called once
+        verify(productRepository).findById(testID);
+        verify(productRepository).deleteById(testID);
+    }
+
+    @Test
+    public void deleteProductByID_withInvalidID_throwsError() {
+        int invalidID = 7;
+
+        ResponseStatusException result = assertThrows(ResponseStatusException.class, () -> {
+            productService.deleteProductById(invalidID);
+        });
+
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 }
