@@ -1,6 +1,5 @@
 package io.catalyte.demo.ingredient;
 
-import io.catalyte.demo.ingredient.Ingredient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
