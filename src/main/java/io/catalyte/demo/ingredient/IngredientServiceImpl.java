@@ -62,7 +62,7 @@ public class IngredientServiceImpl implements IngredientService {
      * @return the created ingredient
      */
     public Ingredient createIngredient(Ingredient ingredientToCreate) {
-        return null; // LOGIC HERE
+        return ingredientRepository.save(ingredientToCreate);
     }
 
     /**
