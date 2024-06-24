@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -148,16 +149,18 @@ public class CustomerServiceImplTest {
 
         when(customerRepository.findById(1)).thenReturn(Optional.of(testCustomer));
         customerService.deleteCustomerById(1);
+        verify(customerRepository).findById(1);
+        verify(customerRepository).deleteById(1);
     }
 
     @Test
     public void deleteCustomerById_withInvalidID_throwsError(){
-    int invalidId = 999;
-    when(customerRepository.findById(invalidId)).thenReturn(Optional.empty());
-    ResponseStatusException result = assertThrows(ResponseStatusException.class, () ->
+        int invalidId = 999;
+        when(customerRepository.findById(invalidId)).thenReturn(Optional.empty());
+        ResponseStatusException result = assertThrows(ResponseStatusException.class, () ->
             customerService.deleteCustomerById(invalidId)
-    );
-    assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+        );
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
         assertEquals("404 NOT_FOUND \"Customer not found.\"", result.getMessage());
     }
 }
