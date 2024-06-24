@@ -12,6 +12,8 @@ import io.catalyte.demo.vendor.vendorEntity.Vendor;
  * Provides various validation methods for validating vendor details.
  */
 public class VendorValidation {
+    // Create a StringBuilder object to gather error messages
+    StringBuilder str = new StringBuilder();
 
     final List<String> US_states = Arrays.asList("AL", "AK", "AZ", "AR",
             "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY",
@@ -25,16 +27,21 @@ public class VendorValidation {
      * @param name the name to be validated
      * @return an error message if the name is invalid; otherwise, an empty string
      */
-    public String nameValidation(String name) {
-        String err1 = "";
+    public StringBuilder nameValidation(String name) {
+//        String err1 = "";
+        str = new StringBuilder();
         if (name == null) {
-            err1 += "~Name field is null~";
+//            err1 += "~Name field is null~";
+            str.append("Name field is null");
+
         } else if (name.isBlank()) {
-            err1 += "~Name field is empty~";
+//            err1 += "~Name field is empty~";
+            str.append("Name field is empty");
         } else if (name.length() >= 50) {
-            err1 += "~Please enter a shorter name~";
+//            err1 += "~Please enter a shorter name~";
+            str.append("Please enter a name shorter than 50 characters");
         }
-        return err1;
+        return str;
     }
 
     /**
