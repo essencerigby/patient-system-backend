@@ -50,33 +50,44 @@ public class VendorValidation {
      * @param address the address to be validated
      * @return an error message if the address is invalid; otherwise, an empty string
      */
-    public String addressValidation(Address address) {
-        String err2 = "";
+    public StringBuilder addressValidation(Address address) {
+//        String err2 = "";
+        str = new StringBuilder();
         if (address.getStreet() == null) {
-            err2 += "~Street1 field is null~";
+            str.append("Street1 field is null");
+//            err2 += "~Street1 field is null~";
         } else if (address.getStreet().isBlank()) {
-            err2 += "~Street1 field is empty~";
+            str.append("Street1 field is empty");
+//            err2 += "~Street1 field is empty~";
         }
         if (address.getState() == null) {
-            err2 += "~State field is null~";
+            str.append("State field is null");
+//            err2 += "~State field is null~";
         } else if (address.getState().isBlank()) {
-            err2 += "~State field is empty~";
+            str.append("State field is empty");
+//            err2 += "~State field is empty~";
         } else if (!US_states.contains(address.getState())) {
-            err2 += "~Please add the right abbreviation of the state: two uppercase letters~";
+            str.append("Please add the right abbreviation of the state: two uppercase letters");
+//            err2 += "~Please add the right abbreviation of the state: two uppercase letters~";
         }
         if (address.getCity() == null) {
-            err2 += "~City field is null~";
+            str.append("City field is null");
+//            err2 += "~City field is null~";
         } else if (address.getCity().isBlank()) {
-            err2 += "~City field is empty~";
+            str.append("City field is empty");
+//            err2 += "~City field is empty~";
         }
         if (address.getZipCode() == null) {
-            err2 += "~Zipcode field is null~";
+            str.append("Zipcode field is null");
+//            err2 += "~Zipcode field is null~";
         } else if (address.getZipCode().isBlank()) {
-            err2 += "~Zipcode field is empty~";
+            str.append("Zipcode field is empty");
+//            err2 += "~Zipcode field is empty~";
         } else if (!address.getZipCode().matches("\\d{5}")) {
-            err2 += "~Zipcode must be 5 numerical digits~";
+            str.append("Zipcode must be 5 numerical digits");
+//            err2 += "~Zipcode must be 5 numerical digits~";
         }
-        return err2;
+        return str;
     }
 
     /**
@@ -85,21 +96,25 @@ public class VendorValidation {
      * @param email the email to be validated
      * @return an error message if the email is invalid; otherwise, an empty string
      */
-    public String emailValidation(String email) {
-        String err3 = "";
+    public StringBuilder emailValidation(String email) {
+//        String err3 = "";
+        str = new StringBuilder();
         String regex = "^[^@]+@[^@]+\\.[^@]+$";
         if (email == null) {
-            err3 += "~Email field is null~";
+            str.append("Email field is null");
+//            err3 += "~Email field is null~";
         } else if (email.isBlank()) {
-            err3 += "~Email field is empty~";
+            str.append("Email field is empty");
+//            err3 += "~Email field is empty~";
         } else {
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(email);
             if (!matcher.matches()) {
-                err3 += "The email is not in the right format: x@x.x";
+                str.append("The email is not in the right format: x@x.x");
+//                err3 += "The email is not in the right format: x@x.x";
             }
         }
-        return err3;
+        return str;
     }
 
     /**
@@ -108,21 +123,25 @@ public class VendorValidation {
      * @param phone the phone number to be validated
      * @return an error message if the phone number is invalid; otherwise, an empty string
      */
-    public String phoneValidation(String phone) {
-        String err4 = "";
+    public StringBuilder phoneValidation(String phone) {
+//        String err4 = "";
+        str = new StringBuilder();
         String regex = "^\\(?\\d{3}\\)?[-]?\\d{3}[-]?\\d{4}$";
         if (phone == null) {
-            err4 += "~Phone field is null~";
+            str.append("Phone field is null");
+//            err4 += "~Phone field is null~";
         } else if (phone.isBlank()) {
-            err4 += "~Phone field is empty~";
+            str.append("Phone field is empty");
+//            err4 += "~Phone field is empty~";
         } else {
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(phone);
             if (!matcher.matches()) {
-                err4 += "~The phone number is not in the right format: 999-999-9999 or 9999999999~";
+                str.append("The phone number is not in the right format: 999-999-9999 or 9999999999");
+//                err4 += "~The phone number is not in the right format: 999-999-9999 or 9999999999~";
             }
         }
-        return err4;
+        return str;
     }
 
     /**
@@ -131,35 +150,41 @@ public class VendorValidation {
      * @param contact the contact information to be validated
      * @return an error message if the contact information is invalid; otherwise, an empty string
      */
-    public String contactValidation(Contact contact) {
-        String err5 = "";
-        String emailError = emailValidation(contact.getEmail());
-        String phoneError = phoneValidation(contact.getPhone());
+    public StringBuilder contactValidation(Contact contact) {
+//        String err5 = "";
+        str = new StringBuilder();
+        String emailError = String.valueOf(emailValidation(contact.getEmail()));
+        String phoneError = String.valueOf(phoneValidation(contact.getPhone()));
         boolean isEmailProvided = contact.getEmail() != null && !contact.getEmail().isBlank();
         boolean isPhoneProvided = contact.getPhone() != null && !contact.getPhone().isBlank();
         if (!emailError.isBlank() && !phoneError.isBlank()) {
-            err5 += "~Either a valid email or phone number must be provided~";
-            err5 += emailValidation(contact.getEmail());
-            err5 += phoneValidation(contact.getPhone());
+            str.append("Either a valid email or phone number must be provided");
+            str.append(contact.getEmail());
+            str.append(contact.getPhone());
         } else {
-            if (isEmailProvided && !emailError.isBlank()) {err5 += emailError;
+            if (isEmailProvided && !emailError.isBlank()) {str.append(emailError);
             }
-            if (isPhoneProvided && !phoneError.isBlank()) {err5 += phoneError;
+            if (isPhoneProvided && !phoneError.isBlank()) {str.append(phoneError);
             }
         }
         if (contact.getContactName() == null) {
-            err5 += "~Contact name field is null~";
+            str.append("Contact name field is null");
+//            err5 += "~Contact name field is null~";
         } else if (contact.getContactName().isBlank()) {
-            err5 += "~Contact name field is empty~";
+            str.append("Contact name field is empty");
+//            err5 += "~Contact name field is empty~";
         } else if (!contact.getContactName().matches("^[a-zA-Z'-]+\\s[a-zA-Z'-]+$")) {
-            err5 += "~Please add Contact name as First name and Last name separated by a space. Only alphabetic characters, hyphens or apostrophes allowed~";
+            str.append("Please add Contact name as First name and Last name separated by a space. Only alphabetic characters, hyphens or apostrophes are allowed");
+//            err5 += "~Please add Contact name as First name and Last name separated by a space. Only alphabetic characters, hyphens or apostrophes allowed~";
         }
         if (contact.getTitleOrRole() == null) {
-            err5 += "~Title/Role field is null~";
+            str.append("Title/Role field is null");
+//            err5 += "~Title/Role field is null~";
         } else if (contact.getTitleOrRole().isBlank()) {
-            err5 += "~Title/role field is empty~";
+            str.append("Title/Role field is empty");
+//            err5 += "~Title/role field is empty~";
         }
-        return err5;
+        return str;
     }
 
     /**
@@ -169,6 +194,6 @@ public class VendorValidation {
      * @return a concatenation of error messages for invalid fields; otherwise, an empty string
      */
     public String validateVendor(Vendor vendor) {
-            return nameValidation(vendor.getName()) + addressValidation(vendor.getAddress()) + contactValidation(vendor.getContact());
+            return nameValidation(vendor.getName()).toString() + addressValidation(vendor.getAddress()) + contactValidation(vendor.getContact());
         }
 }
