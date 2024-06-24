@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import io.catalyte.demo.vendor.vendorEntity.Address;
 import io.catalyte.demo.vendor.vendorEntity.Contact;
+import io.catalyte.demo.vendor.vendorEntity.Vendor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -18,7 +19,6 @@ public class VendorValidationTest {
 
     @BeforeEach
     public void setUp() {
-
         address = new Address();
         address.setStreet("1 Street1");
         address.setStreet2("ap5");
@@ -290,5 +290,19 @@ public class VendorValidationTest {
         List<String> result = validator.contactValidation(contact);
         assertEquals(1, result.size());
         assertTrue(result.contains("Title/Role field is empty"));
+    }
+
+    @Test
+    public void validateVendor_captureErrorMessages_returnArrayOfErrors() {
+        // Create a vendor with invalid data for testing purposes
+        Vendor vendor = new Vendor();
+        vendor.setName(""); // Invalid name
+        vendor.setAddress(new Address()); // Invalid address
+        vendor.setContact(new Contact()); // Invalid contact
+
+        String[] errors = validator.validateVendor(vendor);
+
+        // Some errors are expected, length unspecified
+        assertTrue(errors.length > 0);
     }
 }
