@@ -47,6 +47,7 @@ public class IngredientServiceImpl implements IngredientService {
     /**
      * Retrieves an ingredient by its name.
      * Exact matches only.
+     *
      * @param name The name of the ingredient to retrieve.
      * @return The ingredient(s) with the specified name.
      */
@@ -56,36 +57,24 @@ public class IngredientServiceImpl implements IngredientService {
 
     /**
      * Creates a new ingredient in the repository
-     * @param ingredientToCreate - Ingredient Object containing unique identifier, active status, name,
-     *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
-     *                        and salePrice
-     * @return the created product
+     *
+     * @param ingredientToCreate - Ingredient Object containing a unique identifier, active status, name,
+     *                           purchasing cost, amount, and unit of measurement.
+     * @return the created ingredient
      */
-    public Product createProduct(Product productToCreate) {
-        String errorMessage = productValidator.validateProduct(productToCreate);
-        if (!errorMessage.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-        }
-        errorMessage = productValidator.isUniqueProduct(productToCreate.getName(), getProducts());
-        if (!errorMessage.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, errorMessage);
-        }
-
-        Product formattedProduct = productValidator.formatProduct(productToCreate);
-
-        productRepository.save(formattedProduct);
-        return formattedProduct;
+    public Ingredient createIngredient(Ingredient ingredientToCreate) {
+        return null; // LOGIC HERE
     }
 
     /**
-     * Updates an existing product.
+     * Updates an existing ingredient.
      *
-     * @param id The ID of the product to update.
-     * @param productToEdit The updated product data.
-     * @return The updated product.
+     * @param id               The ID of the ingredient to update.
+     * @param ingredientToEdit The updated ingredient data.
+     * @return The updated ingredient.
      */
-    public Product editProduct(Product productToEdit, int id) {
-        return null; // Edit Product Logic goes here
+    public Ingredient editIngredient(Ingredient ingredientToEdit, int id) {
+        return null; // LOGIC HERE
     }
 
     /**
@@ -94,5 +83,6 @@ public class IngredientServiceImpl implements IngredientService {
      * @param id The ID of the ingredient to delete.
      * @throws ResponseStatusException NOT_FOUND when an invalid ID is provided.
      */
-    public void deleteProductById(int id) { // Deletion logic here }
+    public void deleteIngredientById(int id) { // LOGIC HERE }
+    }
 }
