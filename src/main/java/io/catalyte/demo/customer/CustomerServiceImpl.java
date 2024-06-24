@@ -110,7 +110,9 @@ public class CustomerServiceImpl implements CustomerService {
      * @param id The ID of the customer to delete.
      */
     public void deleteCustomerById(int id) {
-        // PLACEHOLDER
+        if (getCustomerById(id) != null) {
+            customerRepository.deleteById(id);
+        }
     }
 
     /**
