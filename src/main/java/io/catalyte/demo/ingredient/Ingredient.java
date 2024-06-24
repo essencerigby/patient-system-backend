@@ -19,7 +19,7 @@ public class Ingredient {
     private int amount;
     private String unitOfMeasure;
 
-    public Ingredient() {};
+    public Ingredient() {}
 
     public Ingredient(int id, Boolean active, String name, BigDecimal purchasingCost,
                       int amount, String unitOfMeasure) {
