@@ -25,7 +25,7 @@ public class IngredientController {
     /**
      * Creates a new product in the repository
      * @param ingredientToCreate - Ingredient Object containing unique identifier, active status, name,
-     *                           vendorId, ingredientsList, classification, cost, allergenList, and salePrice
+     *                           purchasing cost, amount, unit of measure, and allergens.
      * @return the created ingredient
      */
     @PostMapping
