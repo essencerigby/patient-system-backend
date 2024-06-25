@@ -15,7 +15,7 @@ public class IngredientController {
     IngredientService ingredientService;
 
     /**
-     * @param ingredientService - the service for performing CRUD methods on Customer instances
+     * @param ingredientService - the service for performing CRUD methods on Ingredient instances
      * */
     @Autowired
     public IngredientController(IngredientService ingredientService) {
@@ -23,7 +23,7 @@ public class IngredientController {
     }
 
     /**
-     * Creates a new product in the repository
+     * Creates a new ingredient in the repository
      * @param ingredientToCreate - Ingredient Object containing unique identifier, active status, name,
      *                           purchasing cost, amount, unit of measure, and allergens.
      * @return the created ingredient
