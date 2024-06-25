@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 public class IngredientServiceImpl implements IngredientService {
     IngredientRepository ingredientRepository;
+    IngredientValidator ingredientValidator = new IngredientValidator();
 
     /**
      * Constructs a new instance of IngredientServiceImpl with the specified IngredientRepository.
@@ -62,6 +63,8 @@ public class IngredientServiceImpl implements IngredientService {
      * @return the created ingredient
      */
     public Ingredient createIngredient(Ingredient ingredientToCreate) {
+        double formattedAmount = ingredientValidator.formatIngredientAmount(ingredientToCreate.getAmount());
+        ingredientToCreate.setAmount(formattedAmount);
         return ingredientRepository.save(ingredientToCreate);
     }
 
