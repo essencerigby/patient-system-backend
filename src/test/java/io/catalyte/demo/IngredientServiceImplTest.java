@@ -34,7 +34,7 @@ public class IngredientServiceImplTest {
         );
 
         ingredientService = new IngredientServiceImpl(ingredientRepository);
-        testIngredient = new Ingredient(1,true,"Test Ingredient", BigDecimal.valueOf(15.50),10,"lb", sampleAllergenList);
+        testIngredient = new Ingredient(1,true,"Test Ingredient", BigDecimal.valueOf(15.50),10.50,"lb", sampleAllergenList);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class IngredientServiceImplTest {
         assertEquals("Test Ingredient", result.getName());
         assertEquals(BigDecimal.valueOf(15.50), result.getPurchasingCost());
         assertEquals(true, result.getActive());
-        assertEquals(10, result.getAmount());
+        assertEquals(10.50, result.getAmount());
         assertEquals("lb", result.getUnitOfMeasure());
         assertEquals(Arrays.asList("Nuts", "Gluten"), result.getAllergens());
     }
