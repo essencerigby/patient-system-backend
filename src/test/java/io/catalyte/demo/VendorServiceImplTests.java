@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -253,5 +254,32 @@ class VendorServiceImplTests {
 		// Assert
 		assertEquals(id, editedVendor.getId());
 		assertNotEquals(99, editedVendor.getId());
+	}
+
+	@Test
+	public void deleteVendor_withValidId_deletesVendor() {
+		// Arrange
+		int id = testVendor.getId();
+		when(vendorRepository.findById(id)).thenReturn(Optional.of(testVendor));
+		doNothing().when(vendorRepository).deleteById(id);
+
+		// Act
+		vendorService.deleteVendorById(id);
+
+	}
+
+	@Test
+	public void deleteVendor_withInvalidId_throwsResponseStatusException() {
+		// Arrange
+		int invalidId = 200;
+		when(vendorRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+		// Act & Assert
+		ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> {
+			vendorService.deleteVendorById(invalidId);
+		});
+
+		assertEquals(HttpStatus.NOT_FOUND, e.getStatusCode(),"Expected NOT_FOUND status");
+		assertEquals("Vendor with matching id could not be found.", e.getReason(), "Expected error message mismatch");
 	}
 }

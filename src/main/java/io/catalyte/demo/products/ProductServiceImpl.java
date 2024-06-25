@@ -53,6 +53,7 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Retrieves a product by its name.
      * Exact matches only.
+     *
      * @param name The name of the product to retrieve.
      * @return The product(s) with the specified name.
      */
@@ -70,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * Creates a new product in the repository
+     *
      * @param productToCreate - Product Object containing unique identifier, active status, name,
      *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
      *                        and salePrice
@@ -99,7 +101,22 @@ public class ProductServiceImpl implements ProductService {
      * @return The updated product.
      */
     public Product editProduct(Product productToEdit, int id) {
-        return null; // Edit Product Logic goes here
+        if (productRepository.findById(id).isPresent()) {
+            String errorMessage = productValidator.validateProduct(productToEdit);
+            if (!errorMessage.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            }
+            List<Product> products = getProducts();
+            boolean nameExists = products.stream()
+                .anyMatch(product -> product.getId() != id && product.getName().equalsIgnoreCase(productToEdit.getName()));
+            if (nameExists) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Product with matching name already exists.");
+            }
+            productToEdit.setId(id);
+            Product formattedProduct = productValidator.formatProduct(productToEdit);
+            productRepository.save(formattedProduct);
+            return formattedProduct;
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Product was not found");
     }
 
     /**

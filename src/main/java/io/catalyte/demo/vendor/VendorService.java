@@ -18,5 +18,5 @@ public interface VendorService {
 
     Vendor editVendor(Vendor vendorToEdit, int id);
 
-    void deleteVendor(int id);
+    void deleteVendorById(int id);
 }

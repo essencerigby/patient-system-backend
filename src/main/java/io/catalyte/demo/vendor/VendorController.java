@@ -88,8 +88,8 @@ public class VendorController {
      */
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteVendor(@PathVariable int id) {
-        vendorService.deleteVendor(id);
+    public void deleteVendorById(@PathVariable int id) {
+        vendorService.deleteVendorById(id);
     }
 }
 
