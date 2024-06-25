@@ -1,9 +1,6 @@
 package io.catalyte.demo.ingredient;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,16 +16,20 @@ public class Ingredient {
     private int amount;
     private String unitOfMeasure;
 
+    @ElementCollection
+    private List<String> allergens;
+
     public Ingredient() {}
 
     public Ingredient(int id, Boolean active, String name, BigDecimal purchasingCost,
-                      int amount, String unitOfMeasure) {
+                      int amount, String unitOfMeasure, List<String> allergens) {
         this.id = id;
         this.active = active;
         this.name = name;
         this.purchasingCost = purchasingCost;
         this.amount = amount;
         this.unitOfMeasure = unitOfMeasure;
+        this.allergens = allergens;
     }
 
     public int getId() {
@@ -86,6 +87,4 @@ public class Ingredient {
     public void setAllergens(List<String> allergens) {
         this.allergens = allergens;
     }
-
-    private List<String> allergens;
 }
