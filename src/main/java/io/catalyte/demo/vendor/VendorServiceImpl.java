@@ -56,7 +56,7 @@ public class VendorServiceImpl implements VendorService {
      * Retrieves a vendor by its name.
      * Throws a ResponseStatusException if the vendor is not found.
      * @param name the name of the vendor to retrieve
-     * @return vendor with the specified name; case insensitive
+     * @return vendor with the specified name; case-insensitive
      */
     @Override
     public List<Vendor> getVendorByName(String name) {
@@ -89,7 +89,8 @@ public class VendorServiceImpl implements VendorService {
         contactPhoneNumberToFormat.setPhone(formattedPhoneNumber);
 
         // Validating the vendor information
-        String errors = nameValidator.isNameUnique(vendorToCreate.getName(), getVendors()) + validator.validateVendor(vendorToCreate);
+        String[] errorArray = validator.validateVendor(vendorToCreate);
+        String errors = String.join(", ", errorArray); // Join the array elements into a single string
         if (!errors.isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors);
         }
@@ -115,8 +116,9 @@ public class VendorServiceImpl implements VendorService {
             Contact contactPhoneNumberToFormat = vendorToEdit.getContact();
             String formattedPhoneNumber = PhoneNumberFormatter.formatPhoneNumber(contactPhoneNumberToFormat.getPhone());
             contactPhoneNumberToFormat.setPhone(formattedPhoneNumber);
-            
-            String errors = validator.validateVendor(vendorToEdit);
+
+            String[] errorArray = validator.validateVendor(vendorToEdit);
+            String errors = String.join(", ", errorArray); // Join the array elements into a single string
             if (!errors.isBlank()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors);
             }

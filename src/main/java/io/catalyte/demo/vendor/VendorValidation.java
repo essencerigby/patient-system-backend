@@ -1,5 +1,6 @@
 package io.catalyte.demo.vendor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -12,7 +13,6 @@ import io.catalyte.demo.vendor.vendorEntity.Vendor;
  * Provides various validation methods for validating vendor details.
  */
 public class VendorValidation {
-
     final List<String> US_states = Arrays.asList("AL", "AK", "AZ", "AR",
             "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY",
             "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
@@ -23,145 +23,148 @@ public class VendorValidation {
      * Validates the vendor's name.
      *
      * @param name the name to be validated
-     * @return an error message if the name is invalid; otherwise, an empty string
+     * @return a list of error messages if the name is invalid; otherwise, an empty list
      */
-    public String nameValidation(String name) {
-        String err1 = "";
+    public List<String> nameValidation(String name) {
+        List<String> errors = new ArrayList<>();
         if (name == null) {
-            err1 += "~Name field is null~";
+            errors.add("Name field is null");
         } else if (name.isBlank()) {
-            err1 += "~Name field is empty~";
+            errors.add("Name field is empty");
         } else if (name.length() >= 50) {
-            err1 += "~Please enter a shorter name~";
+            errors.add("Please enter a name shorter than 50 characters");
         }
-        return err1;
+        return errors;
     }
 
     /**
      * Validates the vendor's address.
      *
      * @param address the address to be validated
-     * @return an error message if the address is invalid; otherwise, an empty string
+     * @return a list of error messages if the address is invalid; otherwise, an empty list
      */
-    public String addressValidation(Address address) {
-        String err2 = "";
+    public List<String> addressValidation(Address address) {
+        List<String> errors = new ArrayList<>();
         if (address.getStreet() == null) {
-            err2 += "~Street1 field is null~";
+            errors.add("Street1 field is null");
         } else if (address.getStreet().isBlank()) {
-            err2 += "~Street1 field is empty~";
+            errors.add("Street1 field is empty");
         }
         if (address.getState() == null) {
-            err2 += "~State field is null~";
+            errors.add("State field is null");
         } else if (address.getState().isBlank()) {
-            err2 += "~State field is empty~";
+            errors.add("State field is empty");
         } else if (!US_states.contains(address.getState())) {
-            err2 += "~Please add the right abbreviation of the state: two uppercase letters~";
+            errors.add("Please add the right abbreviation of the state: two uppercase letters");
         }
         if (address.getCity() == null) {
-            err2 += "~City field is null~";
+            errors.add("City field is null");
         } else if (address.getCity().isBlank()) {
-            err2 += "~City field is empty~";
+            errors.add("City field is empty");
         }
         if (address.getZipCode() == null) {
-            err2 += "~Zipcode field is null~";
+            errors.add("Zipcode field is null");
         } else if (address.getZipCode().isBlank()) {
-            err2 += "~Zipcode field is empty~";
+            errors.add("Zipcode field is empty");
         } else if (!address.getZipCode().matches("\\d{5}")) {
-            err2 += "~Zipcode must be 5 numerical digits~";
+            errors.add("Zipcode must be 5 numerical digits");
         }
-        return err2;
+        return errors;
     }
 
     /**
      * Validates the vendor's email.
      *
      * @param email the email to be validated
-     * @return an error message if the email is invalid; otherwise, an empty string
+     * @return a list of error messages if the email is invalid; otherwise, an empty list
      */
-    public String emailValidation(String email) {
-        String err3 = "";
+    public List<String> emailValidation(String email) {
+        List<String> errors = new ArrayList<>();
         String regex = "^[^@]+@[^@]+\\.[^@]+$";
         if (email == null) {
-            err3 += "~Email field is null~";
+            errors.add("Email field is null");
         } else if (email.isBlank()) {
-            err3 += "~Email field is empty~";
+            errors.add("Email field is empty");
         } else {
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(email);
             if (!matcher.matches()) {
-                err3 += "The email is not in the right format: x@x.x";
+                errors.add("The email is not in the right format: x@x.x");
             }
         }
-        return err3;
+        return errors;
     }
 
     /**
      * Validates the vendor's phone number.
      *
      * @param phone the phone number to be validated
-     * @return an error message if the phone number is invalid; otherwise, an empty string
+     * @return a list of error messages if the phone number is invalid; otherwise, an empty list
      */
-    public String phoneValidation(String phone) {
-        String err4 = "";
+    public List<String> phoneValidation(String phone) {
+        List<String> errors = new ArrayList<>();
         String regex = "^\\(?\\d{3}\\)?[-]?\\d{3}[-]?\\d{4}$";
         if (phone == null) {
-            err4 += "~Phone field is null~";
+            errors.add("Phone field is null");
         } else if (phone.isBlank()) {
-            err4 += "~Phone field is empty~";
+            errors.add("Phone field is empty");
         } else {
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(phone);
             if (!matcher.matches()) {
-                err4 += "~The phone number is not in the right format: 999-999-9999 or 9999999999~";
+                errors.add("The phone number is not in the right format: 999-999-9999 or 9999999999");
             }
         }
-        return err4;
+        return errors;
     }
 
     /**
      * Validates the vendor's contact information.
      *
      * @param contact the contact information to be validated
-     * @return an error message if the contact information is invalid; otherwise, an empty string
+     * @return a list of error messages if the contact information is invalid; otherwise, an empty list
      */
-    public String contactValidation(Contact contact) {
-        String err5 = "";
-        String emailError = emailValidation(contact.getEmail());
-        String phoneError = phoneValidation(contact.getPhone());
+    public List<String> contactValidation(Contact contact) {
+        List<String> errors = new ArrayList<>();
+        errors.addAll(emailValidation(contact.getEmail()));
+        errors.addAll(phoneValidation(contact.getPhone()));
+
         boolean isEmailProvided = contact.getEmail() != null && !contact.getEmail().isBlank();
         boolean isPhoneProvided = contact.getPhone() != null && !contact.getPhone().isBlank();
-        if (!emailError.isBlank() && !phoneError.isBlank()) {
-            err5 += "~Either a valid email or phone number must be provided~";
-            err5 += emailValidation(contact.getEmail());
-            err5 += phoneValidation(contact.getPhone());
-        } else {
-            if (isEmailProvided && !emailError.isBlank()) {err5 += emailError;
-            }
-            if (isPhoneProvided && !phoneError.isBlank()) {err5 += phoneError;
-            }
+
+        if (!isEmailProvided && !isPhoneProvided) {
+            errors.add("Either a valid email or phone number must be provided");
         }
+
         if (contact.getContactName() == null) {
-            err5 += "~Contact name field is null~";
+            errors.add("Contact name field is null");
         } else if (contact.getContactName().isBlank()) {
-            err5 += "~Contact name field is empty~";
+            errors.add("Contact name field is empty");
         } else if (!contact.getContactName().matches("^[a-zA-Z'-]+\\s[a-zA-Z'-]+$")) {
-            err5 += "~Please add Contact name as First name and Last name separated by a space. Only alphabetic characters, hyphens or apostrophes allowed~";
+            errors.add("Please add Contact name as First name and Last name separated by a space. Only alphabetic characters, hyphens or apostrophes are allowed");
         }
+
         if (contact.getTitleOrRole() == null) {
-            err5 += "~Title/Role field is null~";
+            errors.add("Title/Role field is null");
         } else if (contact.getTitleOrRole().isBlank()) {
-            err5 += "~Title/role field is empty~";
+            errors.add("Title/Role field is empty");
         }
-        return err5;
+
+        return errors;
     }
 
     /**
      * Validates the vendor's details.
      *
      * @param vendor the vendor to be validated
-     * @return a concatenation of error messages for invalid fields; otherwise, an empty string
+     * @return an array of error messages for invalid fields; otherwise, an empty array
      */
-    public String validateVendor(Vendor vendor) {
-            return nameValidation(vendor.getName()) + addressValidation(vendor.getAddress()) + contactValidation(vendor.getContact());
-        }
+    public String[] validateVendor(Vendor vendor) {
+        List<String> errors = new ArrayList<>();
+        errors.addAll(nameValidation(vendor.getName()));
+        errors.addAll(addressValidation(vendor.getAddress()));
+        errors.addAll(contactValidation(vendor.getContact()));
+
+        return errors.toArray(new String[0]);
+    }
 }
