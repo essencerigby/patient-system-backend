@@ -63,7 +63,7 @@ public class IngredientServiceImpl implements IngredientService {
      * @return the created ingredient
      */
     public Ingredient createIngredient(Ingredient ingredientToCreate) {
-        double formattedAmount = ingredientValidator.formatIngredientAmount(ingredientToCreate.getAmount());
+        String formattedAmount = ingredientValidator.formatAmount(ingredientToCreate.getAmount());
         ingredientToCreate.setAmount(formattedAmount);
         return ingredientRepository.save(ingredientToCreate);
     }

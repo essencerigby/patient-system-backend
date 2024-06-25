@@ -13,7 +13,7 @@ public class Ingredient {
     private Boolean active;
     private String name;
     private BigDecimal purchasingCost;
-    private double amount;
+    private String amount;
     private String unitOfMeasure;
 
     @ElementCollection
@@ -22,7 +22,7 @@ public class Ingredient {
     public Ingredient() {}
 
     public Ingredient(int id, Boolean active, String name, BigDecimal purchasingCost,
-                      double amount, String unitOfMeasure, List<String> allergens) {
+                      String amount, String unitOfMeasure, List<String> allergens) {
         this.id = id;
         this.active = active;
         this.name = name;
@@ -64,11 +64,11 @@ public class Ingredient {
         this.purchasingCost = purchasingCost;
     }
 
-    public double getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
