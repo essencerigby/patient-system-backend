@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/ingredients")
 public class IngredientController {
@@ -20,6 +22,16 @@ public class IngredientController {
     @Autowired
     public IngredientController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
+    }
+
+    /**
+     * Retrieves all ingredients
+     * @return list of all ingredients
+     */
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Ingredient> getIngredients() {
+        return ingredientService.getIngredients();
     }
 
     /**
