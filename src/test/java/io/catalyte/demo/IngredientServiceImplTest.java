@@ -4,7 +4,6 @@ import io.catalyte.demo.ingredient.Ingredient;
 import io.catalyte.demo.ingredient.IngredientRepository;
 import io.catalyte.demo.ingredient.IngredientService;
 import io.catalyte.demo.ingredient.IngredientServiceImpl;
-import io.catalyte.demo.vendor.vendorEntity.Vendor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
