@@ -1,9 +1,6 @@
 package io.catalyte.demo;
 
-import io.catalyte.demo.customer.Customer;
-import io.catalyte.demo.customer.CustomerRepository;
-import io.catalyte.demo.customer.CustomerService;
-import io.catalyte.demo.customer.CustomerServiceImpl;
+import io.catalyte.demo.customer.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +24,8 @@ public class CustomerServiceImplTest {
 
     @Mock
     CustomerRepository customerRepository;
+
+    CustomerValidator customerValidator;
 
     Customer testCustomer;
     Customer testCustomerToEdit;
@@ -105,6 +104,27 @@ public class CustomerServiceImplTest {
         assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Expected BAD_REQUEST Status");
         assertEquals("Please ensure a valid name is provided.", result.getReason());
     }
+
+
+@Test
+public void testValidateCustomer_MultipleErrors() {
+    Customer customer = new Customer();
+    customer.setActive(null);
+    customer.setName("");
+    customer.setEmailAddress("invalid-email");
+    customer.setLifetimeSpent(-10.0);
+    customer.setCustomerSince("");
+
+    CustomerValidator validator = new CustomerValidator(customer);
+    String result = validator.validateCustomer(customer);
+
+    String expectedErrorMessage = " Customer Active Status is null."
+            + " Customer Name is blank."
+            + " Email Address must be in the following format: x@x.x"
+            + " Lifetime Spent must be a non-negative value.";
+
+    assertEquals(expectedErrorMessage, result);
+}
 
     @Test
     public void createCustomer_withValidCustomer_returnsPersistedCustomer() {
