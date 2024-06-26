@@ -1,4 +1,4 @@
-# Real Estate API
+# Expresso-O Coffee Shop
 
 This application exposes endpoints for basic CRUD operations on a model and manages an in memory list of those objects.
 
@@ -66,6 +66,19 @@ Use the following as a JSON body for a POST. We do not supply an id or timestamp
     "emailAddress": "customer.name@email.com",
     "lifetimeSpent": 5000.0
 }
+```
+
+## CreateIngredient sample request body for POST
+```
+{
+  "active": false,
+  "name": "Peanut Brittle",
+  "purchasingCost": 45.80,
+  "amount": 10,
+  "unitOfMeasure": "lb",
+  "allergens": [ "Gluten", "Nuts" ]
+}
+
 ```
 
 ## FrontEndConfig
