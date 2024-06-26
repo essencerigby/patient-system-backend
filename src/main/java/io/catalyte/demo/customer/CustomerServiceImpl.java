@@ -78,14 +78,27 @@ public class CustomerServiceImpl implements CustomerService {
      * @return the created customer
      */
     public Customer createCustomer(Customer customerToCreate) {
-        // Sample validation below, replace with Customer Validation (RUNNERS-92)
-        if (customerToCreate.getName() == null || customerToCreate.getName().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Customer");
+        CustomerValidator customerValidator = new CustomerValidator(customerToCreate);
+        customerToCreate.setCustomerSince(getTimestamp());
+        if (customerToCreate.getLifetimeSpent() == null) {
+            customerToCreate.setLifetimeSpent(0.0);
+        } else {
+            customerToCreate.setLifetimeSpent(customerToCreate.getLifetimeSpent());
         }
 
-        customerToCreate.setCustomerSince(getTimestamp());
-        customerRepository.save(customerToCreate);
-        return customerToCreate;
+        // Collecting error messages
+        String errorMessage = customerValidator.validateCustomer(customerToCreate);
+        errorMessage += customerValidator.isUniqueName(customerToCreate.getName(), getCustomers());
+
+        if (!errorMessage.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    errorMessage);
+        }
+
+        Customer formattedCustomer = customerValidator.formatCustomer(customerToCreate);
+        customerRepository.save(formattedCustomer);
+        return formattedCustomer;
     }
 
     /**
@@ -96,12 +109,40 @@ public class CustomerServiceImpl implements CustomerService {
      * @return The updated customer.
      */
     public Customer editCustomer(Customer customerToEdit, int id) {
-        Customer existingCustomer = getCustomerById(id);
+
+        try {
+            getCustomerById(
+                    id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found.");
+        }
+
+        Customer existingCustomer = getCustomerById(
+                id);
         customerToEdit.setId(id);
         customerToEdit.setCustomerSince(existingCustomer.getCustomerSince());
-        customerRepository.save(customerToEdit);
 
-        return customerToEdit;
+        if (customerToEdit.getLifetimeSpent() == null) {
+            customerToEdit.setLifetimeSpent(0.0);
+        } else {
+            customerToEdit.setLifetimeSpent(customerToEdit.getLifetimeSpent());
+        }
+
+        CustomerValidator customerValidator = new CustomerValidator(customerToEdit);
+
+        // Collecting error messages
+        String errorMessage = customerValidator.validateCustomer(customerToEdit);
+        errorMessage += customerValidator.isUniqueName(customerToEdit.getName(), getCustomers(), id);
+
+        if (!errorMessage.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    errorMessage);
+        }
+
+        Customer formattedCustomer = customerValidator.formatCustomer(customerToEdit);
+        customerRepository.save(formattedCustomer);
+        return formattedCustomer;
     }
 
     /**
