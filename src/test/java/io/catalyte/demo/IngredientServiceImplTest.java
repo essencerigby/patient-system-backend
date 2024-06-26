@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,6 +26,7 @@ public class IngredientServiceImplTest {
     IngredientRepository ingredientRepository;
 
     Ingredient testIngredient;
+    Ingredient testIngredient2;
 
     @BeforeEach
     public void setUp() {
@@ -35,6 +37,7 @@ public class IngredientServiceImplTest {
 
         ingredientService = new IngredientServiceImpl(ingredientRepository);
         testIngredient = new Ingredient(1,true,"Test Ingredient", BigDecimal.valueOf(15.50),"10.50","lb", sampleAllergenList);
+        testIngredient2 = new Ingredient(2,true,"Test Ingredient 2", BigDecimal.valueOf(20.99),"2","oz", sampleAllergenList);
     }
 
     @Test
@@ -49,5 +52,26 @@ public class IngredientServiceImplTest {
         assertEquals("10.50", result.getAmount());
         assertEquals("lb", result.getUnitOfMeasure());
         assertEquals(Arrays.asList("Nuts", "Gluten"), result.getAllergens());
+    }
+
+    @Test
+    public void getIngredients_withNoIngredientsPresent_returnsEmptyArray() {
+        when(ingredientRepository.findAll()).thenReturn(Arrays.asList());
+
+        List <Ingredient> result = ingredientService.getIngredients();
+
+        assertEquals(0, result.size());
+        assertNotNull(result);
+    }
+
+    @Test
+    public void getIngredients_withIngredientsPresent_returnsAllIngredients() {
+        List<Ingredient> expectedIngredients = Arrays.asList(testIngredient, testIngredient2);
+        when(ingredientRepository.findAll()).thenReturn(expectedIngredients);
+
+        List <Ingredient> result = ingredientService.getIngredients();
+
+        assertEquals(2, result.size());
+        assertEquals(expectedIngredients, result);
     }
 }

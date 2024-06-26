@@ -1,11 +1,13 @@
 package io.catalyte.demo.ingredient;
 
+import java.util.List;
+
 public interface IngredientService {
 
     // CRUD methods:
     // Commented out code = placeholder for future CRUD methods
 
-//    List<Ingredient> getIngredients();
+    List<Ingredient> getIngredients();
 
 //    Ingredient getIngredientById(int id);
 

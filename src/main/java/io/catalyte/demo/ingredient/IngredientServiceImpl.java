@@ -31,7 +31,7 @@ public class IngredientServiceImpl implements IngredientService {
      * @return A list of all ingredients in the system.
      */
     public List<Ingredient> getIngredients() {
-        return null; // LOGIC HERE
+        return ingredientRepository.findAll();
     }
 
     /**
