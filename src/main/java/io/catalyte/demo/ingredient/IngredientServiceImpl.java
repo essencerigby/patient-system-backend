@@ -77,9 +77,6 @@ public class IngredientServiceImpl implements IngredientService {
      * @return The updated ingredient.
      */
     public Ingredient editIngredient(Ingredient ingredientToEdit, int id) {
-        Boolean foundIngredient = ingredientRepository.findById(id).isPresent();
-        System.out.println(foundIngredient);
-
         if (ingredientRepository.findById(id).isPresent()) {
             ingredientToEdit.setId(id);
             ingredientRepository.save(ingredientToEdit);
