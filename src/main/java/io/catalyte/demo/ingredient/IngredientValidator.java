@@ -58,9 +58,8 @@ public class IngredientValidator {
 
     public List<String> activeOrInactiveValidation(Boolean active) {
         List<String> errors = new ArrayList<>();
-        // ADD NULL CHECK HERE
-        if(active.toString().isEmpty()) {
-            errors.add("Please type 'true' for active OR 'false' for inactive.");
+        if (active == null) {
+            errors.add("Null value not allowed. Please type 'true' for active OR 'false' for inactive.");
         }
         return errors;
     }
