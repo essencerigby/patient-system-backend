@@ -47,10 +47,11 @@ public class IngredientController {
     }
 
     /**
-     * Creates a new ingredient in the repository
-     * @param ingredientToEdit - Ingredient Object containing unique identifier, active status, name,
-     *                           purchasing cost, amount, unit of measure, and allergens.
-     * @return the created ingredient
+     * Updates an existing ingredient.
+     *
+     * @param id               The ID of the ingredient to update.
+     * @param ingredientToEdit The updated ingredient data.
+     * @return The updated ingredient.
      */
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
