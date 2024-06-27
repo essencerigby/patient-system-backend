@@ -64,10 +64,6 @@ public class IngredientServiceImpl implements IngredientService {
      * @return the created ingredient
      */
     public Ingredient createIngredient(Ingredient ingredientToCreate) {
-        // Format amount to hold two decimal places
-        String formattedAmount = ingredientValidator.formatAmount(ingredientToCreate.getAmount());
-        ingredientToCreate.setAmount(formattedAmount);
-
         // Validate ingredient information
         String [] errorArray = ingredientValidator.validateIngredient(ingredientToCreate);
         String errors = String.join(", ", errorArray); // Join array elements
