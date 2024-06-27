@@ -2,52 +2,31 @@ package io.catalyte.demo.ingredient;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Formats ingredient amount to be stored with two decimal places
+ * Formats BigDecimal variable types to be stored with two decimal places
  */
 public class IngredientValidator {
-    public String formatAmount(String amount) {
-        BigDecimal bd = new BigDecimal(amount);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-
-        DecimalFormat df = new DecimalFormat("0.00");  // Pattern to ensure two decimal places
-        df.setRoundingMode(RoundingMode.HALF_UP);       // Optional rounding mode setting
-
-        return df.format(bd);
-
+    public BigDecimal formatBigDecimal(BigDecimal amount) {
+        return amount.setScale(2, RoundingMode.HALF_UP);
     }
 
     /**
      * Validates the amount of an ingredient.
      *
      * @param amount the ingredient amount to be validated
-     * @return a list of error messages for null, empty, zero, or non-numeric values
+     * @return an error message for null, empty, zero, or non-numeric values
      */
-    public List<String> amountValidation(String amount) {
-        List<String> errors = new ArrayList<>();
+    public String amountValidation(BigDecimal amount) {
+        String error = "";
         if (amount == null) {
-            errors.add("Amount is null. Please add a number greater than 0.");
-        } else if (amount.isEmpty()) {
-            errors.add("Amount is empty. Please add a number greater than 0.");
-        } else {
-            try {
-                BigDecimal bd = new BigDecimal(amount);
-                if (bd.compareTo(BigDecimal.ZERO) == 0) {
-                    errors.add("Amount must be a non-zero number, with up to 2 decimal places.");
-                } else {
-                    String formattedAmount = formatAmount(amount);
-                    Ingredient ingredient = new Ingredient();
-                    ingredient.setAmount(formattedAmount);
-                }
-            } catch (NumberFormatException e) {
-                errors.add("Amount must be a non-zero number, with up to 2 decimal places.");
-            }
+            error = "Amount is null. Please add an amount greater than 0.";
+        } else if (amount.doubleValue() <= 0) {
+            error = "Please add an amount greater than 0.";
         }
-        return errors;
+        return error;
     }
 
     /**
@@ -56,16 +35,16 @@ public class IngredientValidator {
      * @param name the name to be validated
      * @return a list of error messages if the name is invalid; otherwise, an empty list
      */
-    public List<String> nameValidation(String name) {
-        List<String> errors = new ArrayList<>();
+    public String nameValidation(String name) {
+        String error = "";;
         if (name == null) {
-            errors.add("Name field is null");
+            error = "Name field is null";
         } else if (name.isBlank()) {
-            errors.add("Name field is empty");
+            error = "Name field is empty";
         } else if (name.length() >= 50) {
-            errors.add("Please enter an ingredient name shorter than 50 characters");
+            error = "Please enter an ingredient name shorter than 50 characters";
         }
-        return errors;
+        return error;
     }
 
     /**
@@ -74,22 +53,27 @@ public class IngredientValidator {
      * @param active the ingredient status to be validated
      * @return an error message if the status is null; only true or false are allowed
      */
-    public List<String> activeOrInactiveValidation(Boolean active) {
-        List<String> errors = new ArrayList<>();
+    public String activeOrInactiveValidation(Boolean active) {
+        String error = "";
         if (active == null) {
-            errors.add("Null value not allowed. Please type 'true' for active OR 'false' for inactive.");
+            error = "Null value not allowed. Please type 'true' for active OR 'false' for inactive.";
         }
-        return errors;
+        return error;
     }
 
-    public List<String> purchasingCostValidation(BigDecimal purchasingCost) {
-        List<String> errors = new ArrayList<>();
+    /**
+     *
+     * @param purchasingCost the cost to validate
+     * @return an error message if the cost is null or less than 0
+     */
+    public String purchasingCostValidation(BigDecimal purchasingCost) {
+        String error = "";
         if(purchasingCost == null) {
-            errors.add("The cost is null. Input a valid number");
+            error = "The cost is null. Input a valid number";
         } else if (purchasingCost.compareTo(BigDecimal.ZERO) <= 0) {
-            errors.add("The cost must be greater than 0");
+            error = "The cost must be greater than 0";
         }
-        return errors;
+        return error;
     }
 
     /**
@@ -100,11 +84,19 @@ public class IngredientValidator {
      */
     public String[] validateIngredient(Ingredient ingredient) {
         List<String> errors = new ArrayList<>();
-        errors.addAll(nameValidation(ingredient.getName()));
-        errors.addAll(amountValidation(ingredient.getAmount()));
-        errors.addAll(activeOrInactiveValidation(ingredient.getActive()));
-        errors.addAll(purchasingCostValidation(ingredient.getPurchasingCost()));
 
+        if(!nameValidation(ingredient.getName()).isEmpty()) {
+            errors.add(nameValidation(ingredient.getName()));
+        }
+        if(!amountValidation(ingredient.getAmount()).isEmpty()) {
+            errors.add(amountValidation(ingredient.getAmount()));
+        }
+        if(!activeOrInactiveValidation(ingredient.getActive()).isEmpty()) {
+            errors.add(activeOrInactiveValidation(ingredient.getActive()));
+        }
+        if(!purchasingCostValidation(ingredient.getPurchasingCost()).isEmpty()) {
+            errors.add(purchasingCostValidation(ingredient.getPurchasingCost()));
+        }
         return errors.toArray(new String[0]);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -72,8 +73,13 @@ public class IngredientServiceImpl implements IngredientService {
         }
 
         // Format the amount before saving
-        String formattedAmount = ingredientValidator.formatAmount(ingredientToCreate.getAmount());
+        BigDecimal formattedAmount = ingredientValidator.formatBigDecimal(ingredientToCreate.getAmount());
         ingredientToCreate.setAmount(formattedAmount);
+
+        // Format the cost before saving
+        BigDecimal formattedPurchasingCost = ingredientValidator.formatBigDecimal(
+                ingredientToCreate.getPurchasingCost());
+        ingredientToCreate.setPurchasingCost(formattedPurchasingCost);
 
         return ingredientRepository.save(ingredientToCreate);
     }
