@@ -56,6 +56,15 @@ public class IngredientValidator {
         return errors;
     }
 
+    public List<String> activeOrInactiveValidation(Boolean active) {
+        List<String> errors = new ArrayList<>();
+        // ADD NULL CHECK HERE
+        if(active.toString().isEmpty()) {
+            errors.add("Please type 'true' for active OR 'false' for inactive.");
+        }
+        return errors;
+    }
+
     /**
      * Validates an ingredient's details.
      *
@@ -66,6 +75,7 @@ public class IngredientValidator {
         List<String> errors = new ArrayList<>();
         errors.addAll(nameValidation(ingredient.getName()));
         errors.addAll(amountValidation(ingredient.getAmount()));
+        errors.addAll(activeOrInactiveValidation(ingredient.getActive()));
 
         return errors.toArray(new String[0]);
     }
