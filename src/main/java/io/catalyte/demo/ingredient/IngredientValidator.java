@@ -14,6 +14,12 @@ public class IngredientValidator {
         ingredient.setAmount(String.valueOf(bd.setScale(2, RoundingMode.HALF_UP)));
     }
 
+    /**
+     * Validates the amount of an ingredient.
+     *
+     * @param amount the ingredient amount to be validated
+     * @return a list of error messages for null, empty, zero, or non-numeric values
+     */
     public List<String> amountValidation(String amount) {
         List<String> errors = new ArrayList<>();
         if (amount == null) {
@@ -56,6 +62,12 @@ public class IngredientValidator {
         return errors;
     }
 
+    /**
+     * Validates an ingredient's name.
+     *
+     * @param active the ingredient status to be validated
+     * @return an error message if the status is null; only true or false are allowed
+     */
     public List<String> activeOrInactiveValidation(Boolean active) {
         List<String> errors = new ArrayList<>();
         if (active == null) {
