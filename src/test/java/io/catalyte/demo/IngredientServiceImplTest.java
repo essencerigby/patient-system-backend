@@ -87,6 +87,6 @@ public class IngredientServiceImplTest {
     @Test
     public void editIngredient_whenIngredientIdIsInvalid_throwsError() {
         when(ingredientRepository.findById(2)).thenReturn(Optional.empty());
-        assertThrows(ResponseStatusException.class, () -> ingredientService.editIngredient(testIngredient, 2));
+        assertThrows(ResponseStatusException.class, () -> ingredientService.editIngredient(testIngredient, 2), "editIngredient did not throw an error.");
     }
 }
