@@ -2,6 +2,7 @@ package io.catalyte.demo.ingredient;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +10,15 @@ import java.util.List;
  * Formats ingredient amount to be stored with two decimal places
  */
 public class IngredientValidator {
-    public void formatAmount (Ingredient ingredient) {
-        BigDecimal bd = new BigDecimal(ingredient.getAmount());
-        ingredient.setAmount(String.valueOf(bd.setScale(2, RoundingMode.HALF_UP)));
+    public String formatAmount(String amount) {
+        BigDecimal bd = new BigDecimal(amount);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+        DecimalFormat df = new DecimalFormat("0.00");  // Pattern to ensure two decimal places
+        df.setRoundingMode(RoundingMode.HALF_UP);       // Optional rounding mode setting
+
+        return df.format(bd);
+
     }
 
     /**
@@ -23,25 +30,25 @@ public class IngredientValidator {
     public List<String> amountValidation(String amount) {
         List<String> errors = new ArrayList<>();
         if (amount == null) {
-            errors.add("Amount is null. Please add a non-zero number value.");
+            errors.add("Amount is null. Please add a number greater than 0.");
         } else if (amount.isEmpty()) {
-            errors.add("Amount is empty. Please add a non-zero number value.");
+            errors.add("Amount is empty. Please add a number greater than 0.");
         } else {
             try {
-                Ingredient ingredient = new Ingredient();
-                ingredient.setAmount(amount);
-                formatAmount(ingredient);
-
-                if (new BigDecimal(ingredient.getAmount()).compareTo(BigDecimal.ZERO) == 0) {
+                BigDecimal bd = new BigDecimal(amount);
+                if (bd.compareTo(BigDecimal.ZERO) == 0) {
                     errors.add("Amount must be a non-zero number, with up to 2 decimal places.");
+                } else {
+                    String formattedAmount = formatAmount(amount);
+                    Ingredient ingredient = new Ingredient();
+                    ingredient.setAmount(formattedAmount);
                 }
             } catch (NumberFormatException e) {
-                errors.add("Amount must be a number, with up to 2 decimal places.");
-            } catch (ArithmeticException e) {
-                errors.add("Amount format is invalid.");
+                errors.add("Amount must be a non-zero number, with up to 2 decimal places.");
             }
         }
         return errors;
+
     }
 
     /**
@@ -76,6 +83,14 @@ public class IngredientValidator {
         return errors;
     }
 
+    public List<String> purchasingCostValidation(BigDecimal purchasingCost) {
+        List<String> errors = new ArrayList<>();
+        if (purchasingCost.compareTo(BigDecimal.ZERO) <= 0) {
+            errors.add("The cost must be greater than 0");
+        }
+        return errors;
+    }
+
     /**
      * Validates an ingredient's details.
      *
@@ -87,7 +102,24 @@ public class IngredientValidator {
         errors.addAll(nameValidation(ingredient.getName()));
         errors.addAll(amountValidation(ingredient.getAmount()));
         errors.addAll(activeOrInactiveValidation(ingredient.getActive()));
+        errors.addAll(purchasingCostValidation(ingredient.getPurchasingCost()));
 
         return errors.toArray(new String[0]);
     }
+
+//    public static void main(String[] args) {
+//        IngredientValidator validator = new IngredientValidator();
+//
+//        // Example usage: Creating an ingredient with amount 2.5
+//        Ingredient ingredient = new Ingredient();
+//        ingredient.setAmount("2.5");
+//
+//        // Validating and formatting amount
+//        List<String> errors = validator.amountValidation(ingredient.getAmount());
+//        if (errors.isEmpty()) {
+//            System.out.println("Formatted amount: " + ingredient.getAmount());  // Should print "2.50"
+//        } else {
+//            System.out.println("Validation errors: " + errors);
+//        }
+//    }
 }

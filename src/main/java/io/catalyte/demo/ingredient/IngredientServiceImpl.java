@@ -71,6 +71,10 @@ public class IngredientServiceImpl implements IngredientService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors);
         }
 
+        // Format the amount before saving
+        String formattedAmount = ingredientValidator.formatAmount(ingredientToCreate.getAmount());
+        ingredientToCreate.setAmount(formattedAmount);
+
         return ingredientRepository.save(ingredientToCreate);
     }
 
