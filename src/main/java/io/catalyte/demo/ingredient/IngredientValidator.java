@@ -48,7 +48,6 @@ public class IngredientValidator {
             }
         }
         return errors;
-
     }
 
     /**
@@ -85,7 +84,9 @@ public class IngredientValidator {
 
     public List<String> purchasingCostValidation(BigDecimal purchasingCost) {
         List<String> errors = new ArrayList<>();
-        if (purchasingCost.compareTo(BigDecimal.ZERO) <= 0) {
+        if(purchasingCost == null) {
+            errors.add("The cost is null. Input a valid number");
+        } else if (purchasingCost.compareTo(BigDecimal.ZERO) <= 0) {
             errors.add("The cost must be greater than 0");
         }
         return errors;
@@ -106,20 +107,4 @@ public class IngredientValidator {
 
         return errors.toArray(new String[0]);
     }
-
-//    public static void main(String[] args) {
-//        IngredientValidator validator = new IngredientValidator();
-//
-//        // Example usage: Creating an ingredient with amount 2.5
-//        Ingredient ingredient = new Ingredient();
-//        ingredient.setAmount("2.5");
-//
-//        // Validating and formatting amount
-//        List<String> errors = validator.amountValidation(ingredient.getAmount());
-//        if (errors.isEmpty()) {
-//            System.out.println("Formatted amount: " + ingredient.getAmount());  // Should print "2.50"
-//        } else {
-//            System.out.println("Validation errors: " + errors);
-//        }
-//    }
 }
