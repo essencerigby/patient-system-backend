@@ -1,6 +1,7 @@
 package io.catalyte.demo.ingredient;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -63,8 +64,17 @@ public class IngredientServiceImpl implements IngredientService {
      * @return the created ingredient
      */
     public Ingredient createIngredient(Ingredient ingredientToCreate) {
+        // Format amount to hold two decimal places
         String formattedAmount = ingredientValidator.formatAmount(ingredientToCreate.getAmount());
         ingredientToCreate.setAmount(formattedAmount);
+
+        // Validate ingredient information
+        String [] errorArray = ingredientValidator.validateIngredient(ingredientToCreate);
+        String errors = String.join(", ", errorArray); // Join array elements
+        if(!errors.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors);
+        }
+
         return ingredientRepository.save(ingredientToCreate);
     }
 
