@@ -9,10 +9,33 @@ import java.util.List;
  * Formats ingredient amount to be stored with two decimal places
  */
 public class IngredientValidator {
-    public String formatAmount (String amount) {
-        BigDecimal bd = new BigDecimal(amount);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-        return bd.toString();
+    public void formatAmount (Ingredient ingredient) {
+        BigDecimal bd = new BigDecimal(ingredient.getAmount());
+        ingredient.setAmount(String.valueOf(bd.setScale(2, RoundingMode.HALF_UP)));
+    }
+
+    public List<String> amountValidation(String amount) {
+        List<String> errors = new ArrayList<>();
+        if (amount == null) {
+            errors.add("Amount is null. Please add a non-zero number value.");
+        } else if (amount.isEmpty()) {
+            errors.add("Amount is empty. Please add a non-zero number value.");
+        } else {
+            try {
+                Ingredient ingredient = new Ingredient();
+                ingredient.setAmount(amount);
+                formatAmount(ingredient);
+
+                if (new BigDecimal(ingredient.getAmount()).compareTo(BigDecimal.ZERO) == 0) {
+                    errors.add("Amount must be a non-zero number, with up to 2 decimal places.");
+                }
+            } catch (NumberFormatException e) {
+                errors.add("Amount must be a number, with up to 2 decimal places.");
+            } catch (ArithmeticException e) {
+                errors.add("Amount format is invalid.");
+            }
+        }
+        return errors;
     }
 
     /**
@@ -42,6 +65,7 @@ public class IngredientValidator {
     public String[] validateIngredient(Ingredient ingredient) {
         List<String> errors = new ArrayList<>();
         errors.addAll(nameValidation(ingredient.getName()));
+        errors.addAll(amountValidation(ingredient.getAmount()));
 
         return errors.toArray(new String[0]);
     }
