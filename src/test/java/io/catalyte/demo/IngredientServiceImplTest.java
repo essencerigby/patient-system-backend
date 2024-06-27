@@ -9,13 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -73,5 +74,19 @@ public class IngredientServiceImplTest {
 
         assertEquals(2, result.size());
         assertEquals(expectedIngredients, result);
+    }
+
+    @Test
+    public void editIngredient_whenIngredientIdIsValid_returnsEditedIngredient() {
+        when(ingredientRepository.findById(1)).thenReturn(Optional.of(testIngredient));
+        when(ingredientRepository.save(testIngredient2)).thenReturn(testIngredient2);
+        Ingredient editedIngredient = ingredientService.editIngredient(testIngredient2, 1);
+        assertEquals(testIngredient2.getName(), editedIngredient.getName(), "Ingredient names do not match.");
+    }
+
+    @Test
+    public void editIngredient_whenIngredientIdIsInvalid_throwsError() {
+        when(ingredientRepository.findById(2)).thenReturn(Optional.empty());
+        assertThrows(ResponseStatusException.class, () -> ingredientService.editIngredient(testIngredient, 2));
     }
 }
