@@ -45,4 +45,16 @@ public class IngredientController {
     public Ingredient createIngredient(@RequestBody Ingredient ingredientToCreate) {
         return ingredientService.createIngredient(ingredientToCreate);
     }
+
+    /**
+     * Creates a new ingredient in the repository
+     * @param ingredientToEdit - Ingredient Object containing unique identifier, active status, name,
+     *                           purchasing cost, amount, unit of measure, and allergens.
+     * @return the created ingredient
+     */
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Ingredient editIngredient(@RequestBody Ingredient ingredientToEdit, @PathVariable int id) {
+        return ingredientService.editIngredient(ingredientToEdit, id);
+    }
 }

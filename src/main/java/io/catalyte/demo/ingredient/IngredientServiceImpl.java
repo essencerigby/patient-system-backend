@@ -1,6 +1,7 @@
 package io.catalyte.demo.ingredient;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -76,7 +77,14 @@ public class IngredientServiceImpl implements IngredientService {
      * @return The updated ingredient.
      */
     public Ingredient editIngredient(Ingredient ingredientToEdit, int id) {
-        return null; // LOGIC HERE
+        Boolean foundIngredient = ingredientRepository.findById(id).isPresent();
+        System.out.println(foundIngredient);
+
+        if (ingredientRepository.findById(id).isPresent()) {
+            ingredientToEdit.setId(id);
+            ingredientRepository.save(ingredientToEdit);
+            return ingredientToEdit;
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient was not found.");
     }
 
     /**

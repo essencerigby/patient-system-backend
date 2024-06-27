@@ -15,7 +15,7 @@ public interface IngredientService {
 
     Ingredient createIngredient(Ingredient ingredientToCreate);
 
-//    Ingredient editIngredient(Ingredient ingredientToEdit, int id);
+    Ingredient editIngredient(Ingredient ingredientToEdit, int id);
 
 //    void deleteIngredientById(int id);
 }
