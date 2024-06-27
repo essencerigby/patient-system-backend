@@ -1,7 +1,5 @@
 package io.catalyte.demo.ingredient;
 
-import io.catalyte.demo.vendor.vendorEntity.Vendor;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -38,7 +36,7 @@ public class IngredientValidator {
     /**
      * Validates an ingredient's details.
      *
-     * @param ingredient the vendor to be validated
+     * @param ingredient the ingredient to be validated
      * @return an array of error messages for invalid fields; otherwise, an empty array
      */
     public String[] validateIngredient(Ingredient ingredient) {
