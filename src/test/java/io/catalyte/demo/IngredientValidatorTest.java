@@ -117,4 +117,31 @@ public class IngredientValidatorTest {
         String err = validator.purchasingCostValidation(cost);
         assertEquals("", err, "Valid cost error is incorrect.");
     }
+
+    @Test
+    public void allergenListValidation_withNullAllergens_returnsError() {
+        String err = validator.allergenListValidation(null);
+        assertEquals("Null values are not allowed. Please choose at least one allergen, if applicable: Dairy, Soy, Gluten, Nuts.", err, "Null allergens error is incorrect.");
+    }
+
+    @Test
+    public void allergenListValidation_withInvalidAllergen_returnsError() {
+        List<String> allergens = Arrays.asList("Pollen");
+        String err = validator.allergenListValidation(allergens);
+        assertEquals("If this ingredient has an allergen, it must be one or more of the following: Dairy, Soy, Gluten, or Nuts.", err, "Invalid allergen error is incorrect.");
+    }
+
+//    @Test
+//    public void allergenListValidation_withEmptyAllergenList_returnsNoError() {
+//        List<String> allergens = Arrays.asList("");
+//        String result = validator.allergenListValidation(allergens);
+//        assertEquals("", result, "Valid allergens error is incorrect.");
+//    }
+
+    @Test
+    public void allergenListValidation_withValidAllergens_returnsNoError() {
+        List<String> allergens = testIngredient.getAllergens();
+        String result = validator.allergenListValidation(allergens);
+        assertEquals("", result, "Valid allergens error is incorrect.");
+    }
 }
