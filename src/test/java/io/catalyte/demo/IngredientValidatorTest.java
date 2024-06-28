@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IngredientValidatorTest {
     @Mock
@@ -32,7 +32,7 @@ public class IngredientValidatorTest {
     @Test
     public void formatBigDecimal_withValidAmount_formatsCorrectly() {
         BigDecimal formattedAmount = validator.formatBigDecimal(testIngredient.getAmount());
-        assertEquals(new BigDecimal(1.12), formattedAmount, "Formatted amount is incorrect.");
+        assertEquals(new BigDecimal("15.25"), formattedAmount, "Formatted amount is incorrect.");
     }
 
     @Test
