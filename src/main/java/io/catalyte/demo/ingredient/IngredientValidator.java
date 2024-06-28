@@ -106,6 +106,11 @@ public class IngredientValidator {
         return error;
     }
 
+    /**
+     *
+     * @param unitOfMeasure the unit of measure (oz, ml, kg, lb, tsp, tbsp, or cups) to be validated
+     * @return an error message if one of the above measurements is not used, or a null or empty value is found
+     */
     public String unitOfMeasurementValidation(String unitOfMeasure) {
         String error = "";
         List<String> possibleMeasurements = Arrays.asList(
