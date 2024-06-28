@@ -118,14 +118,15 @@ public class IngredientValidator {
                 "cups"
         );
 
-        String formattedUnitOfMeasure = unitOfMeasure.toUpperCase();
-        Ingredient ingredient = new Ingredient();
-        ingredient.setUnitOfMeasure(formattedUnitOfMeasure);
-
-        if(ingredient.getUnitOfMeasure() == null) {
+        if (unitOfMeasure == null) {
             error = "Null values are not allowed. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
-        } else if(ingredient.getUnitOfMeasure().isEmpty()) {
-            error = "A unit of measure is required. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
+        } else {
+//            String formattedUnitOfMeasure = unitOfMeasure.toUpperCase();
+            if (unitOfMeasure.isEmpty()) {
+                error = "A unit of measure is required. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
+            } else if (!possibleMeasurements.contains(unitOfMeasure)) {
+                error = "Invalid unit of measure. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
+            }
         }
         return error;
     }
@@ -153,6 +154,9 @@ public class IngredientValidator {
         }
         if(!allergenListValidation(ingredient.getAllergens()).isEmpty()) {
             errors.add(allergenListValidation(ingredient.getAllergens()));
+        }
+        if(!unitOfMeasurementValidation(ingredient.getUnitOfMeasure()).isEmpty()) {
+            errors.add(unitOfMeasurementValidation(ingredient.getUnitOfMeasure()));
         }
         return errors.toArray(new String[0]);
     }
