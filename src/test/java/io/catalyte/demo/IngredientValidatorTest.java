@@ -57,8 +57,7 @@ public class IngredientValidatorTest {
 
     @Test
     public void nameValidation_withNullName_returnsError() {
-        String name = null;
-        String err = validator.nameValidation(name);
+        String err = validator.nameValidation(null);
         assertEquals("Name field is null", err, "Null name error is incorrect.");
     }
 
@@ -85,8 +84,7 @@ public class IngredientValidatorTest {
 
     @Test
     public void activeOrInactiveValidation_withNullStatus_returnsError() {
-        Boolean active = null;
-        String err = validator.activeOrInactiveValidation(active);
+        String err = validator.activeOrInactiveValidation(null);
         assertEquals("Null value not allowed. Please type 'true' for active OR 'false' for inactive.", err, "Null status error is incorrect.");
     }
 
@@ -99,8 +97,7 @@ public class IngredientValidatorTest {
 
     @Test
     public void purchasingCostValidation_withNullCost_returnsError() {
-        BigDecimal cost = null;
-        String err = validator.purchasingCostValidation(cost);
+        String err = validator.purchasingCostValidation(null);
         assertEquals("The cost is null. Input a valid number", err, "Null cost error is incorrect.");
     }
 
@@ -126,14 +123,14 @@ public class IngredientValidatorTest {
 
     @Test
     public void allergenListValidation_withInvalidAllergen_returnsError() {
-        List<String> allergens = Arrays.asList("Pollen");
+        List<String> allergens = List.of("Pollen");
         String err = validator.allergenListValidation(allergens);
         assertEquals("If this ingredient has an allergen, it must be one or more of the following: Dairy, Soy, Gluten, or Nuts.", err, "Invalid allergen error is incorrect.");
     }
 
     @Test
     public void allergenListValidation_withEmptyAllergenList_returnsNoError() {
-        List<String> allergens = Arrays.asList();
+        List<String> allergens = List.of();
         String result = validator.allergenListValidation(allergens);
         assertEquals("", result, "Valid allergens error is incorrect.");
     }
