@@ -131,12 +131,12 @@ public class IngredientValidatorTest {
         assertEquals("If this ingredient has an allergen, it must be one or more of the following: Dairy, Soy, Gluten, or Nuts.", err, "Invalid allergen error is incorrect.");
     }
 
-//    @Test
-//    public void allergenListValidation_withEmptyAllergenList_returnsNoError() {
-//        List<String> allergens = Arrays.asList("");
-//        String result = validator.allergenListValidation(allergens);
-//        assertEquals("", result, "Valid allergens error is incorrect.");
-//    }
+    @Test
+    public void allergenListValidation_withEmptyAllergenList_returnsNoError() {
+        List<String> allergens = Arrays.asList();
+        String result = validator.allergenListValidation(allergens);
+        assertEquals("", result, "Valid allergens error is incorrect.");
+    }
 
     @Test
     public void allergenListValidation_withValidAllergens_returnsNoError() {
