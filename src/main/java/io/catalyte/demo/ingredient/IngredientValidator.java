@@ -106,6 +106,30 @@ public class IngredientValidator {
         return error;
     }
 
+    public String unitOfMeasurementValidation(String unitOfMeasure) {
+        String error = "";
+        List<String> possibleMeasurements = Arrays.asList(
+                "oz",
+                "ml",
+                "kg",
+                "lb",
+                "tsp",
+                "tbsp",
+                "cups"
+        );
+
+        String formattedUnitOfMeasure = unitOfMeasure.toUpperCase();
+        Ingredient ingredient = new Ingredient();
+        ingredient.setUnitOfMeasure(formattedUnitOfMeasure);
+
+        if(ingredient.getUnitOfMeasure() == null) {
+            error = "Null values are not allowed. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
+        } else if(ingredient.getUnitOfMeasure().isEmpty()) {
+            error = "A unit of measure is required. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
+        }
+        return error;
+    }
+
     /**
      * Validates an ingredient's details.
      *
