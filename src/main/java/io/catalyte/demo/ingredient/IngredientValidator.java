@@ -1,8 +1,11 @@
 package io.catalyte.demo.ingredient;
 
+import io.catalyte.demo.products.Product;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -76,6 +79,28 @@ public class IngredientValidator {
         return error;
     }
 
+    public String allergenListValidation(List<String> allergens) {
+        String error = "";
+        List<String> possibleAllergens = Arrays.asList(
+                "Dairy",
+                "Soy",
+                "Gluten",
+                "Nuts"
+        );
+
+        if (allergens == null) {
+            error = "Null values are not allowed. Please choose one (optional) allergen: Dairy, Soy, Gluten, Nuts.";
+        } else if (!allergens.isEmpty()) {
+            for (String allergen : allergens) {
+                if (!possibleAllergens.contains(allergen)) {
+                    error = "If this ingredient has an allergen, it must be one or more of the following: Dairy, Soy, Gluten, or Nuts.";
+                    break;
+                }
+            }
+        }
+        return error;
+    }
+
     /**
      * Validates an ingredient's details.
      *
@@ -96,6 +121,9 @@ public class IngredientValidator {
         }
         if(!purchasingCostValidation(ingredient.getPurchasingCost()).isEmpty()) {
             errors.add(purchasingCostValidation(ingredient.getPurchasingCost()));
+        }
+        if(!allergenListValidation(ingredient.getAllergens()).isEmpty()) {
+            errors.add(allergenListValidation(ingredient.getAllergens()));
         }
         return errors.toArray(new String[0]);
     }
