@@ -1,7 +1,5 @@
 package io.catalyte.demo.ingredient;
 
-import io.catalyte.demo.products.Product;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
