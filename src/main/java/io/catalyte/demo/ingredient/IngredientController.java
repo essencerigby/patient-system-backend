@@ -45,4 +45,17 @@ public class IngredientController {
     public Ingredient createIngredient(@RequestBody Ingredient ingredientToCreate) {
         return ingredientService.createIngredient(ingredientToCreate);
     }
+
+    /**
+     * Updates an existing ingredient.
+     *
+     * @param id               The ID of the ingredient to update.
+     * @param ingredientToEdit The updated ingredient data.
+     * @return The updated ingredient.
+     */
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Ingredient editIngredient(@RequestBody Ingredient ingredientToEdit, @PathVariable int id) {
+        return ingredientService.editIngredient(ingredientToEdit, id);
+    }
 }
