@@ -77,6 +77,13 @@ public class IngredientValidator {
         return error;
     }
 
+    /**
+     *
+     * @param allergens The list of allergens to be checked for:
+     *                  Dairy, Soy, Gluten, and Nuts
+     * @return an error message if the list includes a null value,
+     *         or an allergen not listed above.
+     */
     public String allergenListValidation(List<String> allergens) {
         String error = "";
         List<String> possibleAllergens = Arrays.asList(
