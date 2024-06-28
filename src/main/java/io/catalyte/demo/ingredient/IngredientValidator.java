@@ -94,7 +94,7 @@ public class IngredientValidator {
         );
 
         if (allergens == null) {
-            error = "Null values are not allowed. Please choose one (optional) allergen: Dairy, Soy, Gluten, Nuts.";
+            error = "Null values are not allowed. Please choose at least one allergen, if applicable: Dairy, Soy, Gluten, Nuts.";
         } else if (!allergens.isEmpty()) {
             for (String allergen : allergens) {
                 if (!possibleAllergens.contains(allergen)) {
