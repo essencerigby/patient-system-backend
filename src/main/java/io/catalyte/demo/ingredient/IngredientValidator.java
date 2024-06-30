@@ -128,10 +128,10 @@ public class IngredientValidator {
         if (unitOfMeasure == null) {
             error = "Null values are not allowed. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
         } else if (unitOfMeasure.isEmpty()) {
-                error = "A unit of measure is required. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
-            } else if (!possibleMeasurements.contains(unitOfMeasure)) {
-                error = "Invalid unit of measure. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
-            }
+            error = "A unit of measure is required. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
+        } else if (!possibleMeasurements.contains(unitOfMeasure)) {
+            error = "Invalid unit of measure. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
+        }
         return error;
     }
 
