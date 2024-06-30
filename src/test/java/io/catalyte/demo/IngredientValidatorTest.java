@@ -125,7 +125,7 @@ public class IngredientValidatorTest {
     public void allergenListValidation_withInvalidAllergen_returnsError() {
         List<String> allergens = List.of("Pollen");
         String err = validator.allergenListValidation(allergens);
-        assertEquals("If this ingredient has an allergen, it must be one or more of the following: Dairy, Soy, Gluten, or Nuts.", err, "Invalid allergen error is incorrect.");
+        assertEquals("If this ingredient has an allergen, it must be one or more of the following: Dairy, Soy, Gluten, or Nuts. Values are case sensitive.", err, "Invalid allergen error is incorrect.");
     }
 
     @Test
@@ -140,5 +140,32 @@ public class IngredientValidatorTest {
         List<String> allergens = testIngredient.getAllergens();
         String result = validator.allergenListValidation(allergens);
         assertEquals("", result, "Valid allergens error is incorrect.");
+    }
+
+    @Test
+    public void unitOfMeasurementValidation_withInvalidMeasurement_returnsError() {
+        String measurement = "ounces";
+        String err = validator.unitOfMeasurementValidation(measurement);
+        assertEquals("Invalid unit of measure. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.", err, "Invalid measurement error is incorrect.");
+    }
+
+    @Test
+    public void unitOfMeasurementValidation_withNullMeasurement_returnsError() {
+        String err = validator.unitOfMeasurementValidation(null);
+        assertEquals("Null values are not allowed. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.", err, "Invalid measurement error is incorrect.");
+    }
+
+    @Test
+    public void unitOfMeasurementValidation_withEmptyMeasurement_returnsError() {
+        String measurement = "";
+        String err = validator.unitOfMeasurementValidation(measurement);
+        assertEquals("A unit of measure is required. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.", err, "Invalid measurement error is incorrect.");
+    }
+
+    @Test
+    public void unitOfMeasurementValidation_withValidMeasurement_noErrors() {
+        String measurement = "oz";
+        String result = validator.unitOfMeasurementValidation(measurement);
+        assertEquals("", result, "Invalid measurement error is incorrect.");
     }
 }
