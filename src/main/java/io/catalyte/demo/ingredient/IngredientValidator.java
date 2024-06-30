@@ -10,6 +10,23 @@ import java.util.List;
  * Formats BigDecimal variable types to be stored with two decimal places
  */
 public class IngredientValidator {
+    List<String> possibleMeasurements = Arrays.asList(
+            "oz",
+            "ml",
+            "kg",
+            "lb",
+            "tsp",
+            "tbsp",
+            "cups"
+    );
+
+    List<String> possibleAllergens = Arrays.asList(
+            "Dairy",
+            "Soy",
+            "Gluten",
+            "Nuts"
+    );
+
     public BigDecimal formatBigDecimal(BigDecimal amount) {
         return amount.setScale(2, RoundingMode.HALF_UP);
     }
@@ -86,19 +103,13 @@ public class IngredientValidator {
      */
     public String allergenListValidation(List<String> allergens) {
         String error = "";
-        List<String> possibleAllergens = Arrays.asList(
-                "Dairy",
-                "Soy",
-                "Gluten",
-                "Nuts"
-        );
 
         if (allergens == null) {
             error = "Null values are not allowed. Please choose at least one allergen, if applicable: Dairy, Soy, Gluten, Nuts.";
         } else if (!allergens.isEmpty()) {
             for (String allergen : allergens) {
                 if (!possibleAllergens.contains(allergen)) {
-                    error = "If this ingredient has an allergen, it must be one or more of the following: Dairy, Soy, Gluten, or Nuts.";
+                    error = "If this ingredient has an allergen, it must be one or more of the following: Dairy, Soy, Gluten, or Nuts. Values are case sensitive.";
                     break;
                 }
             }
@@ -113,26 +124,14 @@ public class IngredientValidator {
      */
     public String unitOfMeasurementValidation(String unitOfMeasure) {
         String error = "";
-        List<String> possibleMeasurements = Arrays.asList(
-                "oz",
-                "ml",
-                "kg",
-                "lb",
-                "tsp",
-                "tbsp",
-                "cups"
-        );
 
         if (unitOfMeasure == null) {
             error = "Null values are not allowed. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
-        } else {
-//            String formattedUnitOfMeasure = unitOfMeasure.toUpperCase();
-            if (unitOfMeasure.isEmpty()) {
+        } else if (unitOfMeasure.isEmpty()) {
                 error = "A unit of measure is required. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
             } else if (!possibleMeasurements.contains(unitOfMeasure)) {
                 error = "Invalid unit of measure. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.";
             }
-        }
         return error;
     }
 
