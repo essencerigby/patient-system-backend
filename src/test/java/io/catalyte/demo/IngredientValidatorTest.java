@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IngredientValidatorTest {
     @Mock
@@ -38,7 +39,8 @@ public class IngredientValidatorTest {
     @Test
     public void amountValidation_withNullAmount_returnsError() {
         String err = validator.amountValidation(null);
-        assertEquals("Amount is null. Please add an amount greater than 0.", err, "Null amount error is incorrect.");
+        assertEquals("Amount is null. Please add an amount greater than 0.", err,
+                "Null amount error is incorrect.");
     }
 
     @Test
@@ -72,7 +74,8 @@ public class IngredientValidatorTest {
     public void nameValidation_withLongName_returnsError() {
         String name = "This is a very long name that exceeds the fifty characters limit";
         String err = validator.nameValidation(name);
-        assertEquals("Please enter an ingredient name shorter than 50 characters", err, "Long name error is incorrect.");
+        assertEquals("Please enter an ingredient name shorter than 50 characters",
+                err, "Long name error is incorrect.");
     }
 
     @Test
@@ -85,7 +88,8 @@ public class IngredientValidatorTest {
     @Test
     public void activeOrInactiveValidation_withNullStatus_returnsError() {
         String err = validator.activeOrInactiveValidation(null);
-        assertEquals("Null value not allowed. Please type 'true' for active OR 'false' for inactive.", err, "Null status error is incorrect.");
+        assertEquals("Null value not allowed. Please type 'true' for active OR 'false' for inactive.",
+                err, "Null status error is incorrect.");
     }
 
     @Test
@@ -118,14 +122,16 @@ public class IngredientValidatorTest {
     @Test
     public void allergenListValidation_withNullAllergens_returnsError() {
         String err = validator.allergenListValidation(null);
-        assertEquals("Null values are not allowed. Please choose at least one allergen, if applicable: Dairy, Soy, Gluten, Nuts.", err, "Null allergens error is incorrect.");
+        assertEquals("Null values are not allowed. Please choose at least one allergen, if applicable: " +
+                "Dairy, Soy, Gluten, Nuts.", err, "Null allergens error is incorrect.");
     }
 
     @Test
     public void allergenListValidation_withInvalidAllergen_returnsError() {
         List<String> allergens = List.of("Pollen");
         String err = validator.allergenListValidation(allergens);
-        assertEquals("If this ingredient has an allergen, it must be one or more of the following: Dairy, Soy, Gluten, or Nuts. Values are case sensitive.", err, "Invalid allergen error is incorrect.");
+        assertEquals("If this ingredient has an allergen, it must be one or more of the following: " +
+                "Dairy, Soy, Gluten, or Nuts. Values are case sensitive.", err, "Invalid allergen error is incorrect.");
     }
 
     @Test
@@ -146,20 +152,23 @@ public class IngredientValidatorTest {
     public void unitOfMeasurementValidation_withInvalidMeasurement_returnsError() {
         String measurement = "ounces";
         String err = validator.unitOfMeasurementValidation(measurement);
-        assertEquals("Invalid unit of measure. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.", err, "Invalid measurement error is incorrect.");
+        assertEquals("Invalid unit of measure. Please use one of the following: " +
+                "oz, ml, kg, lb, tsp, tbsp, cups.", err, "Invalid measurement error is incorrect.");
     }
 
     @Test
     public void unitOfMeasurementValidation_withNullMeasurement_returnsError() {
         String err = validator.unitOfMeasurementValidation(null);
-        assertEquals("Null values are not allowed. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.", err, "Invalid measurement error is incorrect.");
+        assertEquals("Null values are not allowed. Please use one of the following: " +
+                "oz, ml, kg, lb, tsp, tbsp, cups.", err, "Invalid measurement error is incorrect.");
     }
 
     @Test
     public void unitOfMeasurementValidation_withEmptyMeasurement_returnsError() {
         String measurement = "";
         String err = validator.unitOfMeasurementValidation(measurement);
-        assertEquals("A unit of measure is required. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.", err, "Invalid measurement error is incorrect.");
+        assertEquals("A unit of measure is required. Please use one of the following: " +
+                "oz, ml, kg, lb, tsp, tbsp, cups.", err, "Invalid measurement error is incorrect.");
     }
 
     @Test
@@ -167,5 +176,73 @@ public class IngredientValidatorTest {
         String measurement = "oz";
         String result = validator.unitOfMeasurementValidation(measurement);
         assertEquals("", result, "Invalid measurement error is incorrect.");
+    }
+
+    @Test
+    public void testValidateIngredient_AllValid() {
+        String[] errors = validator.validateIngredient(testIngredient);
+
+        assertEquals(0, errors.length, "Expected no validation errors");
+    }
+
+    @Test
+    public void testValidateIngredient_InvalidName() {
+        testIngredient.setName("");
+
+        String[] errors = validator.validateIngredient(testIngredient);
+
+        assertTrue(errors.length > 0, "Expected validation errors for name");
+        assertTrue(Arrays.asList(errors).contains("Name field is empty"), "Expected 'Name field is empty' error");
+    }
+
+    @Test
+    public void testValidateIngredient_InvalidAmount() {
+        testIngredient.setAmount(BigDecimal.valueOf(0));
+
+        String[] errors = validator.validateIngredient(testIngredient);
+
+        assertTrue(errors.length > 0, "Expected validation errors for amount");
+        assertTrue(Arrays.asList(errors).contains("Please add an amount greater than 0."), "Expected 'Please add an amount greater than 0.' error");
+    }
+
+    @Test
+    public void testValidateIngredient_InvalidActiveStatus() {
+        testIngredient.setActive(null);
+
+        String[] errors = validator.validateIngredient(testIngredient);
+
+        assertTrue(errors.length > 0, "Expected validation errors for active status");
+        assertTrue(Arrays.asList(errors).contains("Null value not allowed. Please type 'true' for active OR 'false' for inactive."), "Expected 'Null value not allowed. Please type 'true' for active OR 'false' for inactive.' error");
+    }
+
+    @Test
+    public void testValidateIngredient_InvalidPurchasingCost() {
+        testIngredient.setPurchasingCost(BigDecimal.valueOf(0));
+
+        String[] errors = validator.validateIngredient(testIngredient);
+
+        assertTrue(errors.length > 0, "Expected validation errors for purchasing cost");
+        assertTrue(Arrays.asList(errors).contains("The cost must be greater than 0"), "Expected 'The cost must be greater than 0' error");
+    }
+
+    @Test
+    public void testValidateIngredient_InvalidAllergens() {
+        List<String> invalidAllergens = List.of("Melons");
+        testIngredient.setAllergens(invalidAllergens);
+
+        String[] errors = validator.validateIngredient(testIngredient);
+
+        assertTrue(errors.length > 0, "Expected validation errors for allergens");
+        assertTrue(Arrays.asList(errors).contains("If this ingredient has an allergen, it must be one or more of the following: Dairy, Soy, Gluten, or Nuts. Values are case sensitive."), "Expected 'If this ingredient has an allergen, it must be one or more of the following: Dairy, Soy, Gluten, or Nuts. Values are case sensitive.' error");
+    }
+
+    @Test
+    public void testValidateIngredient_InvalidUnitOfMeasure() {
+        testIngredient.setUnitOfMeasure("");
+
+        String[] errors = validator.validateIngredient(testIngredient);
+
+        assertTrue(errors.length > 0, "Expected validation errors for unit of measure");
+        assertTrue(Arrays.asList(errors).contains("A unit of measure is required. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups."), "Expected 'A unit of measure is required. Please use one of the following: oz, ml, kg, lb, tsp, tbsp, cups.' error");
     }
 }
