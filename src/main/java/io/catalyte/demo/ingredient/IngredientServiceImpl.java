@@ -65,13 +65,6 @@ public class IngredientServiceImpl implements IngredientService {
      * @return the created ingredient
      */
     public Ingredient createIngredient(Ingredient ingredientToCreate) {
-        // Validate ingredient information
-        String [] errorArray = ingredientValidator.validateIngredient(ingredientToCreate);
-        String errors = String.join(", ", errorArray); // Join array elements
-        if(!errors.isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors);
-        }
-
         // Format the amount before saving
         BigDecimal formattedAmount = ingredientValidator.formatBigDecimal(ingredientToCreate.getAmount());
         ingredientToCreate.setAmount(formattedAmount);
@@ -84,6 +77,13 @@ public class IngredientServiceImpl implements IngredientService {
         // Format the unit of measure to uppercase
         String formattedUnitOfMeasure = ingredientToCreate.getUnitOfMeasure().toUpperCase();
         ingredientToCreate.setUnitOfMeasure(formattedUnitOfMeasure);
+
+        // Validate ingredient information
+        String [] errorArray = ingredientValidator.validateIngredient(ingredientToCreate);
+        String errors = String.join(", ", errorArray); // Join array elements
+        if(!errors.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors);
+        }
 
         return ingredientRepository.save(ingredientToCreate);
     }

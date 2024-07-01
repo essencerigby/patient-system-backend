@@ -11,13 +11,13 @@ import java.util.List;
  */
 public class IngredientValidator {
     List<String> possibleMeasurements = Arrays.asList(
-            "oz",
-            "ml",
-            "kg",
-            "lb",
-            "tsp",
-            "tbsp",
-            "cups"
+            "OZ",
+            "ML",
+            "KG",
+            "LB",
+            "TSP",
+            "TBSP",
+            "CUPS"
     );
 
     List<String> possibleAllergens = Arrays.asList(
