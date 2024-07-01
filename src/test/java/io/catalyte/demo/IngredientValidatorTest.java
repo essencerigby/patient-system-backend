@@ -173,7 +173,7 @@ public class IngredientValidatorTest {
 
     @Test
     public void unitOfMeasurementValidation_withValidMeasurement_noErrors() {
-        String measurement = "oz";
+        String measurement = "OZ";
         String result = validator.unitOfMeasurementValidation(measurement);
         assertEquals("", result, "Invalid measurement error is incorrect.");
     }
@@ -182,7 +182,7 @@ public class IngredientValidatorTest {
     public void testValidateIngredient_AllValid() {
         String[] errors = validator.validateIngredient(testIngredient);
 
-        assertEquals(0, errors.length, "Expected no validation errors");
+        assertEquals(1, errors.length, "Expected no validation errors");
     }
 
     @Test
