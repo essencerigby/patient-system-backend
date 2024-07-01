@@ -81,6 +81,10 @@ public class IngredientServiceImpl implements IngredientService {
                 ingredientToCreate.getPurchasingCost());
         ingredientToCreate.setPurchasingCost(formattedPurchasingCost);
 
+        // Format the unit of measure to uppercase
+        String formattedUnitOfMeasure = ingredientToCreate.getUnitOfMeasure().toUpperCase();
+        ingredientToCreate.setUnitOfMeasure(formattedUnitOfMeasure);
+
         return ingredientRepository.save(ingredientToCreate);
     }
 
