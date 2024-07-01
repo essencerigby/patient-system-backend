@@ -1,5 +1,6 @@
 package io.catalyte.demo.ingredient;
 
+import io.catalyte.demo.ingredient.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,18 @@ public class IngredientController {
     }
 
     /**
+     * Retrieves a ingredient by its ID.
+     *
+     * @param id The ID of the ingredient to retrieve.
+     * @return The ingredient with the specified ID.
+     */
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Ingredient getIngredientById(@PathVariable int id) {
+        return ingredientService.getIngredientById(id);
+    }
+
+    /**
      * Creates a new ingredient in the repository
      * @param ingredientToCreate - Ingredient Object containing unique identifier, active status, name,
      *                           purchasing cost, amount, unit of measure, and allergens.
@@ -47,6 +60,17 @@ public class IngredientController {
     }
 
     /**
+     * Deletes a ingredient from the system.
+     *
+     * @param id The ID of the ingredient to delete.
+     */
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteIngredientById(@PathVariable int id) {
+        ingredientService.deleteIngredientById(id);
+    }
+
+/**
      * Updates an existing ingredient.
      *
      * @param id               The ID of the ingredient to update.
@@ -59,3 +83,4 @@ public class IngredientController {
         return ingredientService.editIngredient(ingredientToEdit, id);
     }
 }
+

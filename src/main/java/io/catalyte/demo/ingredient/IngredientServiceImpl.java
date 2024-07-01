@@ -42,7 +42,13 @@ public class IngredientServiceImpl implements IngredientService {
      * @return The ingredient with the specified ID.
      */
     public Ingredient getIngredientById(int id) {
-        return null; // LOGIC HERE
+        try {
+            return ingredientRepository.findById(id).orElseThrow();
+        } catch (Exception e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Ingredient not found.");
+        }
     }
 
     /**
@@ -90,6 +96,9 @@ public class IngredientServiceImpl implements IngredientService {
      * @param id The ID of the ingredient to delete.
      * @throws ResponseStatusException NOT_FOUND when an invalid ID is provided.
      */
-    public void deleteIngredientById(int id) { // LOGIC HERE }
+    public void deleteIngredientById(int id) {
+        if (getIngredientById(id) != null) {
+            ingredientRepository.deleteById(id);
+        }
     }
 }
