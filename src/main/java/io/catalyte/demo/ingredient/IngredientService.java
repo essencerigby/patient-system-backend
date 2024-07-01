@@ -9,7 +9,7 @@ public interface IngredientService {
 
     List<Ingredient> getIngredients();
 
-//    Ingredient getIngredientById(int id);
+    Ingredient getIngredientById(int id);
 
 //    List<Ingredient> getIngredientByName(String name);
 
@@ -17,5 +17,5 @@ public interface IngredientService {
 
     Ingredient editIngredient(Ingredient ingredientToEdit, int id);
 
-//    void deleteIngredientById(int id);
+    void deleteIngredientById(int id);
 }

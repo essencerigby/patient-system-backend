@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -74,6 +76,51 @@ public class IngredientServiceImplTest {
 
         assertEquals(2, result.size());
         assertEquals(expectedIngredients, result);
+    }
+
+    @Test
+    public void getIngredient_withValidID_returnsIngredientWithMatchingID() {
+        testIngredient.setId(1);
+
+        when(ingredientRepository.findById(testIngredient.getId())).thenReturn(Optional.of(testIngredient));
+        Ingredient result = ingredientService.getIngredientById(1);
+        assertEquals(testIngredient, result);
+    }
+
+    @Test
+    public void getIngredient_withInvalidID_returnsErrorWithMessage() {
+        testIngredient.setId(18);
+
+        when(ingredientRepository.findById(testIngredient.getId())).thenReturn(Optional.empty());
+        assertThrows(ResponseStatusException.class, () -> ingredientService.getIngredientById(testIngredient.getId()), "Ingredient not found.");
+    }
+
+    @Test
+    public void deleteIngredientById_withExistingId_deletesIngredient(){
+
+        when(ingredientRepository.findById(1)).thenReturn(
+                Optional.of(testIngredient));
+        ingredientService.deleteIngredientById(1);
+        verify(ingredientRepository).findById(1);
+        verify(ingredientRepository).deleteById(1);
+    }
+
+    @Test
+    public void deleteIngredientById_withInvalidID_throwsError() {
+        int invalidId = 999;
+        when(ingredientRepository.findById(
+                invalidId)).thenReturn(
+                Optional.empty());
+        ResponseStatusException result = assertThrows(
+                ResponseStatusException.class, () ->
+                        ingredientService.deleteIngredientById(
+                                invalidId)
+        );
+        assertEquals(HttpStatus.NOT_FOUND,
+                result.getStatusCode());
+        assertEquals(
+                "404 NOT_FOUND \"Ingredient not found.\"",
+                result.getMessage());
     }
 
     @Test
