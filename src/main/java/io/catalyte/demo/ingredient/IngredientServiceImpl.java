@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -70,8 +71,26 @@ public class IngredientServiceImpl implements IngredientService {
      * @return the created ingredient
      */
     public Ingredient createIngredient(Ingredient ingredientToCreate) {
-        String formattedAmount = ingredientValidator.formatAmount(ingredientToCreate.getAmount());
+        // Format the amount before saving
+        BigDecimal formattedAmount = ingredientValidator.formatBigDecimal(ingredientToCreate.getAmount());
         ingredientToCreate.setAmount(formattedAmount);
+
+        // Format the cost before saving
+        BigDecimal formattedPurchasingCost = ingredientValidator.formatBigDecimal(
+                ingredientToCreate.getPurchasingCost());
+        ingredientToCreate.setPurchasingCost(formattedPurchasingCost);
+
+        // Format the unit of measure to uppercase
+        String formattedUnitOfMeasure = ingredientToCreate.getUnitOfMeasure().toUpperCase();
+        ingredientToCreate.setUnitOfMeasure(formattedUnitOfMeasure);
+
+        // Validate ingredient information
+        String [] errorArray = ingredientValidator.validateIngredient(ingredientToCreate);
+        String errors = String.join(", ", errorArray); // Join array elements
+        if(!errors.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errors);
+        }
+
         return ingredientRepository.save(ingredientToCreate);
     }
 

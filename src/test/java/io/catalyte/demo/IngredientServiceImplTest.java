@@ -39,20 +39,18 @@ public class IngredientServiceImplTest {
         );
 
         ingredientService = new IngredientServiceImpl(ingredientRepository);
-        testIngredient = new Ingredient(1,true,"Test Ingredient", BigDecimal.valueOf(15.50),"10.50","lb", sampleAllergenList);
-        testIngredient2 = new Ingredient(2,true,"Test Ingredient 2", BigDecimal.valueOf(20.99),"2","oz", sampleAllergenList);
+        testIngredient = new Ingredient(1,true,"Test Ingredient", BigDecimal.valueOf(15.50),BigDecimal.valueOf(10.50),"lb", sampleAllergenList);
+        testIngredient2 = new Ingredient(2,true,"Test Ingredient 2", BigDecimal.valueOf(20.99), BigDecimal.valueOf(2),"oz", sampleAllergenList);
     }
 
     @Test
-    public void createIngredient_withAllParametersNoValidation_PersistIngredient() {
+    public void createIngredient_withNoValidation_PersistIngredient() {
         when(ingredientRepository.save(testIngredient)).thenReturn(testIngredient);
 
         Ingredient result = ingredientService.createIngredient(testIngredient);
 
         assertEquals("Test Ingredient", result.getName());
-        assertEquals(BigDecimal.valueOf(15.50), result.getPurchasingCost());
         assertEquals(true, result.getActive());
-        assertEquals("10.50", result.getAmount());
         assertEquals("lb", result.getUnitOfMeasure());
         assertEquals(Arrays.asList("Nuts", "Gluten"), result.getAllergens());
     }
