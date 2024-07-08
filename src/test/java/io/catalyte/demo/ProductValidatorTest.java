@@ -110,28 +110,28 @@ public class ProductValidatorTest {
     public void validateProductVendorID_withBakedGoodProduct_usingNullVendorID_returnsError() {
         testBakedGoodProduct.setVendorId(null);
         String err = productValidator.validateProductVendorID(testBakedGoodProduct);
-        assertEquals(" Vendor ID is null.", err, "Vendor ID is not null.");
+        assertEquals(" Movies ID is null.", err, "Movies ID is not null.");
     }
 
     @Test
     public void validateProductVendorID_withBakedGoodProduct_usingEmptyVendorID_returnsError() {
         testBakedGoodProduct.setVendorId("");
         String err = productValidator.validateProductVendorID(testBakedGoodProduct);
-        assertEquals(" Vendor ID is empty.", err, "Vendor ID is not empty.");
+        assertEquals(" Movies ID is empty.", err, "Movies ID is not empty.");
     }
 
     @Test
     public void validateProductVendorID_withBakedGoodProduct_usingValidVendorID_returnsEmptyString() {
         testBakedGoodProduct.setVendorId("null");
         String err = productValidator.validateProductVendorID(testBakedGoodProduct);
-        assertEquals("", err, "Vendor ID is not null.");
+        assertEquals("", err, "Movies ID is not null.");
     }
 
     @Test
     public void validateProductVendorID_withDrinkProduct_usingValidVendorID_returnsEmptyString() {
         testBakedGoodProduct.setVendorId("null");
         String err = productValidator.validateProductVendorID(testBakedGoodProduct);
-        assertEquals("", err, "Vendor ID is not null.");
+        assertEquals("", err, "Movies ID is not null.");
     }
 
     @Test
@@ -358,7 +358,7 @@ public class ProductValidatorTest {
     public void formatProduct_withDrinkProduct_returnsFormattedProduct() {
             Product result = productValidator.formatProduct(testDrinkProduct);
             assertEquals("n/a", result.getMarkup(), "Product Markup does not have default value.");
-            assertEquals("n/a", result.getVendorId(), "Product has Vendor ID.");
+            assertEquals("n/a", result.getVendorId(), "Product has Movies ID.");
 
     }
 

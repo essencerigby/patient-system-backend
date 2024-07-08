@@ -44,7 +44,7 @@ public class ProductValidator {
     }
 
     /**
-     * Validates that Product Vendor ID is not null or empty based on Product Classification
+     * Validates that Product Movies ID is not null or empty based on Product Classification
      * @param productToValidate - Product Object containing unique identifier, active status, name,
      *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
      *                        and salePrice
@@ -54,10 +54,10 @@ public class ProductValidator {
         if (productToValidate.getClassification() != null) {
             if (productToValidate.getClassification().equals("Baked Good")) {
                 if (productToValidate.getVendorId() == null) {
-                    return " Vendor ID is null.";
+                    return " Movies ID is null.";
                 }
                 else if (productToValidate.getVendorId().isEmpty()) {
-                    return " Vendor ID is empty.";
+                    return " Movies ID is empty.";
                 }
                 else {
                     return "";

@@ -12,74 +12,16 @@ The server will start on `localhost:8085`
 
 Use the following as a JSON body for a POST. We do not supply an id or timestamp on the POST, as that is the application's job to manage.
 
-## CreateVendor sample request body for POST
+## CreateMovie sample request body for POST
 ```
 {
-  "name": "Sample Vendor",
-  "address": {
-    "street": "123 Main St",
-    "street2": "Apt 101",
-    "city": "Springfield",
-    "state": "IL",
-    "zipCode": "62701"
-  },
-  "contact": {
-    "contactName": "John Doe",
-    "email": "john.doe@example.com",
-    "titleOrRole": "Sales Manager",
-    "phone": "1234567890"
-  }
+"title": text,
+"genre": text,
+"director": text,
+"dailyRentalCost": decimal
 }
 ```
 
-## CreateProduct sample request body for POST
-```
-{    
-    "active": true,
-    "description": "The description of the Product.",
-    "name": "Product Name",
-    "vendorId": 12345,
-    "ingredientsList": [
-        "Sample Ingredient 1",
-        "Sample Ingredient 2",
-        "Sample Ingredient 3",
-        "Sample Ingredient 4"
-    ],
-    "classification": "Drink",
-    "type": "Coffee",
-    "cost": 1.5,
-    "markup": 5,
-    "allergenList": [
-        "Dairy",
-        "Gluten",
-        "Nuts",
-        "Soy"
-    ]
-}
-```
-
-## CreateCustomer sample request body for POST
-```
-{    
-    "active": true,
-    "name": "Customer Name",
-    "emailAddress": "customer.name@email.com",
-    "lifetimeSpent": 5000.0
-}
-```
-
-## CreateIngredient sample request body for POST
-```
-{
-  "active": false,
-  "name": "Peanut Brittle",
-  "purchasingCost": 45.80,
-  "amount": 10,
-  "unitOfMeasure": "lb",
-  "allergens": [ "Gluten", "Nuts" ]
-}
-
-```
 
 ## FrontEndConfig
 
