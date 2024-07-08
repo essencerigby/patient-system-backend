@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service implementation & business logic layer.
@@ -52,6 +53,7 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Retrieves a product by its name.
      * Exact matches only.
+     *
      * @param name The name of the product to retrieve.
      * @return The product(s) with the specified name.
      */
@@ -69,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * Creates a new product in the repository
+     *
      * @param productToCreate - Product Object containing unique identifier, active status, name,
      *                        imageUrl, vendorId, ingredientsList, classification, cost, allergenList,
      *                        and salePrice
@@ -98,15 +101,35 @@ public class ProductServiceImpl implements ProductService {
      * @return The updated product.
      */
     public Product editProduct(Product productToEdit, int id) {
-        return null; // Edit Product Logic goes here
+        if (productRepository.findById(id).isPresent()) {
+            String errorMessage = productValidator.validateProduct(productToEdit);
+            if (!errorMessage.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            }
+            List<Product> products = getProducts();
+            boolean nameExists = products.stream()
+                .anyMatch(product -> product.getId() != id && product.getName().equalsIgnoreCase(productToEdit.getName()));
+            if (nameExists) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Product with matching name already exists.");
+            }
+            productToEdit.setId(id);
+            Product formattedProduct = productValidator.formatProduct(productToEdit);
+            productRepository.save(formattedProduct);
+            return formattedProduct;
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Product was not found");
     }
 
     /**
      * Deletes a product from the system.
      *
      * @param id The ID of the product to delete.
+     * @throws ResponseStatusException NOT_FOUND when an invalid ID is provided.
      */
     public void deleteProductById(int id) {
-        // Delete Product by ID Logic goes here
+        Optional<Product> foundProduct = productRepository.findById(id);
+
+        if (foundProduct.isPresent()) {
+            productRepository.deleteById(id);
+        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A product with this ID was not found and could not be deleted.");
     }
 }
