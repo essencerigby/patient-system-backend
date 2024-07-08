@@ -1,9 +1,6 @@
 package io.catalyte.demo;
 
-import io.catalyte.demo.customer.Customer;
-import io.catalyte.demo.customer.CustomerRepository;
-import io.catalyte.demo.customer.CustomerService;
-import io.catalyte.demo.customer.CustomerServiceImpl;
+import io.catalyte.demo.customer.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,11 +9,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,6 +24,8 @@ public class CustomerServiceImplTest {
 
     @Mock
     CustomerRepository customerRepository;
+
+    CustomerValidator customerValidator;
 
     Customer testCustomer;
     Customer testCustomerToEdit;
@@ -60,13 +61,70 @@ public class CustomerServiceImplTest {
     @Test
     public void getCustomerById_withInvalidId_throwsError() {
         when(customerRepository.findById(2)).thenReturn(Optional.empty());
-        ResponseStatusException result = assertThrows(ResponseStatusException.class, () -> {
-            customerService.getCustomerById(2);
-        });
+        ResponseStatusException result = assertThrows(ResponseStatusException.class, () -> customerService.getCustomerById(2));
 
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode(), "Expected NOT_FOUND Status");
         assertEquals("Customer not found.", result.getReason(), "Expected error message mismatch");
     }
+
+    @Test
+    public void getCustomerByName_withValidName_returnsCustomer() {
+        sampleCustomers = Collections.singletonList(testCustomer);
+        when(customerRepository.findByNameIgnoreCase("Customer Name")).thenReturn(sampleCustomers);
+
+        List<Customer> result = customerService.getCustomerByName("Customer Name");
+
+        assertEquals(testCustomer.getName(), result.get(0).getName());
+    }
+
+    @Test
+    public void getCustomerByName_withNonExistentName_throwsError() {
+        String nonExistentName = "John Doe";
+
+        ResponseStatusException result = assertThrows(ResponseStatusException.class, () -> customerService.getCustomerByName(nonExistentName));
+
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode(), "Expected NOT_FOUND Status");
+        assertEquals("A customer with this name wasn't found.", result.getReason());
+    }
+
+    @Test
+    public void getCustomerByName_withEmptyName_throwsError() {
+        testCustomer.setName("");
+
+        ResponseStatusException result = assertThrows(ResponseStatusException.class, () -> customerService.getCustomerByName(testCustomer.getName()));
+
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Expected BAD_REQUEST Status");
+        assertEquals("Please ensure a valid name is provided.", result.getReason());
+    }
+
+    @Test
+    public void getCustomerByName_withNullValue_throwsError() {
+        ResponseStatusException result = assertThrows(ResponseStatusException.class, () -> customerService.getCustomerByName(null));
+
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Expected BAD_REQUEST Status");
+        assertEquals("Please ensure a valid name is provided.", result.getReason());
+    }
+
+
+@Test
+public void testValidateCustomer_MultipleErrors() {
+    Customer customer = new Customer();
+    customer.setActive(null);
+    customer.setName("");
+    customer.setEmailAddress("invalid-email");
+    customer.setLifetimeSpent(-10.0);
+    customer.setCustomerSince("");
+
+    CustomerValidator validator = new CustomerValidator(customer);
+    String result = validator.validateCustomer(customer);
+
+    String expectedErrorMessage = " Customer Active Status is null."
+            + " Customer Name is blank."
+            + " Email Address must be in the following format: x@x.x"
+            + " Lifetime Spent must be a non-negative value.";
+
+    assertEquals(expectedErrorMessage, result);
+}
 
     @Test
     public void createCustomer_withValidCustomer_returnsPersistedCustomer() {
@@ -79,9 +137,7 @@ public class CustomerServiceImplTest {
     public void createCustomer_withInvalidCustomer_throwsError() {
         testCustomer.setName("");
 
-        assertThrows(ResponseStatusException.class, () -> {
-            customerService.createCustomer(testCustomer);
-        }, "Product was saved.");
+        assertThrows(ResponseStatusException.class, () -> customerService.createCustomer(testCustomer), "Product was saved.");
     }
 
     @Test
@@ -103,10 +159,28 @@ public class CustomerServiceImplTest {
     public void editCustomer_whenCustomerIdIsNotValid_shouldReturn404Error() {
         int invalidID = 25; // Assuming this customer ID does not exist
         when(customerRepository.findById(invalidID)).thenReturn(Optional.empty());
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            customerService.editCustomer(testCustomerToEdit, invalidID);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> customerService.editCustomer(testCustomerToEdit, invalidID));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
         assertEquals("404 NOT_FOUND \"Customer not found.\"", exception.getMessage());
+    }
+
+    @Test
+    public void deleteCustomerById_withExistingId_deletesCustomer(){
+
+        when(customerRepository.findById(1)).thenReturn(Optional.of(testCustomer));
+        customerService.deleteCustomerById(1);
+        verify(customerRepository).findById(1);
+        verify(customerRepository).deleteById(1);
+    }
+
+    @Test
+    public void deleteCustomerById_withInvalidID_throwsError(){
+        int invalidId = 999;
+        when(customerRepository.findById(invalidId)).thenReturn(Optional.empty());
+        ResponseStatusException result = assertThrows(ResponseStatusException.class, () ->
+            customerService.deleteCustomerById(invalidId)
+        );
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+        assertEquals("404 NOT_FOUND \"Customer not found.\"", result.getMessage());
     }
 }
