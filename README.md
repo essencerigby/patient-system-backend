@@ -21,7 +21,10 @@ Use the following as a JSON body for a POST. We do not supply an id on the POST,
 "dailyRentalCost": "5.99"
 }
 ```
-
+## Unit Testing
+1. Navigate to src/test/java/io/catalyte/demo/MoviesServiceImplTests.java
+2. Right-click on the green play button in the left gutter
+3. Select "Run MoviesServiceImplTests with coverage"
 
 ## FrontEndConfig
 
