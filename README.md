@@ -1,4 +1,4 @@
-# Expresso-O Coffee Shop
+# Movie Rental Inventory
 
 This application exposes endpoints for basic CRUD operations on a model and manages an in memory list of those objects.
 
@@ -10,15 +10,15 @@ The server will start on `localhost:8085`
 
 ## JSON Body
 
-Use the following as a JSON body for a POST. We do not supply an id or timestamp on the POST, as that is the application's job to manage.
+Use the following as a JSON body for a POST. We do not supply an id on the POST, as that is the application's job to manage.
 
 ## CreateMovie sample request body for POST
 ```
 {
-"title": text,
-"genre": text,
-"director": text,
-"dailyRentalCost": decimal
+"title": "Inside Out",
+"genre": "Family-Comedy",
+"director": "Kelsey Mann",
+"dailyRentalCost": "5.99"
 }
 ```
 

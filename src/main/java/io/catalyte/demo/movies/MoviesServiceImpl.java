@@ -17,14 +17,10 @@ import java.util.Optional;
 public class MoviesServiceImpl implements MoviesService {
 
     private final MoviesRepository moviesRepository;
-    private final TitleUniqueValidator titleValidator;
-    private final MoviesValidation validator;
 
     @Autowired
-    public MoviesServiceImpl(MoviesRepository moviesRepository, TitleUniqueValidator titleValidator, MoviesValidation validator) {
+    public MoviesServiceImpl(MoviesRepository moviesRepository) {
         this.moviesRepository = moviesRepository;
-        this.titleValidator = titleValidator;
-        this.validator = validator;
     }
 
     /**
@@ -43,11 +39,8 @@ public class MoviesServiceImpl implements MoviesService {
      * @return the movies with the specified ID
      */
     public Movies getMoviesById(int id) {
-        try {
-            return moviesRepository.findById(id).orElseThrow();
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found.");
-        }
+        return moviesRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found."));
     }
 
     /**
@@ -58,13 +51,17 @@ public class MoviesServiceImpl implements MoviesService {
      */
     @Override
     public Movies createMovie(Movies movieToCreate) {
+        MoviesValidation validator = new MoviesValidation();
+        TitleUniqueValidator titleValidator = new TitleUniqueValidator();
+
         List<String> errors = List.of(validator.validateMovie(movieToCreate));
         if (!errors.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
         }
 
-        if (!titleValidator.isTitleUnique(movieToCreate.getTitle(), getMovies()).isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Title must be unique");
+        String titleValidationMessage = titleValidator.isTitleUnique(movieToCreate.getTitle(), getMovies());
+        if (!titleValidationMessage.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, titleValidationMessage);
         }
 
         return moviesRepository.save(movieToCreate);
@@ -78,6 +75,8 @@ public class MoviesServiceImpl implements MoviesService {
      * @return the updated movies
      */
     public Movies editMovie(Movies movieToEdit, int id) {
+        MoviesValidation validator = new MoviesValidation();
+
         if (moviesRepository.findById(id).isPresent()) {
             movieToEdit.setId(id);
 
@@ -87,7 +86,7 @@ public class MoviesServiceImpl implements MoviesService {
             }
             return moviesRepository.save(movieToEdit);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Movie was not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The movie was not found");
         }
     }
 
@@ -97,11 +96,11 @@ public class MoviesServiceImpl implements MoviesService {
      * @param id the ID of the movies to retrieve
      */
     public void deleteMovieById(int id) {
-        Optional<Movies> vendorToDelete = moviesRepository.findById(id);
-
-        if (vendorToDelete.isPresent()) {
+        if (moviesRepository.findById(id).isPresent()) {
             moviesRepository.deleteById(id);
-        } else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movies with matching id could not be found.");
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie with matching id could not be found.");
+        }
     }
 
 }

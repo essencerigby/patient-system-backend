@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name="vendors")
+@Table(name="movies")
 public class Movies {
 
     @Id

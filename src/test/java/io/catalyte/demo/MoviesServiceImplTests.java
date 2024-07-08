@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 class MoviesServiceImplTests {
 
 	@InjectMocks
-	MoviesServiceImpl vendorService;
+	MoviesServiceImpl moviesService;
 
 	@Mock
 	MoviesRepository moviesRepository;
@@ -60,7 +60,7 @@ class MoviesServiceImplTests {
 	public void getMovies_EmptyList() {
 		when(moviesRepository.findAll()).thenReturn(Arrays.asList());
 
-		List<Movies> movies = vendorService.getMovies();
+		List<Movies> movies = moviesService.getMovies();
 
 		assertNotNull(movies);
 		assertEquals(0, movies.size());
@@ -74,7 +74,7 @@ class MoviesServiceImplTests {
 		);
 		when(moviesRepository.findAll()).thenReturn(expectedMovies);
 
-		List<Movies> movies = vendorService.getMovies();
+		List<Movies> movies = moviesService.getMovies();
 
 		assertNotNull(movies);
 		assertEquals(2, movies.size());
@@ -85,9 +85,9 @@ class MoviesServiceImplTests {
 	public void getMovieById_withValidId_returnsMovie() {
 		when(moviesRepository.findById(1)).thenReturn(Optional.of(testMovies));
 
-		Movies result = vendorService.getMoviesById(1);
+		Movies result = moviesService.getMoviesById(1);
 
-		assertEquals(testMovies, result, "Movies name mismatch");
+		assertEquals(testMovies, result, "Movie title mismatch");
 	}
 
 	@Test
@@ -96,18 +96,18 @@ class MoviesServiceImplTests {
 		when(moviesRepository.findById(invalidId)).thenReturn(Optional.empty());
 
 		ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-			vendorService.getMoviesById(invalidId);
+			moviesService.getMoviesById(invalidId);
 		});
 
 		assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode(), "Expected NOT_FOUND status");
-		assertEquals("Movies not found.", exception.getReason(), "Expected error message mismatch");
+		assertEquals("Movie not found.", exception.getReason(), "Expected error message mismatch");
 	}
 
 	@Test
 	public void createMovie_validInputs_returnsCreatedMovie() {
 		when(moviesRepository.save(any(Movies.class))).thenReturn(testMovies);
 
-		Movies result = vendorService.createMovie(testMovies);
+		Movies result = moviesService.createMovie(testMovies);
 
 		assertEquals(testMovies.getTitle(), result.getTitle());
 	}
@@ -117,7 +117,7 @@ class MoviesServiceImplTests {
 		Movies invalidMovie = new Movies("", "", "", null);
 
 		ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-			vendorService.createMovie(invalidMovie);
+			moviesService.createMovie(invalidMovie);
 		});
 
 		assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode(), "Expected BAD_REQUEST status");
@@ -127,7 +127,7 @@ class MoviesServiceImplTests {
 	public void createMovie_unexpectedServerError() {
 		when(moviesRepository.save(any(Movies.class))).thenThrow(RuntimeException.class);
 
-		assertThrows(RuntimeException.class, () -> vendorService.createMovie(testMovies));
+		assertThrows(RuntimeException.class, () -> moviesService.createMovie(testMovies));
 	}
 
 	@Test
@@ -135,7 +135,7 @@ class MoviesServiceImplTests {
 		when(moviesRepository.findById(1)).thenReturn(Optional.of(testMovies));
 		when(moviesRepository.save(any(Movies.class))).thenReturn(testMoviesToEdit);
 
-		Movies editedMovies = vendorService.editMovie(testMoviesToEdit, 1);
+		Movies editedMovies = moviesService.editMovie(testMoviesToEdit, 1);
 
 		assertEquals(testMoviesToEdit.getTitle(), editedMovies.getTitle());
 		assertEquals(testMoviesToEdit.getGenre(), editedMovies.getGenre());
@@ -149,11 +149,11 @@ class MoviesServiceImplTests {
 		when(moviesRepository.findById(invalidMovieId)).thenReturn(Optional.empty());
 
 		ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-			vendorService.editMovie(testMoviesToEdit, invalidMovieId);
+			moviesService.editMovie(testMoviesToEdit, invalidMovieId);
 		});
 
 		assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-		assertEquals("404 NOT_FOUND \"The Movies was not found\"", exception.getMessage());
+		assertEquals("404 NOT_FOUND \"The movie was not found\"", exception.getMessage());
 	}
 
 	@Test
@@ -162,7 +162,7 @@ class MoviesServiceImplTests {
 		when(moviesRepository.findById(id)).thenReturn(Optional.of(testMovies));
 		doNothing().when(moviesRepository).deleteById(id);
 
-		vendorService.deleteMovieById(id);
+		moviesService.deleteMovieById(id);
 
 		verify(moviesRepository, times(1)).deleteById(id);
 	}
@@ -173,10 +173,10 @@ class MoviesServiceImplTests {
 		when(moviesRepository.findById(invalidId)).thenReturn(Optional.empty());
 
 		ResponseStatusException e = assertThrows(ResponseStatusException.class, () -> {
-			vendorService.deleteMovieById(invalidId);
+			moviesService.deleteMovieById(invalidId);
 		});
 
 		assertEquals(HttpStatus.NOT_FOUND, e.getStatusCode(), "Expected NOT_FOUND status");
-		assertEquals("Movies with matching id could not be found.", e.getReason(), "Expected error message mismatch");
+		assertEquals("Movie with matching id could not be found.", e.getReason(), "Expected error message mismatch");
 	}
 }
