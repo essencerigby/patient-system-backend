@@ -27,7 +27,7 @@ public class MoviesValidation {
             errors.add("Title field is empty");
         } else if (title.length() > 50) {
             errors.add("Please enter a tile shorter than 50 characters");
-        } else if (!title.matches("[\\w\\s\\-\\.',]*")) {
+        } else if (!title.matches("[A-Za-z\\s\\-',.]*")) {
             errors.add("Title contains invalid characters");
         }
         return errors;
@@ -41,7 +41,7 @@ public class MoviesValidation {
             errors.add("Genre field is empty");
         } else if (genre.length() > 20) {
             errors.add("Please enter a genre less than 50 characters");
-        } else if (!genre.matches("[\\w\\s\\-\\.',]*")) {
+        } else if (!genre.matches("[A-Za-z\\s\\-',.]*")) {
             errors.add("Genre contains invalid characters");
         }
         return errors;
@@ -55,7 +55,7 @@ public class MoviesValidation {
             errors.add("Director field is empty");
         } else if (director.length() > 50) {
             errors.add("Please enter a director name shorter than 50 characters");
-        } else if (!director.matches("[\\w\\s\\-\\.',]*")) {
+        } else if (!director.matches("[A-Za-z\\s\\-',.]*")) {
             errors.add("Director name contains invalid characters");
         }
         return errors;
