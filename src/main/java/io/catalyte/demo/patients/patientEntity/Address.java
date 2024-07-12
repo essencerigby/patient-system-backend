@@ -1,4 +1,4 @@
-package io.catalyte.demo.movies.moviesEntity;
+package io.catalyte.demo.patients.patientEntity;
 
 import jakarta.persistence.Embeddable;
 
@@ -6,7 +6,6 @@ import jakarta.persistence.Embeddable;
 public class Address {
 
     private String street;
-    private String street2;
     private String city;
     private String state;
     private String zipCode;
@@ -43,14 +42,6 @@ public class Address {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
-    }
-
-    public String getStreet2() {
-        return street2;
-    }
-
-    public void setStreet2(String street2) {
-        this.street2 = street2;
     }
 
 }

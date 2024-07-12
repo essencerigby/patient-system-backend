@@ -15,9 +15,9 @@ Use the following as a JSON body for a POST. We do not supply an id on the POST,
 ## CreateMovie sample request body for POST
 ```
 {
-"title": "Inside Out",
-"genre": "Family-Comedy",
-"director": "Kelsey Mann",
+"ssn": "Inside Out",
+"gender": "Family-Comedy",
+"insurance": "Kelsey Mann",
 "dailyRentalCost": "5.99"
 }
 ```

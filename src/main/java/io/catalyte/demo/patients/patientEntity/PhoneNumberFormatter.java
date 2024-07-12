@@ -1,4 +1,4 @@
-package io.catalyte.demo.movies.moviesEntity;
+package io.catalyte.demo.patients.patientEntity;
 
 import org.springframework.stereotype.Service;
 

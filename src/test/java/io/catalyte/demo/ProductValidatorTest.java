@@ -110,28 +110,28 @@ public class ProductValidatorTest {
     public void validateProductVendorID_withBakedGoodProduct_usingNullVendorID_returnsError() {
         testBakedGoodProduct.setVendorId(null);
         String err = productValidator.validateProductVendorID(testBakedGoodProduct);
-        assertEquals(" Movies ID is null.", err, "Movies ID is not null.");
+        assertEquals(" Patient ID is null.", err, "Patient ID is not null.");
     }
 
     @Test
     public void validateProductVendorID_withBakedGoodProduct_usingEmptyVendorID_returnsError() {
         testBakedGoodProduct.setVendorId("");
         String err = productValidator.validateProductVendorID(testBakedGoodProduct);
-        assertEquals(" Movies ID is empty.", err, "Movies ID is not empty.");
+        assertEquals(" Patient ID is empty.", err, "Patient ID is not empty.");
     }
 
     @Test
     public void validateProductVendorID_withBakedGoodProduct_usingValidVendorID_returnsEmptyString() {
         testBakedGoodProduct.setVendorId("null");
         String err = productValidator.validateProductVendorID(testBakedGoodProduct);
-        assertEquals("", err, "Movies ID is not null.");
+        assertEquals("", err, "Patient ID is not null.");
     }
 
     @Test
     public void validateProductVendorID_withDrinkProduct_usingValidVendorID_returnsEmptyString() {
         testBakedGoodProduct.setVendorId("null");
         String err = productValidator.validateProductVendorID(testBakedGoodProduct);
-        assertEquals("", err, "Movies ID is not null.");
+        assertEquals("", err, "Patient ID is not null.");
     }
 
     @Test
@@ -358,7 +358,7 @@ public class ProductValidatorTest {
     public void formatProduct_withDrinkProduct_returnsFormattedProduct() {
             Product result = productValidator.formatProduct(testDrinkProduct);
             assertEquals("n/a", result.getMarkup(), "Product Markup does not have default value.");
-            assertEquals("n/a", result.getVendorId(), "Product has Movies ID.");
+            assertEquals("n/a", result.getVendorId(), "Product has Patient ID.");
 
     }
 

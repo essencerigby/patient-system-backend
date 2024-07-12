@@ -1,17 +1,17 @@
-package io.catalyte.demo.movies;
+package io.catalyte.demo.patients;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.catalyte.demo.movies.moviesEntity.Movies;
+import io.catalyte.demo.patients.patientEntity.Patient;
 import org.springframework.stereotype.Component;
 
 /**
- * Provides various validation methods for validating movies details.
+ * Provides various validation methods for validating patients details.
  */
 @Component
-public class MoviesValidation {
+public class PatientValidation {
 
     /**
      * Validates the movie's tile.
@@ -84,15 +84,15 @@ public class MoviesValidation {
     /**
      * Validates the movie's details.
      *
-     * @param movies the movies to be validated
+     * @param patient the patient to be validated
      * @return an array of error messages for invalid fields; otherwise, an empty array
      */
-    public String[] validateMovie(Movies movies) {
+    public String[] validateMovie(Patient patient) {
         List<String> errors = new ArrayList<>();
-        errors.addAll(titleValidation(movies.getTitle()));
-        errors.addAll(genreValidation(movies.getGenre()));
-        errors.addAll(directorValidation(movies.getDirector()));
-        errors.addAll(dailyRentalCostValidation(String.valueOf(movies.getDailyRentalCost())));
+        errors.addAll(titleValidation(patient.getSsn()));
+        errors.addAll(genreValidation(patient.getGender()));
+        errors.addAll(directorValidation(patient.getInsurance()));
+        errors.addAll(dailyRentalCostValidation(String.valueOf(patient.getDailyRentalCost())));
         return errors.toArray(new String[0]);
     }
 }
