@@ -51,16 +51,16 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public Patient createPatient(Patient patientToCreate) {
         PatientValidation validator = new PatientValidation();
-        PatientUniqueValidator titleValidator = new PatientUniqueValidator();
+        PatientUniqueValidator uniqueValidator = new PatientUniqueValidator();
 
         List<String> errors = List.of(validator.validatePatient(patientToCreate));
         if (!errors.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
         }
 
-        String titleValidationMessage = titleValidator.isTitleUnique(patientToCreate.getSsn(), getPatients());
-        if (!titleValidationMessage.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, titleValidationMessage);
+        String uniqueValidationMessage = uniqueValidator.isSsnAndEmailUnique(patientToCreate.getSsn(), patientToCreate.getEmail(), getPatients());
+        if (!uniqueValidationMessage.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, uniqueValidationMessage);
         }
 
         return patientRepository.save(patientToCreate);
@@ -69,21 +69,21 @@ public class PatientServiceImpl implements PatientService {
     /**
      * Edits an existing patient.
      *
-     * @param patientToEdit the patient with updated details
+     * @param patientToUpdate the patient with updated details
      * @param id the ID of the patient to update
      * @return the updated patient
      */
-    public Patient editPatient(Patient patientToEdit, int id) {
+    public Patient editPatient(Patient patientToUpdate, int id) {
         PatientValidation validator = new PatientValidation();
 
         if (patientRepository.findById(id).isPresent()) {
-            patientToEdit.setId(id);
+            patientToUpdate.setId(id);
 
-            List<String> errors = List.of(validator.validatePatient(patientToEdit));
+            List<String> errors = List.of(validator.validatePatient(patientToUpdate));
             if (!errors.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
             }
-            return patientRepository.save(patientToEdit);
+            return patientRepository.save(patientToUpdate);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The patient was not found");
         }
