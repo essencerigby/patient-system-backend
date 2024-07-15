@@ -12,9 +12,9 @@ public interface PatientService {
 
     Patient getPatientById(int id);
 
-    Patient createPatient(Patient movieToCreate);
+    Patient createPatient(Patient patientToCreate);
 
-    Patient editPatient(Patient movieToEdit, int id);
+    Patient editPatient(Patient patientToUpdate, int id);
 
     void deletePatientById(int id);
 }
