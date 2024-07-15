@@ -32,7 +32,7 @@ public class PatientController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Patient> getMovies() {
+    public List<Patient> getPatients() {
         return patientService.getPatients();
     }
 
@@ -43,7 +43,7 @@ public class PatientController {
      */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Patient getMovieById(@PathVariable int id) {
+    public Patient getPatientById(@PathVariable int id) {
         return patientService.getPatientById(id);
     }
 
@@ -54,7 +54,7 @@ public class PatientController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Patient createMovie(@RequestBody Patient patientToCreate) {
+    public Patient createPatient(@RequestBody Patient patientToCreate) {
         return patientService.createPatient(patientToCreate);
     }
 
@@ -65,7 +65,7 @@ public class PatientController {
      * */
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Patient editMovie(@RequestBody Patient patientToEdit, @PathVariable int id) {
+    public Patient updatePatient(@RequestBody Patient patientToEdit, @PathVariable int id) {
         return patientService.editPatient(patientToEdit, id);
     }
 
@@ -75,7 +75,7 @@ public class PatientController {
      */
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteMovieById(@PathVariable int id) {
+    public void deletePatient(@PathVariable int id) {
         patientService.deletePatientById(id);
     }
 }

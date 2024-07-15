@@ -33,7 +33,7 @@ public class PatientValidation {
         } else if (firstName.isBlank()) {
             errors.add("First Name field is empty");
         } else if (firstName.length() > 30) {
-            errors.add("Please enter a name shorter than 30 characters");
+            errors.add("Please enter a first name shorter than 30 characters");
         } else if (!firstName.matches("[A-Za-z\\s\\-',.]*")) {
             errors.add("First Name contains invalid characters");
         }
@@ -53,7 +53,7 @@ public class PatientValidation {
         } else if (lastName.isBlank()) {
             errors.add("Last Name field is empty");
         } else if (lastName.length() > 30) {
-            errors.add("Please enter a name shorter than 30 characters");
+            errors.add("Please enter a last name shorter than 30 characters");
         } else if (!lastName.matches("[A-Za-z\\s\\-',.]*")) {
             errors.add("Last Name contains invalid characters");
         }
@@ -92,7 +92,7 @@ public class PatientValidation {
             errors.add("Email field is empty");
         } else if (email.length() > 50) {
             errors.add("Email must be less than 50 characters");
-        } else if (!email.matches("^[a-zA-Z0-9]+@[a-zA-Z]+\\.([a-zA-Z]+)+$\n")) {
+        } else if (!email.matches("^[a-zA-Z0-9]+@[a-zA-Z]+\\.([a-zA-Z]+)*$")) {
                 errors.add("The email is not in the right format: x@x.x");
         }
         return errors;
@@ -151,7 +151,7 @@ public class PatientValidation {
         } else if (state.isBlank()) {
             errors.add("State field is empty");
         } else if (!US_states.contains(state)) {
-            errors.add("Please add the right abbreviation of the state: two uppercase letters");
+            errors.add("State must be an US State abbreviation");
         }
         return errors;
     }
@@ -169,7 +169,7 @@ public class PatientValidation {
             errors.add("Zip code field is null");
         } else if (zip.isEmpty()) {
             errors.add("Zip code field is empty");
-        } else if (!zip.matches("^\\d{5}(-\\d{4})?$\n")) {
+        } else if (!zip.matches("^\\d{5}(-\\d{4})?$")) {
             errors.add("Zip must be in the format DDDDD or DDDDD-DDDD");
         }
         return errors;
@@ -257,6 +257,8 @@ public class PatientValidation {
             errors.add("Insurance field is empty");
         } else if (insurance.length() > 50) {
             errors.add("Insurance must be less than 50 characters");
+        } else if (!insurance.matches("[A-Za-z\\s\\-',.]*")) {
+            errors.add("Insurance contains invalid characters");
         }
         return errors;
     }

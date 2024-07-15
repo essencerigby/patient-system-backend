@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service implementation & business logic layer.
@@ -53,14 +54,14 @@ public class PatientServiceImpl implements PatientService {
         PatientValidation validator = new PatientValidation();
         PatientUniqueValidator uniqueValidator = new PatientUniqueValidator();
 
+        String isUniqueValidationMessage = uniqueValidator.areSSNAndEmailUnique(patientToCreate.getSsn(), patientToCreate.getEmail(), getPatients());
+        if (!isUniqueValidationMessage.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, isUniqueValidationMessage);
+        }
+
         List<String> errors = List.of(validator.validatePatient(patientToCreate));
         if (!errors.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
-        }
-
-        String uniqueValidationMessage = uniqueValidator.isSsnAndEmailUnique(patientToCreate.getSsn(), patientToCreate.getEmail(), getPatients());
-        if (!uniqueValidationMessage.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, uniqueValidationMessage);
         }
 
         return patientRepository.save(patientToCreate);
@@ -75,20 +76,29 @@ public class PatientServiceImpl implements PatientService {
      */
     public Patient editPatient(Patient patientToUpdate, int id) {
         PatientValidation validator = new PatientValidation();
+        PatientUniqueValidator uniqueValidator = new PatientUniqueValidator();
 
-        if (patientRepository.findById(id).isPresent()) {
+        Optional<Patient> existingPatientOpt = patientRepository.findById(id);
+        if (existingPatientOpt.isPresent()) {
+            Patient existingPatient = existingPatientOpt.get();
             patientToUpdate.setId(id);
+
+            String isUniqueValidationMessage = uniqueValidator.areSSNAndEmailUniqueForUpdate(
+                    patientToUpdate.getSsn(), patientToUpdate.getEmail(), patientToUpdate.getId(), getPatients());
+            if (!isUniqueValidationMessage.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, isUniqueValidationMessage);
+            }
 
             List<String> errors = List.of(validator.validatePatient(patientToUpdate));
             if (!errors.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
             }
+
             return patientRepository.save(patientToUpdate);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The patient was not found");
         }
     }
-
     /**
      * Deletes a patient by its ID
      * Throws a ResponseStatusException if the patient is not found.

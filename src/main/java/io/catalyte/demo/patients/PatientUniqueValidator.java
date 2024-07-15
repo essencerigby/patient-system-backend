@@ -12,23 +12,78 @@ import java.util.List;
 public class PatientUniqueValidator {
 
     /**
-     * Checks if the given title is unique within the provided list of vendors.
+     * Checks if the given ssn and email are unique within the provided list of patients.
      *
      * @param ssn the ssn to be checked for uniqueness
      * @param email the email to be checked for uniqueness
      * @param patientList the list of patients to check against
-     * @return a message indicating the result of the validation. If the ssn and/or email is unique, an empty string is returned.
-     * If a patient with the given ssn and/or email already exists, a message indicating this is returned.
+     * @return a message indicating the result of the validation. If both ssn and email are unique, an empty string is returned.
+     * If a patient with the given ssn or email already exists, a message indicating this is returned.
      */
-    public String isSsnAndEmailUnique(String ssn, String email, List<Patient> patientList) {
+    public String areSSNAndEmailUnique(String ssn, String email, List<Patient> patientList) {
+        boolean ssnExists = false;
+        boolean emailExists = false;
 
         for (Patient patient : patientList) {
-                if (patient.getSsn().equals(ssn)) {
-                    return "Patient with this ssn already exists";
-                } else if (patient.getEmail().equals(email)) {
-                    return "Patient with this email already exists";
-                }
+            if (patient.getSsn().equals(ssn)) {
+                ssnExists = true;
+            }
+            if (patient.getEmail().equals(email)) {
+                emailExists = true;
+            }
+            if (ssnExists && emailExists) {
+                break;
+            }
         }
-        return "";
+
+        StringBuilder message = new StringBuilder();
+        if (ssnExists) {
+            message.append("Patient with this ssn already exists. ");
+        }
+        if (emailExists) {
+            message.append("Patient with this email already exists.");
+        }
+
+        return message.toString().trim();
+    }
+
+    /**
+     * Checks if the given ssn and email are unique within the provided list of patients for an update operation.
+     *
+     * @param ssn the ssn to be checked for uniqueness
+     * @param email the email to be checked for uniqueness
+     * @param id the id of the patient being updated
+     * @param patientList the list of patients to check against
+     * @return a message indicating the result of the validation. If both ssn and email are unique for other patients, an empty string is returned.
+     * If a patient with the given ssn or email already exists but has a different ID, a message indicating this is returned.
+     */
+    public String areSSNAndEmailUniqueForUpdate(String ssn, String email, int id, List<Patient> patientList) {
+        boolean ssnExists = false;
+        boolean emailExists = false;
+
+        for (Patient patient : patientList) {
+            if (patient.getId() != id) {
+                if (patient.getSsn().equals(ssn)) {
+                    ssnExists = true;
+                }
+                if (patient.getEmail().equals(email)) {
+                    emailExists = true;
+                }
+            }
+            // If both ssnExists and emailExists are true, we can break the loop early
+            if (ssnExists && emailExists) {
+                break;
+            }
+        }
+
+        StringBuilder message = new StringBuilder();
+        if (ssnExists) {
+            message.append("Patient with this ssn already exists. ");
+        }
+        if (emailExists) {
+            message.append("Patient with this email already exists.");
+        }
+
+        return message.toString().trim();
     }
 }
