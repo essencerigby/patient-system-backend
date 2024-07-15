@@ -27,18 +27,18 @@ public class Patient {
     private Short height;
     private Short weight;
     private String insurance;
-    private BigDecimal dailyRentalCost;
 
 
     // Constructor - empty params
-    public Patient() {}
+    public Patient() {
+    }
 
     // Constructors - default values + params
     public Patient(int id, String firstName, String lastName, String ssn,
                    String email, String street, String city,
                    String state, String zip, String gender,
                    Short age, Short height, Short weight,
-                   String insurance, BigDecimal dailyRentalCost) {
+                   String insurance) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -53,7 +53,6 @@ public class Patient {
         this.height = height;
         this.weight = weight;
         this.insurance = insurance;
-        this.dailyRentalCost = dailyRentalCost;
     }
 
     public int getId() {
@@ -166,13 +165,5 @@ public class Patient {
 
     public void setInsurance(String insurance) {
         this.insurance = insurance;
-    }
-
-    public BigDecimal getDailyRentalCost() {
-        return dailyRentalCost;
-    }
-
-    public void setDailyRentalCost(BigDecimal dailyRentalCost) {
-        this.dailyRentalCost = dailyRentalCost;
     }
 }

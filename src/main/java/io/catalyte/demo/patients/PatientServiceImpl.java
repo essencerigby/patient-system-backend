@@ -53,7 +53,7 @@ public class PatientServiceImpl implements PatientService {
         PatientValidation validator = new PatientValidation();
         PatientUniqueValidator titleValidator = new PatientUniqueValidator();
 
-        List<String> errors = List.of(validator.validateMovie(patientToCreate));
+        List<String> errors = List.of(validator.validatePatient(patientToCreate));
         if (!errors.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
         }
@@ -79,7 +79,7 @@ public class PatientServiceImpl implements PatientService {
         if (patientRepository.findById(id).isPresent()) {
             patientToEdit.setId(id);
 
-            List<String> errors = List.of(validator.validateMovie(patientToEdit));
+            List<String> errors = List.of(validator.validatePatient(patientToEdit));
             if (!errors.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(", ", errors));
             }
