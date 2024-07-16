@@ -183,7 +183,7 @@ public class PatientValidation {
      */
     public List<String> ageValidation(Short age) {
         List<String> errors = new ArrayList<>();
-        if (age == 0) {
+        if (age == null) {
             errors.add("Age field is empty");
         } else if (age < 0) {
             errors.add("Age must be a positive number");
@@ -201,7 +201,9 @@ public class PatientValidation {
      */
     public List<String> heightValidation(Short height) {
         List<String> errors = new ArrayList<>();
-        if (height < 0) {
+        if (height == null) {
+            errors.add("Height field is empty");
+        }else if (height < 0) {
             errors.add("Height must be a positive number in inches");
         } else if (height > 108) {
             errors.add("Height must be between 0 and 108, no decimals");
@@ -217,7 +219,9 @@ public class PatientValidation {
      */
     public List<String> weightValidation(Short weight) {
         List<String> errors = new ArrayList<>();
-       if (weight < 0) {
+        if (weight == null) {
+            errors.add("Weight field is empty");
+        }else if (weight < 0) {
             errors.add("Weight must be a positive whole number");
         } else if (weight > 1400) {
             errors.add("Weight must be between 0 and 1400, no decimals");
