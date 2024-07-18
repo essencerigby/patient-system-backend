@@ -166,7 +166,7 @@ public class PatientValidation {
         List<String> errors = new ArrayList<>();
         if (zip == null) {
             errors.add("Zip code field is null");
-        } else if (zip.isEmpty()) {
+        } else if (zip.isEmpty() || zip.isBlank()) {
             errors.add("Zip code field is empty");
         } else if (!zip.matches("^\\d{5}(-\\d{4})?$")) {
             errors.add("Zip must be in the format DDDDD or DDDDD-DDDD");
@@ -185,7 +185,7 @@ public class PatientValidation {
         if (age == null) {
             errors.add("Age field is empty");
         } else if (age < 0) {
-            errors.add("Age must be a positive number");
+            errors.add("Age must be a positive number, enter 0 for infant");
         } else if (age > 120) {
             errors.add("Age must be between 0 and 120");
         }
@@ -200,9 +200,12 @@ public class PatientValidation {
      */
     public List<String> heightValidation(Short height) {
         List<String> errors = new ArrayList<>();
+
         if (height == null) {
-            errors.add("Height field is empty");
-        }else if (height < 0) {
+            return errors;
+        }
+
+        if (height < 0) {
             errors.add("Height must be a positive number in inches");
         } else if (height > 108) {
             errors.add("Height must be between 0 and 108, no decimals");
@@ -218,9 +221,12 @@ public class PatientValidation {
      */
     public List<String> weightValidation(Short weight) {
         List<String> errors = new ArrayList<>();
+
         if (weight == null) {
-            errors.add("Weight field is empty");
-        }else if (weight < 0) {
+            return errors;
+        }
+
+        if (weight < 0) {
             errors.add("Weight must be a positive whole number");
         } else if (weight > 1400) {
             errors.add("Weight must be between 0 and 1400, no decimals");
@@ -238,7 +244,7 @@ public class PatientValidation {
         List<String> errors = new ArrayList<>();
         if (gender == null) {
             errors.add("Gender field is null");
-        } else if (gender.isEmpty()) {
+        } else if (gender.isBlank()) {
             errors.add("Gender field is empty");
         } else if (!gender_values.contains(gender)) {
             errors.add("Gender must be: Male, Female, or Other");
@@ -256,7 +262,7 @@ public class PatientValidation {
         List<String> errors = new ArrayList<>();
         if (insurance == null) {
             errors.add("Insurance field is null");
-        } else if (insurance.isEmpty()) {
+        } else if (insurance.isBlank()) {
             errors.add("Insurance field is empty");
         } else if (insurance.length() > 50) {
             errors.add("Insurance must be less than 50 characters");

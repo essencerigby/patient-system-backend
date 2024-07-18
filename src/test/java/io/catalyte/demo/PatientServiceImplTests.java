@@ -189,7 +189,7 @@ class PatientServiceImplTests {
 		patientToUpdate.setId(1);
 		patientToUpdate.setFirstName("John");
 		patientToUpdate.setLastName("Doe");
-		patientToUpdate.setSsn("987-65-4321"); // Duplicate SSN
+		patientToUpdate.setSsn("987-65-4321");
 		patientToUpdate.setEmail("john.doe@example.com");
 
 		ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->
