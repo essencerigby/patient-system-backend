@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.catalyte.demo.patients.patientEntity.Patient;
 import org.springframework.stereotype.Component;
 
 /**

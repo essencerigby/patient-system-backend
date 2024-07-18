@@ -1,6 +1,5 @@
 package io.catalyte.demo.patients;
 
-import io.catalyte.demo.patients.patientEntity.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -69,7 +68,8 @@ public class PatientServiceImpl implements PatientService {
 
     /**
      * Edits an existing patient.
-     *
+     *Throws a ResponseStatusException if values become invalid,
+       ssn/email belongs to different patient, or the patient is not found
      * @param patientToUpdate the patient with updated details
      * @param id the ID of the patient to update
      * @return the updated patient

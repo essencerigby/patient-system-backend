@@ -1,11 +1,9 @@
-package io.catalyte.demo.patients.patientEntity;
+package io.catalyte.demo.patients;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
-import java.math.BigDecimal;
 
 @Entity
 @Table(name="patients")
@@ -36,8 +34,8 @@ public class Patient {
     // Constructors - default values + params
     public Patient(int id, String firstName, String lastName, String ssn,
                    String email, String street, String city,
-                   String state, String zip, String gender,
-                   Short age, Short height, Short weight,
+                   String state, String zip,
+                   Short age, Short height, Short weight, String gender,
                    String insurance) {
         this.id = id;
         this.firstName = firstName;
@@ -48,10 +46,10 @@ public class Patient {
         this.city = city;
         this.state = state;
         this.zip = zip;
-        this.gender = gender;
         this.age = age;
         this.height = height;
         this.weight = weight;
+        this.gender = gender;
         this.insurance = insurance;
     }
 

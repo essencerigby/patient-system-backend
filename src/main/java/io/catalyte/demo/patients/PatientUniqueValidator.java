@@ -1,6 +1,5 @@
 package io.catalyte.demo.patients;
 
-import io.catalyte.demo.patients.patientEntity.Patient;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

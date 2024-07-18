@@ -1,7 +1,5 @@
 package io.catalyte.demo.patients;
 
-import io.catalyte.demo.patients.patientEntity.Patient;
-
 import java.util.List;
 
 public interface PatientService {
